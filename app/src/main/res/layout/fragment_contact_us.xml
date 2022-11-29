@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="listener"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="viewModel"
+            type="com.rolling.meadows.view_model.StaticPagesViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#56B7E5">
+<!-- android:layout_marginBottom="@dimen/_35sdp"-->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:fillViewport="true">
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:paddingStart="@dimen/_20sdp"
+                    android:paddingTop="@dimen/_30sdp"
+                    android:paddingEnd="@dimen/_20sdp"
+                    android:paddingBottom="@dimen/_15sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/nameCL"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:background="@drawable/edittext_stroke"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/nameET"
+                            validationError="@{viewModel.contactUsLiveData.errorName}"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz 0123456789"
+                            android:drawableStart="@drawable/ic_user_profile"
+                            android:drawablePadding="@dimen/_10sdp"
+                            android:hint="@string/name"
+                            android:imeOptions="actionNext"
+                            android:inputType="textEmailAddress"
+                            android:nextFocusForward="@+id/phoneET"
+                            android:padding="@dimen/_14sdp"
+                            android:singleLine="true"
+                            android:textColor="@color/_1D1A2F"
+                            android:textColorHint="@color/_787F84"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <View
+                            android:id="@+id/viewName"
+                            android:layout_width="@dimen/_2sdp"
+                            android:layout_height="0dp"
+                            android:layout_marginVertical="@dimen/_13sdp"
+                            android:background="@drawable/view_black_edittext"
+                            android:visibility="gone"
+                            app:layout_constraintBottom_toBottomOf="@+id/nameET"
+                            app:layout_constraintStart_toStartOf="@+id/nameET"
+                            app:layout_constraintTop_toTopOf="@+id/nameET" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/emailCL"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:background="@drawable/edittext_stroke"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/nameCL">
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/emailET"
+                            style="@style/editTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz 0123456789.@_"
+                            android:drawableStart="@drawable/ic_email"
+                            android:drawablePadding="@dimen/_10sdp"
+                            android:hint="@string/email"
+                            android:imeOptions="actionNext"
+                            android:inputType="textEmailAddress"
+                            android:nextFocusForward="@+id/messageET"
+                            android:textColor="@color/_1D1A2F"
+                            android:textColorHint="@color/_787F84"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <View
+                            android:id="@+id/viewEmail"
+                            android:layout_width="@dimen/_2sdp"
+                            android:layout_height="0dp"
+                            android:layout_marginVertical="@dimen/_13sdp"
+                            android:background="@drawable/view_black_edittext"
+                            android:visibility="gone"
+                            app:layout_constraintBottom_toBottomOf="@+id/emailET"
+                            app:layout_constraintStart_toStartOf="@+id/emailET"
+                            app:layout_constraintTop_toTopOf="@+id/emailET" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/selectCategoryCL"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:background="@drawable/edittext_stroke"
+                        android:onClick="@{listener::onClick}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/emailCL">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/selectCategoryET"
+                            style="@style/editTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:cursorVisible="false"
+                            android:drawableStart="@drawable/ic_menu"
+                            android:drawablePadding="@dimen/_10sdp"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
+                            android:hint="@string/select_category_for_message"
+                            android:onClick="@{listener::onClick}"
+                            android:padding="@dimen/_14sdp"
+                            android:textColor="@color/_1D1A2F"
+                            android:textColorHint="@color/_787F84"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/imageSpinner"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/_10sdp"
+                            android:src="@drawable/ic_dropdown"
+                            app:layout_constraintBottom_toBottomOf="@+id/selectCategoryET"
+                            app:layout_constraintEnd_toEndOf="@id/selectCategoryET"
+                            app:layout_constraintTop_toTopOf="@+id/selectCategoryET" />
+
+                        <View
+                            android:id="@+id/viewselect"
+                            android:layout_width="@dimen/_2sdp"
+                            android:layout_height="0dp"
+                            android:layout_marginVertical="@dimen/_13sdp"
+                            android:background="@drawable/view_black_edittext"
+                            android:visibility="gone"
+                            app:layout_constraintBottom_toBottomOf="@+id/selectCategoryET"
+                            app:layout_constraintStart_toStartOf="@+id/selectCategoryET"
+                            app:layout_constraintTop_toTopOf="@+id/selectCategoryET" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/categoryRV"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_5sdp"
+                        android:background="@color/white"
+                        android:elevation="@dimen/_5sdp"
+                        android:nestedScrollingEnabled="false"
+                        android:visibility="gone"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintEnd_toEndOf="@+id/selectCategoryCL"
+                        app:layout_constraintStart_toStartOf="@+id/selectCategoryCL"
+                        app:layout_constraintTop_toBottomOf="@+id/selectCategoryCL" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/messageCT"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:background="@drawable/edittext_stroke"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/categoryRV">
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/messageET"
+                            style="@style/editTextStyle"
+                            validationError="@{viewModel.contactUsLiveData.errorDescription}"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="top"
+                            android:hint="@string/your_message"
+                            android:inputType="textMultiLine|textCapSentences"
+                            android:minHeight="@dimen/_140sdp"
+                            android:nextFocusForward="@+id/phoneET"
+                            android:text="@={viewModel.contactUsLiveData.description}"
+                            android:textColor="@color/_1D1A2F"
+                            android:textColorHint="@color/_787F84"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/submitBT"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_70sdp"
+                        android:layout_marginHorizontal="@dimen/_30sdp"
+                        android:layout_marginTop="@dimen/_30sdp"
+                        android:background="@drawable/button"
+                        android:gravity="center"
+                        android:onClick="@{listener::onClick}"
+                        android:paddingBottom="@dimen/_19sdp"
+                        android:text="@string/send"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_13sdp"
+                        app:fontFamily="@font/lato_bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/messageCT" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

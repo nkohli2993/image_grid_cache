@@ -1,0 +1,48 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    ext.kotlin_version = "1.6.10"
+    ext.hilt_version = "2.41"
+    ext.picassoVersion = "2.71828"
+    ext.glideVersion = "4.13.1"
+    ext.hilt_viewmodels = "1.0.0-alpha02"
+    ext.hilt_workmanager = "1.0.0-alpha02"
+    ext. mockVersion = "1.10.5"
+    ext.coroutinesTestVersion = "1.4.2-native-mt"
+    ext.junitVersion = "5.7.0"
+    ext.androidXJunitVersion = "1.1.4-alpha07"
+    ext.assertjVersion = "3.19.0"
+    ext.coreTestingVersion = "2.1.0"
+    ext.espressoIntentsVersion = "3.4.0"
+    ext.espressoVersion = "3.4.0"
+    ext.toasty_version = "1.4.2"
+    repositories {
+        maven { url 'https://jitpack.io' }
+        mavenCentral()
+        google()
+    }
+    dependencies {
+        classpath 'com.google.gms:google-services:4.3.14'
+        classpath 'com.android.tools.build:gradle:7.1.3'
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10'
+        classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
+
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.5.3"
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.2'
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        maven { url "https://maven.google.com" }
+        maven { url 'https://jitpack.io' }
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

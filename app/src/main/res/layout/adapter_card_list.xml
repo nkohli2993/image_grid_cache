@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_5sdp"
+        android:background="@drawable/ic_card_back"
+        android:paddingHorizontal="@dimen/_15sdp"
+        android:paddingVertical="@dimen/_20sdp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/cardTypeIV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_card_type"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/deleteIV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:src="@drawable/ic_delete"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardNumberTV" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/cardNumberTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:text="5621 3255 4588 6595"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_16sdp"
+            app:fontFamily="@font/lato_regular"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardTypeIV" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/cardHolderNameTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="John Smith"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12sdp"
+            app:fontFamily="@font/lato_regular"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/expiryDateTV" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/cardHolderNameTxtTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Card holder Name"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_10sdp"
+            app:fontFamily="@font/lato_regular"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardHolderNameTV" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/expiryDateTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:text="06/2024"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12sdp"
+            app:fontFamily="@font/lato_regular"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/deleteIV" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/expiryDateTxtTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Expiry Date"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_10sdp"
+            app:fontFamily="@font/lato_regular"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/expiryDateTV" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
