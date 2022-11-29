@@ -301,8 +301,8 @@ object CommonFunctions {
     }
 
     fun getMediumFont(context: Context): Typeface {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) context.resources.getFont(R.font.lato_regular)
-        else context.let { ResourcesCompat.getFont(it, R.font.lato_regular) }!!
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) context.resources.getFont(R.font.poppins_regular)
+        else context.let { ResourcesCompat.getFont(it, R.font.poppins_regular) }!!
     }
 
     inline fun SpannableStringBuilder.font(

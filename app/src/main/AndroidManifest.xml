@@ -63,10 +63,6 @@
             android:name="com.google.firebase.messaging.default_notification_icon"
 
             android:resource="@mipmap/ic_user_notification" />
-
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_key" />
     </application>
 
 </manifest>

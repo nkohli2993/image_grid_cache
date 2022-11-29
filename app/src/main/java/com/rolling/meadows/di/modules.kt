@@ -40,9 +40,6 @@ val repositoryModule = module {
         AuthenticationRepository(get())
     }
     single {
-        RideRepository(get(),get())
-    }
-    single {
         ImageUtils()
     }
 }

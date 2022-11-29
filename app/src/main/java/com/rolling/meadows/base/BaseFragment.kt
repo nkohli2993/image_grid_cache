@@ -5,6 +5,7 @@ import android.content.IntentSender.SendIntentException
 import android.location.Location
 import android.os.Bundle
 import android.view.*
+import com.rolling.meadows.R
 import androidx.annotation.LayoutRes
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil

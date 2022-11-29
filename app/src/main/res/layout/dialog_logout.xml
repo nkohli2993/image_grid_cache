@@ -32,7 +32,7 @@
                 android:text="@string/sure_you_want_to_logout"
                 android:textColor="@color/_1D1A2F"
                 android:textSize="@dimen/_17ssp"
-                app:fontFamily="@font/lato_bold"
+                app:fontFamily="@font/poppins_semibold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -51,7 +51,7 @@
                 android:text="@string/cancel"
                 android:textColor="@color/_1D1A2F"
                 android:textSize="@dimen/_13sdp"
-                app:fontFamily="@font/lato_bold"
+                app:fontFamily="@font/poppins_semibold"
                 app:layout_constraintBottom_toBottomOf="@+id/logoutBT"
                 app:layout_constraintEnd_toStartOf="@id/logoutBT"
                 app:layout_constraintStart_toStartOf="parent"
@@ -70,7 +70,7 @@
                 android:text="@string/logout"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_13sdp"
-                app:fontFamily="@font/lato_bold"
+                app:fontFamily="@font/poppins_semibold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/cancelBT"
                 app:layout_constraintTop_toBottomOf="@+id/titleTV" />

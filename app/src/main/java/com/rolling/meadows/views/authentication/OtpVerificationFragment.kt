@@ -47,7 +47,6 @@ class OtpVerificationFragment : BaseFragment<FragmentOtpVerificationBinding>(),
         type = args.type
         otp = args.otp
         phoneNumber = args.phoneNumber
-        binding.reservedTV.reservedWithVersion(baseActivity!!)
         binding.firstET.onTextWritten(binding.viewfirst)
         binding.secondET.onTextWritten(binding.viewSecond)
         binding.threeET.onTextWritten(binding.viewthree)
@@ -60,22 +59,6 @@ class OtpVerificationFragment : BaseFragment<FragmentOtpVerificationBinding>(),
         binding.secondET.otpHelper()
         binding.threeET.otpHelper()
         binding.fourET.otpHelper()
-        when (type) {
-            "registration_account" -> {
-                binding.enterOtpTxt.text = getString(R.string.account_verification)
-                binding.otpText.text =
-                    "${getString(R.string.registration_otp_verification_text)} $phoneNumber ${
-                        getString(R.string.phone_num)
-                    }"
-                binding.continueBT.text = getString(R.string.verify)
-            }
-            else -> {
-                binding.enterOtpTxt.text = getString(R.string.enter_otp)
-                binding.otpText.text =
-                    "${getString(R.string.otp_forgot_password_text)} $phoneNumber ${getString(R.string.to_reset_your_password)}"
-            }
-        }
-
 
     }
 

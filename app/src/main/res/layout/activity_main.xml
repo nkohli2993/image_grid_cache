@@ -70,7 +70,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_10sdp"
-                        android:fontFamily="@font/lato_bold"
+                        android:fontFamily="@font/poppins_semibold"
                         android:gravity="center"
                         android:paddingHorizontal="@dimen/_15sdp"
                         android:text="@string/home"
@@ -94,7 +94,7 @@
                 app:navGraph="@navigation/home_navigation" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <!--        drawer view-->
+       <!-- &lt;!&ndash;        drawer view&ndash;&gt;
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/drawerCL"
             android:layout_width="match_parent"
@@ -155,7 +155,7 @@
                             android:text="@string/home"
                             android:textColor="@color/white"
                             android:textSize="@dimen/_14sdp"
-                            app:fontFamily="@font/lato_bold"
+                            app:fontFamily="@font/poppins_semibold"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -187,7 +187,7 @@
                             android:text="@string/my_ride"
                             android:textColor="@color/_82C9EF"
                             android:textSize="@dimen/_14sdp"
-                            app:fontFamily="@font/lato_bold"
+                            app:fontFamily="@font/poppins_semibold"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -219,7 +219,7 @@
                             android:text="@string/my_profile"
                             android:textColor="@color/_82C9EF"
                             android:textSize="@dimen/_14sdp"
-                            app:fontFamily="@font/lato_bold"
+                            app:fontFamily="@font/poppins_semibold"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -252,7 +252,7 @@
                             android:text="@string/payment_method"
                             android:textColor="@color/_82C9EF"
                             android:textSize="@dimen/_14sdp"
-                            app:fontFamily="@font/lato_bold"
+                            app:fontFamily="@font/poppins_semibold"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -285,7 +285,7 @@
                             android:text="@string/about_us"
                             android:textColor="@color/_82C9EF"
                             android:textSize="@dimen/_14sdp"
-                            app:fontFamily="@font/lato_bold"
+                            app:fontFamily="@font/poppins_semibold"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -318,7 +318,7 @@
                             android:text="@string/privacy_policy"
                             android:textColor="@color/_82C9EF"
                             android:textSize="@dimen/_14sdp"
-                            app:fontFamily="@font/lato_bold"
+                            app:fontFamily="@font/poppins_semibold"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -351,7 +351,7 @@
                             android:text="@string/terms_a_conditions"
                             android:textColor="@color/_82C9EF"
                             android:textSize="@dimen/_14sdp"
-                            app:fontFamily="@font/lato_bold"
+                            app:fontFamily="@font/poppins_semibold"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -384,7 +384,7 @@
                             android:text="@string/contact_us"
                             android:textColor="@color/_82C9EF"
                             android:textSize="@dimen/_14sdp"
-                            app:fontFamily="@font/lato_bold"
+                            app:fontFamily="@font/poppins_semibold"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -406,7 +406,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>-->
 
     </androidx.drawerlayout.widget.DrawerLayout>
 </layout>

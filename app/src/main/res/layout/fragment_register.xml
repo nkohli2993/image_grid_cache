@@ -44,7 +44,7 @@
                 android:text="@string/create_account"
                 android:textColor="@color/_1D1A2F"
                 android:textSize="@dimen/_20ssp"
-                app:fontFamily="@font/lato_bold"
+                app:fontFamily="@font/poppins_semibold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/backIV" />
 
@@ -56,7 +56,7 @@
                 android:text="@string/welcome_text_register"
                 android:textColor="@color/_787F84"
                 android:textSize="@dimen/_10ssp"
-                app:fontFamily="@font/lato_regular"
+                app:fontFamily="@font/poppins_regular"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/createAccountTxt" />
 
@@ -293,7 +293,7 @@
                         android:digits="0123456789"
                         android:layout_marginStart="@dimen/_2sdp"
                         android:background="@null"
-                        android:fontFamily="@font/lato_regular"
+                        android:fontFamily="@font/poppins_regular"
                         android:hint="@string/_phone_number"
                         android:imeOptions="actionNext"
                         android:inputType="phone"
@@ -436,7 +436,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:fontFamily="@font/lato_regular"
+                android:fontFamily="@font/poppins_regular"
                 android:paddingEnd="@dimen/_2sdp"
                 android:text="@string/agree_terms_privacy_policy"
                 android:textColor="@color/_787F84"
@@ -458,7 +458,7 @@
                 android:text="@string/create"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_13sdp"
-                app:fontFamily="@font/lato_bold"
+                app:fontFamily="@font/poppins_semibold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/termsTV" />
@@ -470,7 +470,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_25sdp"
                 android:layout_marginBottom="@dimen/_10sdp"
-                android:fontFamily="@font/lato_regular"
+                android:fontFamily="@font/poppins_regular"
                 android:gravity="center"
                 android:paddingVertical="@dimen/_5sdp"
                 android:text="@string/already_have_an_account_sign_in"

@@ -62,7 +62,7 @@
                     android:drawableStart="@drawable/ic_location"
                     android:drawablePadding="@dimen/_10sdp"
                     android:ellipsize="end"
-                    android:fontFamily="@font/lato_regular"
+                    android:fontFamily="@font/poppins_regular"
                     android:gravity="center_vertical"
                     android:maxWidth="@dimen/_130sdp"
                     android:maxLength="70"
@@ -120,6 +120,6 @@
             android:text="@string/done"
             android:textColor="@color/white"
             android:textSize="@dimen/_13sdp"
-            app:fontFamily="@font/lato_bold" />
+            app:fontFamily="@font/poppins_semibold" />
     </RelativeLayout>
 </layout>

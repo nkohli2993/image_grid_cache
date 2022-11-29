@@ -87,7 +87,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(), View.OnFocusCh
     }
 
     private fun codePickerHandling() {
-        val typeFace = ResourcesCompat.getFont(requireContext(), R.font.lato_regular)
+        val typeFace = ResourcesCompat.getFont(requireContext(), R.font.poppins_regular)
         binding.codePicker.setTypeFace(typeFace)
         viewModel.registrationLiveData.value?.deviceType = 1
         viewModel.registrationLiveData.value?.role = "1"

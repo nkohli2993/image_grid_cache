@@ -39,7 +39,7 @@
             android:text="5621 3255 4588 6595"
             android:textColor="@color/white"
             android:textSize="@dimen/_16sdp"
-            app:fontFamily="@font/lato_regular"
+            app:fontFamily="@font/poppins_regular"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cardTypeIV" />
 
@@ -50,7 +50,7 @@
             android:text="John Smith"
             android:textColor="@color/white"
             android:textSize="@dimen/_12sdp"
-            app:fontFamily="@font/lato_regular"
+            app:fontFamily="@font/poppins_regular"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/expiryDateTV" />
 
@@ -61,7 +61,7 @@
             android:text="Card holder Name"
             android:textColor="@color/white"
             android:textSize="@dimen/_10sdp"
-            app:fontFamily="@font/lato_regular"
+            app:fontFamily="@font/poppins_regular"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cardHolderNameTV" />
 
@@ -73,7 +73,7 @@
             android:text="06/2024"
             android:textColor="@color/white"
             android:textSize="@dimen/_12sdp"
-            app:fontFamily="@font/lato_regular"
+            app:fontFamily="@font/poppins_regular"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/deleteIV" />
 
@@ -84,7 +84,7 @@
             android:text="Expiry Date"
             android:textColor="@color/white"
             android:textSize="@dimen/_10sdp"
-            app:fontFamily="@font/lato_regular"
+            app:fontFamily="@font/poppins_regular"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/expiryDateTV" />
     </androidx.constraintlayout.widget.ConstraintLayout>

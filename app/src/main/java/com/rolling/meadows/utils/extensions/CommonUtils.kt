@@ -110,7 +110,7 @@ fun TextView.setSpanString(
         override fun updateDrawState(ds: TextPaint) {
             super.updateDrawState(ds)
             ds.isUnderlineText = false
-            val typeFace = ResourcesCompat.getFont(context, R.font.lato_bold)
+            val typeFace = ResourcesCompat.getFont(context, R.font.poppins_semibold)
             ds.typeface = typeFace
             ds.color = ContextCompat.getColor(context, color)
             if (isBold) {
