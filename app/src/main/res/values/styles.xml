@@ -26,12 +26,6 @@
         <item name="android:textColorHint">@android:color/black</item>
         <item name="android:background">@drawable/edittext_stroke</item>
     </style>
-    <style name="textviewStyle" parent="Widget.AppCompat.TextView">
-        <item name="fontFamily">@font/poppins_regular</item>
-        <item name="android:textSize">@dimen/_12ssp</item>
-        <item name="android:textColor">@android:color/black</item>
-        <item name="android:textColorHint">@android:color/black</item>
-    </style>
 
     <style name="buttonViewStyle" parent="Widget.MaterialComponents.Button">
         <item name="android:textSize">@dimen/_14ssp</item>
@@ -64,11 +58,6 @@
         <item name="android:windowExitAnimation">@anim/popup_hide</item>
     </style>
 
-    <style name="RatingBarSmall" parent="android:Widget.DeviceDefault.Light.RatingBar.Small">
-        <item name="android:progressDrawable">@drawable/rating_bar</item>
-        <item name="android:minHeight">39dp</item>
-        <item name="android:maxHeight">39dp</item>
-    </style>
     <style name="ratingSmall" parent="android:Widget.DeviceDefault.Light.RatingBar.Indicator">
         <item name="android:progressDrawable">@drawable/small_rating_bar</item>
         <item name="android:minHeight">12dp</item>
@@ -77,45 +66,6 @@
     <style name="roundedImageViewRounded" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
-    </style>
-    <style name="roundedCornerView" parent="">
-        <item name="cornerSize">@dimen/_10sdp</item>
-        <item name="cornerFamily">rounded</item>
-    </style>
-    <style name="default_swipe_button_style" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="inner_text">Swipe</item>
-        <item name="inner_text_color">@color/black</item>
-        <item name="inner_text_size">12sp</item>
-        <item name="inner_text_gravity">center</item>
-
-        <item name="outer_background_drawable">@drawable/circle_white</item>
-        <item name="outer_background_height">40dp</item>
-
-        <item name="button_background_drawable">@drawable/ic_pay</item>
-        <item name="button_background_padding">16dp</item>
-        <item name="button_background_src">@drawable/ic_button_car</item>
-        <item name="button_width">@dimen/_40sdp</item>
-        <item name="button_height">@dimen/_40sdp</item>
-
-        <item name="trail_enabled">true</item>
-        <item name="trail_background_tint">@color/white</item>
-
-        <item name="has_finish_animation">true</item>
-        <item name="has_active_status">true</item>
-    </style>
-
-    <style name="BottomSheetThem" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
-        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
-    </style>
-
-    <style name="AppBottomSheetDialogTheme"
-        parent="Theme.Design.Light.BottomSheetDialog">
-        <item name="bottomSheetStyle">@style/AppModalStyle</item>
-    </style>
-
-    <style name="AppModalStyle"
-        parent="Widget.Design.BottomSheet.Modal">
-        <item name="android:background">@drawable/round_white_fill</item>
     </style>
 
 

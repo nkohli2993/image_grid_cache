@@ -42,6 +42,14 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(){
         initUi()
     }
 
+    override fun onClick(v: View?) {
+        super.onClick(v)
+        when(v?.id){
+            R.id.btnLogin->{
+                baseActivity!!.goToMainActivity()
+            }
+        }
+    }
 
 
     private fun initUi() {
@@ -70,7 +78,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(){
 
     override fun onResume() {
         super.onResume()
-        baseActivity!!.getFirebaseToken()
+      //  baseActivity!!.getFirebaseToken()
     }
 
     override fun observeViewModel() {

@@ -147,6 +147,7 @@
                         android:background="@drawable/button_background"
                         android:fontFamily="@font/poppins_semibold"
                         android:text="@string/login"
+                        android:onClick="@{listener::onClick}"
                         android:paddingBottom="@dimen/_5sdp"
                         android:textAllCaps="false"
                         app:layout_constraintStart_toStartOf="parent"

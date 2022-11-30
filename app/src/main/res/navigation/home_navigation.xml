@@ -9,147 +9,33 @@
         android:name="com.rolling.meadows.views.view_main.homePages.HomeFragment"
         tools:layout="@layout/fragment_home">
         <action
-            android:id="@+id/home_to_select_address_fragment"
-            app:destination="@+id/selectAddressFragment" />
+            android:id="@+id/home_to_rolling_detail"
+            app:destination="@+id/detailRollingDetail" />
         <action
-            android:id="@+id/action_rating"
-            app:destination="@id/action_rate_ride" />
-        <action
-            android:id="@+id/action_homeFragment_to_action_select_payment"
-            app:destination="@id/action_select_payment" />
-
-        <action
-            android:id="@+id/action_fav_driver_list"
-            app:destination="@id/action_fav_driver" />
+            android:id="@+id/action_home_to_notification"
+            app:destination="@+id/notificationFragment" />
 
     </fragment>
     <fragment
-        android:id="@+id/contactUsFragment"
-        android:name="com.rolling.meadows.views.view_main.dynamicPages.ContactUsFragment"
-        tools:layout="@layout/fragment_contact_us" />
-    <fragment
-        android:id="@+id/staticPagesFragment"
-        android:name="com.rolling.meadows.views.view_main.dynamicPages.StaticPagesFragment"
-        tools:layout="@layout/fragment_dynamic_page" />
-    <fragment
-        android:id="@+id/addCardFragment"
-        android:name="com.rolling.meadows.views.view_main.payment.AddCardFragment"
-        tools:layout="@layout/fragment_add_card" />
-
-    <fragment
-        android:id="@+id/action_select_payment"
-        android:name="com.rolling.meadows.views.view_main.payment.SelectPaymentFragment"
-        tools:layout="@layout/fragment_select_payment">
-        <action
-            android:id="@+id/action_add_card_payment"
-            app:destination="@+id/addCardFragment" />
-        <action
-            android:id="@+id/action_action_select_payment_to_homeFragment"
-            app:popUpToInclusive="true"
-            app:popUpTo="@id/homeFragment"
-            app:destination="@id/homeActivity" />
-
-
-
-
-    </fragment>
-    <fragment
-        android:id="@+id/selectAddressFragment"
-        android:name="com.rolling.meadows.views.view_main.homePages.SelectLocationFragment"
-        tools:layout="@layout/fragment_select_location">
-        <action
-            android:id="@+id/action_select_loaction_to_select_location_from_map"
-            app:destination="@+id/action_select_map_location_fragment" />
-
-        <action
-            android:id="@+id/action_select_location_to_home"
-            app:destination="@+id/homeFragment" />
-    </fragment>
-
-
-    <fragment
-        android:id="@+id/action_select_map_location_fragment"
-        android:name="com.rolling.meadows.views.view_main.homePages.SearchLocationMapFragment"
-        android:label="@string/select_location"
-        tools:layout="@layout/fragment_search_location">
-        <action
-            android:id="@+id/mapLocation_to_home"
-            app:destination="@id/homeFragment"
-            app:popUpTo="@id/homeFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/action_profile_fragment"
-        android:name="com.rolling.meadows.views.view_main.profile.ProfileFragment"
-        tools:layout="@layout/fragment_profile">
-        <action
-            android:id="@+id/action_change_password"
-            app:destination="@id/action_change_password" />
-        <action
-            android:id="@+id/action_edit_profile"
-            app:destination="@id/action_edit_profile_from_profile" />
-        <action
-            android:id="@+id/action_booking_request"
-            app:destination="@id/action_booking_request" />
-    </fragment>
-    <fragment
-        android:id="@+id/action_edit_profile_from_profile"
-        android:name="com.rolling.meadows.views.view_main.profile.EditProfileFragment"
-        android:label="edit_profile"
-        tools:layout="@layout/fragment_edit_profile" />
+        android:id="@+id/detailRollingDetail"
+        android:name="com.rolling.meadows.views.view_main.RollingDetailFragment"
+        tools:layout="@layout/fragment_rolling_detail" />
     <fragment
         android:id="@+id/action_change_password"
         android:name="com.rolling.meadows.views.authentication.forgot_password.ResetPasswordFragment"
         android:label="@string/_otp_verification"
         tools:layout="@layout/fragment_otp_verification" />
     <fragment
-        android:id="@+id/action_booking_request"
-        android:name="com.rolling.meadows.views.view_main.bookings.BookingRequestFragment"
-        android:label="booking_request"
-        tools:layout="@layout/fragment_booking_request">
-        <action
-            android:id="@+id/action_booking_request_detail"
-            app:destination="@id/action_booking_request_detail" />
-        <action
-            android:id="@+id/action_fav_driver_list"
-            app:destination="@id/action_fav_driver" />
-    </fragment>
-    <fragment
-        android:id="@+id/action_fav_driver"
-        android:name="com.rolling.meadows.views.view_main.bookings.DriverFavoriteFragment"
-        android:label="booking_request"
-        tools:layout="@layout/fragment_driver_favorite"/>
-    <fragment
-        android:id="@+id/action_booking_request_detail"
-        android:name="com.rolling.meadows.views.view_main.bookings.BookingDetailFragment"
-        android:label="booking_request_detail"
-        tools:layout="@layout/fragment_booking_detail">
-        <action
-            android:id="@+id/action_rating"
-            app:destination="@id/action_rate_ride" />
-    </fragment>
-    <fragment
-        android:id="@+id/action_rate_ride"
-        android:name="com.rolling.meadows.views.view_main.RatingRideFragment"
-        android:label="booking_request"
-        tools:layout="@layout/fragment_rating_ride" >
-        <action
-            android:id="@+id/action_fav_driver_list"
-            app:destination="@id/action_fav_driver" />
-
-    </fragment>
-    <fragment
-        android:id="@+id/action_home_to_notification"
+        android:id="@+id/notificationFragment"
         android:name="com.rolling.meadows.views.view_main.notification.NotificationFragment"
         android:label="@string/notification"
         tools:layout="@layout/fragment_notification">
         <action
-            android:id="@+id/action_booking_request_detail"
-            app:destination="@id/action_booking_request_detail" />
+            android:id="@+id/action_detail_rolling"
+            app:destination="@id/detailRollingDetail" />
     </fragment>
 
-    <activity
-        android:id="@+id/homeActivity"
-        android:name="com.rolling.meadows.views.view_main.MainActivity" />
+    <activity android:name="com.rolling.meadows.views.view_main.MainActivity" />
 
 
 </navigation>

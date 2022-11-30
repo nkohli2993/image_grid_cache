@@ -56,7 +56,6 @@ import java.net.SocketTimeoutException
 import java.util.concurrent.TimeoutException
 
 abstract class BaseActivity : AppCompatActivity() {
-    var googleApisHandle: GoogleApisHandle? = null
     private val viewModel: LoginViewModel by viewModels()
     var selectedFile: MutableLiveData<File> = MutableLiveData()
     private val PERMISSION_REQUEST_CODE = 200
@@ -80,9 +79,8 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initProgressLoader()
-        googleApisHandle = GoogleApisHandle.getInstance(this)
-        FirebaseApp.initializeApp(this)
-        getFirebaseToken()
+       // FirebaseApp.initializeApp(this)
+        //getFirebaseToken()
     }
 
     fun hideKeyBoard(): Boolean {

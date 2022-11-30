@@ -94,7 +94,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
                         }
                         val bundleIntent = Bundle()
                         bundleIntent.putInt("id", bundle.getString("ride_id")!!.toInt())
-                        navController?.navigate(R.id.action_booking_request_detail, bundleIntent)
+                        //navController?.navigate(R.id., bundleIntent)
                     }
                 }
 
@@ -135,11 +135,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
 
         val destArray = listOf<Int>(
             R.id.homeFragment,
-            R.id.action_select_payment,
-            R.id.action_profile_fragment,
-            R.id.action_booking_request,
             R.id.staticPagesFragment,
-            R.id.contactUsFragment
         )
         if (destArray.contains(getCurrentFragmentId())) {
             if (!binding.drawer.isDrawerOpen(GravityCompat.END)) {
@@ -216,20 +212,10 @@ class MainActivity : BaseActivity(), View.OnClickListener {
 
     override fun onBackPressed() {
         val destArray = listOf<Int>(R.id.homeFragment)
-        val backPressAry = listOf<Int>(
-            R.id.homeFragment,
-            R.id.action_select_payment,
-            R.id.action_profile_fragment,
-            R.id.action_booking_request,
-            R.id.staticPagesFragment,
-            R.id.contactUsFragment
-        )
         if (destArray.contains(getCurrentFragmentId())) {
             // check for view  to open
             backAction()
-        } else if (backPressAry.contains(getCurrentFragmentId())) {
-            navController?.navigate(R.id.homeFragment)
-        } else {
+        }  else {
             navController?.popBackStack()
         }
     }
