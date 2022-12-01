@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.net.Uri
 import android.os.Build
 import android.text.SpannableString
@@ -18,6 +20,7 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.ColorRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
@@ -27,6 +30,8 @@ import androidx.core.widget.doOnTextChanged
 import com.google.android.material.snackbar.Snackbar
 import com.rolling.meadows.BuildConfig
 import com.rolling.meadows.R
+import com.rolling.meadows.di.provideAppContext
+import org.jetbrains.annotations.NotNull
 import java.util.*
 
 fun View.visibleView(show: Boolean) {
@@ -57,32 +62,48 @@ fun TextView.reservedWithVersion(context: Context) {
     text = "v${BuildConfig.VERSION_NAME.plus(" ${context.getString(R.string.all_right_reserved)}")}"
 }
 
-fun AppCompatEditText.onTextWritten(view: View) {
+fun AppCompatEditText.onTextWritten() {
     doOnTextChanged { text, start, before, count ->
         if (text.toString().isNotEmpty()) {
-            setBackgroundResource(R.drawable.background_black_stroke)
-            view.visibleView(true)
+            setTextViewDrawableColor(this, R.color._B2D05A)
+            setBackgroundResource(R.drawable.background_stoke_highlight_edittext)
         } else {
-            setBackgroundResource(R.drawable.edittext_stroke)
-            view.visibleView(false)
+            setTextViewDrawableColor(this, R.color._8F8F8F)
+            setBackgroundResource(R.drawable.background_stroke_edittext)
         }
     }
 }
 
+fun setTextViewDrawableColor(
+    @NotNull textView: TextView,
+    @ColorRes color: Int
+) {
+    for (drawable in textView.compoundDrawables) {
+        if (drawable != null) {
+            drawable.colorFilter =
+                PorterDuffColorFilter(
+                    ContextCompat.getColor(provideAppContext(), color),
+                    PorterDuff.Mode.SRC_IN
+                )
+        }
+    }
+}
+
+
 fun AppCompatImageView.showHidePassword(editView: AppCompatEditText) {
     setOnClickListener {
-        if (this.tag == R.drawable.ic_show) {
+        if (this.tag == R.drawable.ic_eye) {
             //Hide Password
             editView.transformationMethod = PasswordTransformationMethod.getInstance()
-            this.setImageResource(R.drawable.ic_hide)
-            this.tag = R.drawable.ic_hide
+            this.setImageResource(R.drawable.ic_eye_close)
+            this.tag = R.drawable.ic_eye_close
 
         } else {
             //Show password
             editView.transformationMethod =
                 HideReturnsTransformationMethod.getInstance()
-            this.setImageResource(R.drawable.ic_show)
-            this.tag = R.drawable.ic_show
+            this.setImageResource(R.drawable.ic_eye)
+            this.tag = R.drawable.ic_eye
         }
 //        isPasswordShown = !isPasswordShown
         editView.setSelection(editView.length())
@@ -92,7 +113,7 @@ fun AppCompatImageView.showHidePassword(editView: AppCompatEditText) {
 
 fun TextView.setSpanString(
     message: String?,
-    color: Int = R.color.colorPrimary,
+    color: Int = R.color._B2D05A,
     startPos: Int,
     isBold: Boolean = false,
     isUnderLine: Boolean = false,

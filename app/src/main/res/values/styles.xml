@@ -58,11 +58,6 @@
         <item name="android:windowExitAnimation">@anim/popup_hide</item>
     </style>
 
-    <style name="ratingSmall" parent="android:Widget.DeviceDefault.Light.RatingBar.Indicator">
-        <item name="android:progressDrawable">@drawable/small_rating_bar</item>
-        <item name="android:minHeight">12dp</item>
-        <item name="android:maxHeight">12dp</item>
-    </style>
     <style name="roundedImageViewRounded" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>

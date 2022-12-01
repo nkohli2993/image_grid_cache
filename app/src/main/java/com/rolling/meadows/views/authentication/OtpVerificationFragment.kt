@@ -24,15 +24,14 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class OtpVerificationFragment : BaseFragment<FragmentOtpVerificationBinding>(),
-    View.OnFocusChangeListener {
+class OtpVerificationFragment : BaseFragment<FragmentOtpVerificationBinding>()
+  {
     override fun getLayoutRes(): Int = R.layout.fragment_otp_verification
     private val viewModel: PhoneVerificationViewModel by viewModels()
     private var type: String? = null
     private var dialog: Dialog? = null
     private var otp: String? = null
     private var phoneNumber: String? = null
-    private val args: OtpVerificationFragmentArgs by navArgs()
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         initUi()
@@ -44,17 +43,11 @@ class OtpVerificationFragment : BaseFragment<FragmentOtpVerificationBinding>(),
         binding.listener = this
         removeFlag()
 
-        type = args.type
-        otp = args.otp
-        phoneNumber = args.phoneNumber
-        binding.firstET.onTextWritten(binding.viewfirst)
-        binding.secondET.onTextWritten(binding.viewSecond)
-        binding.threeET.onTextWritten(binding.viewthree)
-        binding.fourET.onTextWritten(binding.viewfour)
-        binding.firstET.onFocusChangeListener = this
-        binding.secondET.onFocusChangeListener = this
-        binding.threeET.onFocusChangeListener = this
-        binding.fourET.onFocusChangeListener = this
+        binding.firstET.onTextWritten()
+        binding.secondET.onTextWritten()
+        binding.threeET.onTextWritten()
+        binding.fourET.onTextWritten()
+
         binding.firstET.otpHelper()
         binding.secondET.otpHelper()
         binding.threeET.otpHelper()
@@ -65,14 +58,14 @@ class OtpVerificationFragment : BaseFragment<FragmentOtpVerificationBinding>(),
     override fun onClick(v: View?) {
         super.onClick(v)
         when (v?.id) {
-            R.id.continueBT -> {
+            R.id.btnContinue -> {
                 val otp = binding.firstET.text.toString().trim()
                     .plus(binding.secondET.text.toString().trim())
                     .plus(binding.threeET.text.toString().trim())
                     .plus(binding.fourET.text.toString().trim())
-                viewModel.otpVerificationLiveData.value?.otp = otp
+              /*  viewModel.otpVerificationLiveData.value?.otp = otp
                 viewModel.otpVerificationLiveData.value?.user_id =
-                    viewModel.getUser()?.id.toString()
+                    viewModel.getUser()?.id.toString()*/
 
                 when {
                     otp.isEmpty() -> {
@@ -82,6 +75,8 @@ class OtpVerificationFragment : BaseFragment<FragmentOtpVerificationBinding>(),
                         showError(baseActivity!!, getString(R.string.plz_enter_valid_otp))
                     }
                     else -> {
+                        findNavController().navigate(R.id.action_reset_otp)
+/*
                         when (type) {
                             "registration_account" -> {
                                 viewModel.onClickOtpVerify()
@@ -90,6 +85,7 @@ class OtpVerificationFragment : BaseFragment<FragmentOtpVerificationBinding>(),
                                 viewModel.onClickResetOtpVerify()
                             }
                         }
+*/
 
                     }
                 }
@@ -97,7 +93,7 @@ class OtpVerificationFragment : BaseFragment<FragmentOtpVerificationBinding>(),
             R.id.backIV -> {
                 when (type) {
                     "registration_account" -> {
-                       findNavController().navigate(R.id.loginFragment)
+                       findNavController().navigate(R.id.action_introFragment_to_loginFragment)
                     }
                     else -> {
                         baseActivity!!.onBackPressed()
@@ -112,12 +108,13 @@ class OtpVerificationFragment : BaseFragment<FragmentOtpVerificationBinding>(),
     private fun setView() {
         binding.resendOtpTV.setSpanString(
             baseActivity!!.getString(R.string.dont_have_account_resend_otp),
-            startPos = 22,
+            startPos = 19,
             isBold = true,
             onClick = {
-                viewModel.resendOtpVerificationLiveData.value?.user_id =
+                showInfo(baseActivity!!, "New OTP resend to you.")
+               /* viewModel.resendOtpVerificationLiveData.value?.user_id =
                     viewModel.getUser()?.id.toString()
-                viewModel.hitResendOtpVerification()
+                viewModel.hitResendOtpVerification()*/
             })
     }
 
@@ -135,35 +132,6 @@ class OtpVerificationFragment : BaseFragment<FragmentOtpVerificationBinding>(),
             baseActivity!!.goToMainActivity()
         }
         dialog?.show()
-    }
-
-    override fun onFocusChange(p0: View?, p1: Boolean) {
-        binding.firstET.setBackgroundResource(R.drawable.edittext_stroke)
-        binding.secondET.setBackgroundResource(R.drawable.edittext_stroke)
-        binding.threeET.setBackgroundResource(R.drawable.edittext_stroke)
-        binding.fourET.setBackgroundResource(R.drawable.edittext_stroke)
-        binding.viewfirst.visibleView(false)
-        binding.viewSecond.visibleView(false)
-        binding.viewthree.visibleView(false)
-        binding.viewfour.visibleView(false)
-        when (p0?.id) {
-            R.id.firstET -> {
-                binding.viewfirst.visibleView(true)
-                binding.firstET.setBackgroundResource(R.drawable.background_black_stroke)
-            }
-            R.id.secondET -> {
-                binding.viewSecond.visibleView(true)
-                binding.secondET.setBackgroundResource(R.drawable.background_black_stroke)
-            }
-            R.id.threeET -> {
-                binding.viewthree.visibleView(true)
-                binding.threeET.setBackgroundResource(R.drawable.background_black_stroke)
-            }
-            R.id.fourET -> {
-                binding.viewfour.visibleView(true)
-                binding.fourET.setBackgroundResource(R.drawable.background_black_stroke)
-            }
-        }
     }
 
     override fun observeViewModel() {

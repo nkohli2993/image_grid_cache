@@ -37,7 +37,6 @@ import java.util.*
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity(), View.OnClickListener {
-    var noDriverDialog: Dialog? = null
     private lateinit var binding: ActivityMainBinding
     private var dialog: Dialog? = null
     var navController: NavController? = null
@@ -62,9 +61,11 @@ class MainActivity : BaseActivity(), View.OnClickListener {
     private fun init() {
         binding.listener = this
 
+/*
         if (intent != null && intent.hasExtra("isPush")) {
             intent.getBundleExtra("detail")?.let { checkAction(it) }
         }
+*/
     }
 
     override fun onStop() {
@@ -107,58 +108,11 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         clearNotification()
     }
 
-    fun setToolbar(value: Boolean) {
-        if (binding != null) {
-            toolbar.visibleView(value)
-        }
-    }
-
-    fun setTitle(title: String) {
-        if (binding != null) {
-            titleTV.text = title
-        }
-    }
-
-
-    private fun setSelectedTextColorIcon(
-        imageView: AppCompatImageView,
-        image: Int,
-        textView: AppCompatTextView,
-        color: Int
-    ) {
-        imageView.setImageResource(image)
-        textView.setTextColor(color)
-    }
-
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
-        val destArray = listOf<Int>(
-            R.id.homeFragment,
-            R.id.staticPagesFragment,
-        )
-        if (destArray.contains(getCurrentFragmentId())) {
-            if (!binding.drawer.isDrawerOpen(GravityCompat.END)) {
-//                openDrawer()
-            } else {
-                binding.drawer.close()
-            }
-
-        } else {
-            onBackPressed()
-        }
-        return super.onOptionsItemSelected(item)
-    }
 
     fun getCurrentFragmentId(): Int? {
         return navController?.currentDestination?.id
     }
 
-
-    fun setToolbar(title: String?) {
-        binding.titleTV.visibleView(!title.isNullOrEmpty())
-        binding.titleTV.text = title
-    }
 
     fun getCurrentFragment(): Fragment {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.home_nav_host_fragment)
@@ -233,7 +187,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog?.setContentView(R.layout.dialog_logout)
         dialog?.setCancelable(true)
-        val cancelBT = dialog?.findViewById(R.id.cancelBT) as AppCompatTextView
+        val cancelBT = dialog?.findViewById(R.id.canelBT) as AppCompatTextView
         val logoutBT = dialog?.findViewById(R.id.logoutBT) as AppCompatTextView
         val logoutCL = dialog?.findViewById(R.id.logoutCL) as ConstraintLayout
         val card = dialog?.findViewById(R.id.card) as CardView
@@ -248,8 +202,8 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         }
         logoutBT.setOnClickListener {
             dialog?.dismiss()
-            viewModel.onClickLogout()
-            binding.drawer.closeDrawer(GravityCompat.END)
+//            viewModel.onClickLogout()
+            goToInitialActivity()
         }
         dialog?.show()
     }
@@ -290,35 +244,6 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    @SuppressLint("SetTextI18n")
-    fun opeDialog(type: String = "") {
-        noDriverDialog = Dialog(this, android.R.style.Theme_Translucent_NoTitleBar)
-        noDriverDialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        noDriverDialog?.setContentView(R.layout.dialog_logout)
-        noDriverDialog?.setCancelable(true)
-        val cancelBT = noDriverDialog?.findViewById(R.id.cancelBT) as AppCompatTextView
-        val logoutBT = noDriverDialog?.findViewById(R.id.logoutBT) as AppCompatTextView
-        val titleTV = noDriverDialog?.findViewById(R.id.titleTV) as AppCompatTextView
-        val logoutCL = noDriverDialog?.findViewById(R.id.logoutCL) as ConstraintLayout
-        cancelBT.visibleView(false)
-        titleTV.text = "No driver found, your ride is cancelled. Try again later."
-        logoutBT.text = getString(R.string.ok)
-        val card = noDriverDialog?.findViewById(R.id.card) as CardView
-        card.setOnClickListener {
-
-        }
-        logoutCL.setOnClickListener {
-            noDriverDialog?.dismiss()
-        }
-        cancelBT.setOnClickListener {
-            noDriverDialog?.dismiss()
-        }
-        logoutBT.setOnClickListener {
-            noDriverDialog?.dismiss()
-
-        }
-        noDriverDialog?.show()
-    }
 
     private fun openNotificationDialog(bundle: Bundle) {
         showAlertDialog(message = (bundle.get("title") as String),

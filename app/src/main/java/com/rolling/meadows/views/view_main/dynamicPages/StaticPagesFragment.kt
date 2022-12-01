@@ -73,8 +73,13 @@ class StaticPagesFragment : BaseFragment<FragmentDynamicPageBinding>() {
     override fun initViewBinding() {
         changeStatusBarColor(ContextCompat.getColor(requireContext(), R.color.colorPrimaryDark))
         changeStatusBarIconColor(true)
+/*
         if (baseActivity is MainActivity) {
+*/
+/*
             (baseActivity as MainActivity).setToolbar(true)
+*//*
+
             when (arguments?.getString("type")) {
                 Constants.ABOUT_US -> {
                     (baseActivity as MainActivity).setTitle(getString(R.string.about_us))
@@ -87,6 +92,7 @@ class StaticPagesFragment : BaseFragment<FragmentDynamicPageBinding>() {
                 }
             }
         }
+*/
         init()
     }
 

@@ -173,7 +173,7 @@ abstract class BaseFragment<DB : ViewDataBinding> : Fragment(),
 
 
     fun showCustomUI() {
-        changeStatusBarColor(ContextCompat.getColor(baseActivity!!, R.color.colorPrimaryDark))
+        changeStatusBarColor(ContextCompat.getColor(baseActivity!!, R.color.colorPrimary))
         changeStatusBarIconColor(false)
         baseActivity!!.window.setFlags(
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,

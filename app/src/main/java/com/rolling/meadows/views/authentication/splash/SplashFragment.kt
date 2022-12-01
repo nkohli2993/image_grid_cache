@@ -25,9 +25,9 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>() {
     private val viewModel: ProfileViewModel by viewModels()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //showCustomUI()
-        changeStatusBarColor(ContextCompat.getColor(baseActivity!!, R.color.colorPrimary))
-        changeStatusBarIconColor(false)
+        showCustomUI()
+//        changeStatusBarColor(ContextCompat.getColor(baseActivity!!, R.color.colorPrimary))
+//        changeStatusBarIconColor(false)
     }
 
     override fun onResume() {

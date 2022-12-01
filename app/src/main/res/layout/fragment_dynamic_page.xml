@@ -24,7 +24,6 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_95sdp"
-                android:background="@mipmap/main_background"
                 android:visibility="gone"
                 app:contentInsetStart="0dp"
                 app:layout_constraintStart_toStartOf="parent"

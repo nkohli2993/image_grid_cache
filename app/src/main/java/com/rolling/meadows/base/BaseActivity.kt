@@ -149,7 +149,7 @@ abstract class BaseActivity : AppCompatActivity() {
         } ?: run {
             when (errorCode) {
                 HTTPStatus.UNAUTHORIZED_AND_VALIDATIONS -> {
-                    showSessionTimeOutDialog(message)
+//                    showSessionTimeOutDialog(message)
                 }
                 HTTPStatus.NOT_FOUND -> {
                     showError(this, message!!)
@@ -165,6 +165,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
     }
 
+/*
     private fun showSessionTimeOutDialog(message: String?) {
         val dialog = Dialog(this, android.R.style.Theme_Panel)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -183,6 +184,7 @@ abstract class BaseActivity : AppCompatActivity() {
         }
         dialog.show()
     }
+*/
 
 
     fun initProgressLoader() {

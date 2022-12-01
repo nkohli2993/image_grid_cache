@@ -37,10 +37,6 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(),
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (baseActivity is MainActivity) {
-            (baseActivity as MainActivity).setToolbar(false)
-            (baseActivity as MainActivity).setTitle(getString(R.string.notification))
-        }
         isBinded = false
     }
 
@@ -115,7 +111,7 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(),
         super.onClick(v)
         when(v?.id){
             R.id.backIV ->{
-                findNavController().popBackStack()
+                baseActivity!!.onBackPressed()
             }
         }
     }

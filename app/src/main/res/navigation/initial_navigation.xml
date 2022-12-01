@@ -20,24 +20,12 @@
         android:label="@string/login"
         tools:layout="@layout/fragment_login">
         <action
-            android:id="@+id/action_loginFragment_to_registerFragment"
-            app:destination="@id/registerFragment" />
-        <action
             android:id="@+id/action_loginFragment_to_forgotPasswordFragment"
             app:destination="@id/forgotPasswordFragment" />
         <action
             android:id="@+id/action_send_otp"
             app:destination="@id/fragment_otp_verification" />
 
-    </fragment>
-    <fragment
-        android:id="@+id/registerFragment"
-        android:name="com.rolling.meadows.views.authentication.register.RegisterFragment"
-        android:label="@string/register"
-        tools:layout="@layout/fragment_register">
-        <action
-            android:id="@+id/action_send_otp"
-            app:destination="@id/fragment_otp_verification" />
     </fragment>
     <fragment
         android:id="@+id/forgotPasswordFragment"
@@ -54,21 +42,6 @@
         android:name="com.rolling.meadows.views.authentication.OtpVerificationFragment"
         android:label="@string/_otp_verification"
         tools:layout="@layout/fragment_otp_verification">
-        <argument
-            android:name="type"
-            app:argType="string" />
-        <argument
-            android:name="phone_code"
-            app:argType="string"
-            app:nullable="true" />
-        <argument
-            android:name="phone_number"
-            app:argType="string"
-            app:nullable="true" />
-        <argument
-            android:name="otp"
-            app:argType="string"
-            app:nullable="true" />
         <action
             android:id="@+id/action_reset_otp"
             app:destination="@id/fragment_reset_otp" />

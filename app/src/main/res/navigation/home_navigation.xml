@@ -35,7 +35,7 @@
             app:destination="@id/detailRollingDetail" />
     </fragment>
 
-    <activity android:name="com.rolling.meadows.views.view_main.MainActivity" />
+<!--    <activity android:name="com.rolling.meadows.views.view_main.MainActivity" />-->
 
 
 </navigation>

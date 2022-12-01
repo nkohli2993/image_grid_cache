@@ -1,8 +1,6 @@
 package com.rolling.meadows.views.authentication.forgot_password
 
 import android.view.View
-import androidx.core.content.res.ResourcesCompat
-import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.rolling.meadows.R
@@ -11,9 +9,7 @@ import com.rolling.meadows.databinding.FragmentForgotPasswordBinding
 import com.rolling.meadows.network.retrofit.DataResult
 import com.rolling.meadows.utils.extensions.*
 import com.rolling.meadows.view_model.ForgotPasswordViewModel
-import com.rolling.meadows.views.authentication.register.RegisterFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_forgot_password.*
 
 @AndroidEntryPoint
 class ForgotPasswordFragment : BaseFragment<FragmentForgotPasswordBinding>() {
@@ -27,17 +23,16 @@ class ForgotPasswordFragment : BaseFragment<FragmentForgotPasswordBinding>() {
 
     private fun initUi() {
         binding.listener = this
-
-
-
+        binding.edtEmail.onTextWritten()
+        removeFlag()
     }
 
 
     override fun onClick(v: View?) {
         super.onClick(v)
         when (v?.id) {
-            R.id.continueBT -> {
-
+            R.id.submitBT -> {
+                findNavController().navigate(R.id.action_send_otp)
             }
             R.id.backIV -> {
                 baseActivity!!.onBackPressed()
@@ -57,15 +52,7 @@ class ForgotPasswordFragment : BaseFragment<FragmentForgotPasswordBinding>() {
                         hideLoading()
                         showInfo(baseActivity!!, result.data?.message!!)
                         viewModel.saveUser(result.data.data)
-                        findNavController().navigate(
-                            RegisterFragmentDirections.actionSendOtp(
-                                "forgot_password",
-                                viewModel.forgotPasswordLiveData.value!!.phoneCode,
-                                viewModel.forgotPasswordLiveData.value!!.phoneCode.plus(" ${viewModel.forgotPasswordLiveData.value!!.phoneNumber}"),
-                                ((result.data.data?.phoneVerificationOtp ?: "") as Int
-                                    ?: 0).toString()
-                            )
-                        )
+                        findNavController().navigate(R.id.action_send_otp)
                     }
                     is DataResult.Failure -> {
                         handleFailure(result.message, result.exception, result.errorCode)
