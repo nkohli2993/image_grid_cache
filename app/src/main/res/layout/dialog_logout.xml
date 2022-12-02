@@ -55,7 +55,7 @@
 
             <View
                 android:layout_width="@dimen/_2sdp"
-                android:layout_height="@dimen/_60sdp"
+                android:layout_height="@dimen/_45sdp"
                 android:background="@color/_EFEFEF"
                 app:layout_constraintEnd_toStartOf="@+id/guideline"
                 app:layout_constraintStart_toEndOf="@+id/guideline"

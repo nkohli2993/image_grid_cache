@@ -12,15 +12,15 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
+        android:background="@drawable/ic_screen_background"
         android:orientation="vertical"
-        android:paddingHorizontal="@dimen/_15sdp"
         android:paddingTop="@dimen/_5sdp">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/backIV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_15sdp"
             android:layout_marginTop="@dimen/_10sdp"
             android:onClick="@{listener::onClick}"
             android:paddingVertical="@dimen/_10sdp"
@@ -30,13 +30,15 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/enterOtpTxt"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_15sdp"
             android:layout_marginTop="@dimen/_40sdp"
             android:text="@string/verify_otp"
             android:textColor="@color/_1D1A2F"
             android:textSize="@dimen/_18ssp"
             app:fontFamily="@font/poppins_semibold"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/backIV" />
 
@@ -48,8 +50,8 @@
             android:text="@string/otp_forgot_password_text"
             android:textColor="@color/_303030"
             android:textSize="@dimen/_13ssp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/enterOtpTxt"
+            app:layout_constraintStart_toStartOf="@+id/enterOtpTxt"
             app:layout_constraintTop_toBottomOf="@id/enterOtpTxt" />
 
 
@@ -68,60 +70,109 @@
                 android:id="@+id/otpCL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_30sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/firstET"
-                    style="@style/editTextStyle"
-                    android:layout_width="@dimen/_80sdp"
-                    android:layout_height="@dimen/_80sdp"
-                    android:background="@drawable/shadow_background"
-                    android:gravity="center"
-                    android:imeOptions="actionNext"
-                    android:inputType="number"
-                    android:maxLength="1"
-                    android:nextFocusForward="@+id/secondET"
-                    android:singleLine="true"
-                    android:text="1"
-                    android:textSize="@dimen/_15sdp"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/firstCL"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    android:background="@drawable/edittext_stroke"
+                    android:minHeight="@dimen/_55sdp"
                     app:layout_constraintEnd_toStartOf="@+id/secondCL"
                     app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent">
 
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/secondET"
-                    style="@style/editTextStyle"
-                    android:layout_width="@dimen/_80sdp"
-                    android:layout_height="@dimen/_80sdp"
-                    android:background="@drawable/shadow_background"
-                    android:gravity="center"
-                    android:imeOptions="actionNext"
-                    android:inputType="number"
-                    android:maxLength="1"
-                    android:nextFocusForward="@+id/threeET"
-                    android:singleLine="true"
-                    android:textSize="@dimen/_15sdp"
-                    app:layout_constraintBottom_toBottomOf="@+id/firstET"
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/firstET"
+                        style="@style/editTextStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:background="@drawable/edittext_stroke"
+                        android:gravity="center"
+                        android:imeOptions="actionNext"
+                        android:inputType="number"
+                        android:maxLength="1"
+                        android:nextFocusForward="@+id/secondET"
+                        android:singleLine="true"
+                        android:textSize="@dimen/_15sdp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/viewfirst"
+                        android:layout_width="@dimen/_2sdp"
+                        android:layout_height="0dp"
+                        android:layout_marginVertical="@dimen/_13sdp"
+                        android:background="@drawable/view_black_edittext"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="@+id/firstET"
+                        app:layout_constraintStart_toStartOf="@+id/firstET"
+                        app:layout_constraintTop_toTopOf="@+id/firstET" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/secondCL"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    android:background="@drawable/edittext_stroke"
+                    app:layout_constraintBottom_toBottomOf="@+id/firstCL"
                     app:layout_constraintEnd_toStartOf="@+id/thirdCL"
                     app:layout_constraintHorizontal_chainStyle="packed"
-                    app:layout_constraintStart_toEndOf="@+id/firstET"
-                    app:layout_constraintTop_toTopOf="@+id/firstET" />
+                    app:layout_constraintStart_toEndOf="@+id/firstCL"
+                    app:layout_constraintTop_toTopOf="@+id/firstCL">
 
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/secondET"
+                        style="@style/editTextStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:background="@drawable/edittext_stroke"
+                        android:gravity="center"
+                        android:imeOptions="actionNext"
+                        android:inputType="number"
+                        android:maxLength="1"
+                        android:nextFocusForward="@+id/threeET"
+                        android:singleLine="true"
+                        android:textSize="@dimen/_15sdp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/viewSecond"
+                        android:layout_width="@dimen/_2sdp"
+                        android:layout_height="0dp"
+                        android:layout_marginVertical="@dimen/_13sdp"
+                        android:background="@drawable/view_black_edittext"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="@+id/secondET"
+                        app:layout_constraintStart_toStartOf="@+id/secondET"
+                        app:layout_constraintTop_toTopOf="@+id/secondET" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/thirdCL"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_8sdp"
                     android:background="@drawable/edittext_stroke"
-                    app:layout_constraintBottom_toBottomOf="@+id/firstET"
+                    app:layout_constraintBottom_toBottomOf="@+id/firstCL"
                     app:layout_constraintEnd_toStartOf="@+id/fourthCL"
                     app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toEndOf="@+id/secondCL"
-                    app:layout_constraintTop_toTopOf="@+id/firstET">
+                    app:layout_constraintTop_toTopOf="@+id/firstCL">
 
                     <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/threeET"
@@ -160,11 +211,11 @@
                     android:layout_height="0dp"
                     android:layout_marginEnd="@dimen/_5sdp"
                     android:background="@drawable/edittext_stroke"
-                    app:layout_constraintBottom_toBottomOf="@+id/firstET"
+                    app:layout_constraintBottom_toBottomOf="@+id/firstCL"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toEndOf="@+id/thirdCL"
-                    app:layout_constraintTop_toTopOf="@+id/firstET">
+                    app:layout_constraintTop_toTopOf="@+id/firstCL">
 
                     <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/fourET"
@@ -200,14 +251,15 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnContinue"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_30sdp"
                 android:background="@drawable/button_background"
                 android:fontFamily="@font/poppins_semibold"
                 android:onClick="@{listener::onClick}"
-                android:paddingBottom="@dimen/_5sdp"
+                android:padding="@dimen/_10sdp"
                 android:text="@string/submit"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
@@ -216,10 +268,12 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/otpCL" />
 
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/resendOtpTV"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:fontFamily="@font/poppins_regular"
                 android:gravity="start"
@@ -228,7 +282,7 @@
                 android:textColor="@color/_787F84"
                 android:textSize="@dimen/_12ssp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/btnContinue"
                 app:layout_constraintTop_toBottomOf="@+id/btnContinue" />
 
 

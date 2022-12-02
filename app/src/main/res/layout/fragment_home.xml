@@ -51,7 +51,6 @@
                     android:id="@+id/titleTV"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp"
                     android:fontFamily="@font/poppins_medium"
                     android:gravity="start"
                     android:text="Rick Doe"
@@ -78,10 +77,9 @@
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/typeTV"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawablePadding="@dimen/_10sdp"
-                        android:paddingStart="@dimen/_15sdp"
-                        android:paddingEnd="@dimen/_10sdp"
+                        android:layout_height="match_parent"
+                        android:paddingStart="@dimen/_5sdp"
+                        android:paddingEnd="@dimen/_8sdp"
                         android:text="Day" />
 
                     <androidx.appcompat.widget.AppCompatImageView
@@ -98,7 +96,7 @@
                     android:fontFamily="@font/poppins_regular"
                     android:gravity="center"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_14sdp"
+                    android:textSize="@dimen/_1sdp"
                     app:layout_constraintStart_toStartOf="@+id/typeLL"
                     app:layout_constraintTop_toBottomOf="@+id/typeLL" />
 
@@ -152,7 +150,6 @@
                     android:visibility="visible"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.461"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:listitem="@layout/adapter_month" />
@@ -163,7 +160,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/ic_calendar_scale"
-                android:paddingVertical="@dimen/_10sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/calenderMonthCL">
@@ -172,7 +168,6 @@
                     android:id="@+id/dateRV"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_18sdp"
                     android:nestedScrollingEnabled="false"
                     android:orientation="horizontal"
                     android:overScrollMode="never"
@@ -197,6 +192,7 @@
                 android:text="@string/event"
                 android:textColor="@color/_1D1A2F"
                 android:textSize="@dimen/_16sdp"
+                app:layout_constraintBottom_toBottomOf="@id/emojiIV"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/emojiIV" />
 
@@ -211,13 +207,14 @@
                 android:text="Today"
                 android:textColor="@color/_B7B7B7"
                 android:textSize="@dimen/_10sdp"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/eventTV" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/emojiIV"
-                android:layout_width="@dimen/_60sdp"
-                android:layout_height="@dimen/_60sdp"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp"
                 android:layout_margin="@dimen/_10sdp"
                 android:src="@drawable/ic_emoji"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -228,7 +225,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginHorizontal="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_10sdp"
                 android:background="@color/_FBFCF6"
                 android:fillViewport="true"
                 android:overScrollMode="never"
@@ -241,6 +237,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/dateTV"
+                        android:layout_width="0dp"
+                        android:visibility="gone"
+                        android:layout_height="wrap_content"
+                        android:paddingVertical="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:fontFamily="@font/poppins_medium"
+                        android:gravity="start"
+                        android:text="Today"
+                        android:textColor="@color/_B7B7B7"
+                        android:textSize="@dimen/_10sdp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rollingRV"
                         android:layout_width="match_parent"
@@ -252,7 +263,7 @@
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/dateTV"
                         tools:listitem="@layout/adapter_rolling_event" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

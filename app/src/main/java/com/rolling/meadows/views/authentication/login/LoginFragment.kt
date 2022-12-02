@@ -3,6 +3,7 @@ package com.rolling.meadows.views.authentication.login
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -48,12 +49,37 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         super.onClick(v)
         when (v?.id) {
             R.id.btnLogin -> {
-                baseActivity!!.goToMainActivity()
+                when {
+                    binding.edtEmail.text.isNullOrEmpty() -> {
+                        binding.edtEmail.error =
+                            getString(R.string.plz_enter_email_address)
+                        binding.edtEmail.requestFocus()
+                    }
+                    (binding.edtEmail.text?.trim()
+                        ?: "").isNotEmpty() && !isValidEmail() -> {
+                        binding.edtEmail.error =
+                            getString(R.string.plz_enter_valid_email_address)
+                        binding.edtEmail.requestFocus()
+                    }
+                    binding.edtPasswd.text.isNullOrEmpty() -> {
+                        binding.edtPasswd.error =
+                            getString(R.string.plz_enter_password)
+                        binding.edtPasswd.requestFocus()
+                    }
+                    else -> {
+                        baseActivity!!.goToMainActivity()
+                    }
+                }
             }
             R.id.txtForgotPassword -> {
                 findNavController().navigate(R.id.action_loginFragment_to_forgotPasswordFragment)
             }
         }
+    }
+
+    private fun isValidEmail(): Boolean {
+      return  binding.edtEmail.text.toString().isNotEmpty() &&
+                Patterns.EMAIL_ADDRESS.matcher(binding.edtEmail.text.toString()).matches()
     }
 
 
@@ -67,15 +93,16 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         binding.edtEmail.onTextWritten()
         binding.edtPasswd.doOnTextChanged { text, start, before, count ->
             if (text.toString().isNotEmpty()) {
-                setTextViewDrawableColor(binding.edtPasswd,R.color._B2D05A)
+                setTextViewDrawableColor(binding.edtPasswd, R.color._B2D05A)
                 binding.passwordLL.setBackgroundResource(R.drawable.background_stoke_highlight_edittext)
             } else {
-                setTextViewDrawableColor(binding.edtPasswd,R.color._8F8F8F)
+                setTextViewDrawableColor(binding.edtPasswd, R.color._8F8F8F)
                 binding.passwordLL.setBackgroundResource(R.drawable.background_stroke_edittext)
             }
         }
 
     }
+
     private fun setTextViewDrawableColor(
         @NotNull textView: TextView,
         @ColorRes color: Int
@@ -83,7 +110,10 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         for (drawable in textView.compoundDrawables) {
             if (drawable != null) {
                 drawable.colorFilter =
-                    PorterDuffColorFilter(ContextCompat.getColor(baseActivity!!, color), PorterDuff.Mode.SRC_IN)
+                    PorterDuffColorFilter(
+                        ContextCompat.getColor(baseActivity!!, color),
+                        PorterDuff.Mode.SRC_IN
+                    )
             }
         }
     }

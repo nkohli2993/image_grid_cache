@@ -8,7 +8,7 @@
         <item name="materialButtonStyle">@style/buttonViewStyle</item>
         <item name="android:radioButtonStyle">@style/radioButtonTheme</item>
         <item name="radioButtonStyle">@style/radioButtonTheme</item>
-        <item name="android:navigationBarColor">@color/colorPrimary</item>
+<!--        <item name="android:navigationBarColor">@color/_FF24A872</item>-->
     </style>
     <style name="dateTimeTheme" parent="@style/ThemeOverlay.MaterialComponents.Dialog">
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -56,11 +56,6 @@
     <style name="pause_dialog_animation">
         <item name="android:windowEnterAnimation">@anim/popup_show</item>
         <item name="android:windowExitAnimation">@anim/popup_hide</item>
-    </style>
-
-    <style name="roundedImageViewRounded" parent="">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">50%</item>
     </style>
 
 

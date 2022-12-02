@@ -13,15 +13,14 @@
     <color name="btn_color">#0493DF</color>
     <color name="btn_color_ripple">#92FE0A84</color>
     <color name="full_transparent">#00000000</color>
-    <color name="_F1FAFF">#F1FAFF</color>
     <color name="_1D1A2F">#1D1A2F</color>
     <color name="_EE2929">#EE2929</color>
     <color name="_EFEFEF">#EFEFEF</color>
-    <color name="_AFB3B6">#AFB3B6</color>
     <color name="transparent">#00000000</color>
     <color name="_787F84">#787F84</color>
     <color name="_38C5F3">#38C5F3</color>
     <color name="_B1B1B1">#B1B1B1</color>
     <color name="_083000">#083000</color>
     <color name="_B7B7B7">#B7B7B7</color>
+    <color name="_FF24A872">#FF24A872</color>
 </resources>

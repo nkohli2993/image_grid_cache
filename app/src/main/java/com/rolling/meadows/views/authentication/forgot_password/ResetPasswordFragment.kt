@@ -77,7 +77,7 @@ class ResetPasswordFragment : BaseFragment<FragmentResetPasswordBinding>() {
                             getString(R.string.plz_enter_confirm_password)
                         binding.confirmPasswordET.requestFocus()
                     }
-                    binding.passwordET.text.toString() != binding.confirmPasswordET.toString() -> {
+                    binding.passwordET.text.toString() != binding.confirmPasswordET.text.toString() -> {
                         binding.confirmPasswordET.error =
                             getString(R.string.new_password_doesnot_matched_with_old_password)
                         binding.confirmPasswordET.requestFocus()

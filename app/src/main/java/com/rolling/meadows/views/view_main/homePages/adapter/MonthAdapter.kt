@@ -58,6 +58,7 @@ class MonthAdapter(
 
         binding.root.setOnClickListener {
             selectedPosition = position
+            onItemClick(position,"month")
             notifyDataSetChanged()
         }
     }

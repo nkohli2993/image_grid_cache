@@ -139,23 +139,25 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/passwordLL" />
 
+
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btnLogin"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="@dimen/_40sdp"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_30sdp"
                         android:background="@drawable/button_background"
                         android:fontFamily="@font/poppins_semibold"
                         android:onClick="@{listener::onClick}"
-                        android:paddingBottom="@dimen/_5sdp"
+                        android:padding="@dimen/_10sdp"
                         android:text="@string/login"
                         android:textAllCaps="false"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_13ssp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/passwordLL" />
+                        app:layout_constraintTop_toBottomOf="@+id/txtForgotPassword" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

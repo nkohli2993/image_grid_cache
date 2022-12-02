@@ -180,7 +180,7 @@ abstract class BaseFragment<DB : ViewDataBinding> : Fragment(),
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
         )
         baseActivity!!.window.navigationBarColor =
-            ContextCompat.getColor(baseActivity!!, R.color.colorPrimary)
+            ContextCompat.getColor(baseActivity!!, R.color._FF24A872)
 
     }
 

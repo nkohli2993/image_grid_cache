@@ -1,5 +1,6 @@
 package com.rolling.meadows.views.authentication.forgot_password
 
+import android.util.Patterns
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -32,12 +33,34 @@ class ForgotPasswordFragment : BaseFragment<FragmentForgotPasswordBinding>() {
         super.onClick(v)
         when (v?.id) {
             R.id.submitBT -> {
-                findNavController().navigate(R.id.action_send_otp)
+                when {
+                    binding.edtEmail.text.isNullOrEmpty() -> {
+                        binding.edtEmail.error =
+                            getString(R.string.plz_enter_email_address)
+                        binding.edtEmail.requestFocus()
+                    }
+                    (binding.edtEmail.text?.trim()
+                        ?: "").isNotEmpty() && !isValidEmail() -> {
+                        binding.edtEmail.error =
+                            getString(R.string.plz_enter_valid_email_address)
+                        binding.edtEmail.requestFocus()
+                    }
+                    else -> {
+                        findNavController().navigate(R.id.action_send_otp)
+                    }
+                }
+
+
             }
             R.id.backIV -> {
                 baseActivity!!.onBackPressed()
             }
         }
+    }
+
+    private fun isValidEmail(): Boolean {
+        return binding.edtEmail.text.toString().isNotEmpty() &&
+                Patterns.EMAIL_ADDRESS.matcher(binding.edtEmail.text.toString()).matches()
     }
 
 

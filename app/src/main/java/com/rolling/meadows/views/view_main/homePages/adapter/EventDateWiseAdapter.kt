@@ -9,7 +9,7 @@ import com.rolling.meadows.databinding.AdapterRollingEventDateWiseBinding
 import com.rolling.meadows.utils.extensions.visibleView
 
 class EventDateWiseAdapter  (
-    val baseActivity: BaseActivity
+    val baseActivity: BaseActivity,  val background: ArrayList<Int>
 ) : BaseAdapter<AdapterRollingEventDateWiseBinding>(),
     BaseAdapter.OnItemClick {
 
@@ -22,7 +22,9 @@ class EventDateWiseAdapter  (
        /* if(position == 0){
             binding.dateTV.visibleView(false)
         }*/
-        val adapter = EventsAdapter(baseActivity)
+
+
+        val adapter = DateWiseEvents(baseActivity,background)
         binding.rollingRV.adapter = adapter
     }
 

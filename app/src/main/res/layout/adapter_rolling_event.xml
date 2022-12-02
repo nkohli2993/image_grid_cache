@@ -7,6 +7,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/viewCL"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_5sdp"
@@ -37,9 +38,9 @@
             android:id="@+id/titleTV"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_20sdp"
             android:fontFamily="@font/poppins_medium"
             android:gravity="start"
-            android:layout_marginTop="@dimen/_20sdp"
             android:text="Shopping at WalMart"
             android:textColor="@color/_1D1A2F"
             android:textSize="@dimen/_14sdp"
@@ -57,7 +58,7 @@
             android:paddingVertical="@dimen/_5sdp"
             android:text="Greetings from the Rolling Meadows Library! I am your resident librarian and bibliophile."
             android:textColor="@color/_303030"
-            android:textSize="@dimen/_12sdp"
+            android:textSize="@dimen/_10sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/imageIV"
             app:layout_constraintTop_toBottomOf="@id/titleTV" />

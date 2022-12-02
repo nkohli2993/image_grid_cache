@@ -74,6 +74,18 @@ fun AppCompatEditText.onTextWritten() {
     }
 }
 
+fun AppCompatEditText.onOTPTextWritten() {
+    doOnTextChanged { text, start, before, count ->
+        if (text.toString().isNotEmpty()) {
+            setTextViewDrawableColor(this, R.color._B2D05A)
+            setBackgroundResource(R.drawable.edittext_stroke_dark)
+        } else {
+            setTextViewDrawableColor(this, R.color._8F8F8F)
+            setBackgroundResource(R.drawable.edittext_stroke)
+        }
+    }
+}
+
 fun setTextViewDrawableColor(
     @NotNull textView: TextView,
     @ColorRes color: Int

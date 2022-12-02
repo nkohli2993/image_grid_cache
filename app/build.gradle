@@ -60,7 +60,7 @@ android {
 
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
-            def project = "rovesTaxiCustomer"
+            def project = "rollingMeadows"
             def separator = "_"
             def buildType = variant.buildType.name
             def versionName = variant.versionName

@@ -1,6 +1,7 @@
 package com.rolling.meadows.views.view_main.homePages.adapter
 
 import android.annotation.SuppressLint
+import android.view.View
 import androidx.core.content.ContextCompat
 import com.rolling.meadows.R
 import com.rolling.meadows.base.BaseActivity
@@ -22,7 +23,9 @@ class DateAdapter (
         binding.dayTV.text = dateList[position].day
         binding.dateTV.setBackgroundResource(R.drawable.background_transparent)
         binding.dateTV.setTextColor(ContextCompat.getColor(baseActivity, R.color._B7B7B7))
+        binding.lineIV.visibility = View.INVISIBLE
         if(selectedPosition == position){
+            binding.lineIV.visibility = View.VISIBLE
             binding.dateTV.setBackgroundResource(R.drawable.background_date_green)
             binding.dateTV.setTextColor(ContextCompat.getColor(baseActivity, R.color.white))
         }

@@ -43,10 +43,10 @@ class OtpVerificationFragment : BaseFragment<FragmentOtpVerificationBinding>()
         binding.listener = this
         removeFlag()
 
-        binding.firstET.onTextWritten()
-        binding.secondET.onTextWritten()
-        binding.threeET.onTextWritten()
-        binding.fourET.onTextWritten()
+        binding.firstET.onOTPTextWritten()
+        binding.secondET.onOTPTextWritten()
+        binding.threeET.onOTPTextWritten()
+        binding.fourET.onOTPTextWritten()
 
         binding.firstET.otpHelper()
         binding.secondET.otpHelper()

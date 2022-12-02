@@ -21,6 +21,7 @@ import com.rolling.meadows.base.BaseAdapter
 import com.rolling.meadows.base.BaseFragment
 import com.rolling.meadows.data.DateData
 import com.rolling.meadows.databinding.FragmentHomeBinding
+import com.rolling.meadows.utils.extensions.visibleView
 import com.rolling.meadows.views.view_main.homePages.adapter.DateAdapter
 import com.rolling.meadows.views.view_main.homePages.adapter.EventDateWiseAdapter
 import com.rolling.meadows.views.view_main.homePages.adapter.EventsAdapter
@@ -29,16 +30,19 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.time.YearMonth
 import java.util.*
+import kotlin.collections.ArrayList
 
 @RequiresApi(Build.VERSION_CODES.O)
 class HomeFragment : BaseFragment<FragmentHomeBinding>(),
     BaseAdapter.OnItemClick {
     override fun getLayoutRes() = R.layout.fragment_home
+    private var background: ArrayList<Int> = arrayListOf()
     private val lastDayInCalendar = Calendar.getInstance()
     private val sdf = SimpleDateFormat("MMMM yyyy")
     private val cal = Calendar.getInstance()
     var monthSelected = -1
     var dateelected = -1
+
     // current date
     private val currentDate = Calendar.getInstance()
     private val currentDay = currentDate[Calendar.DAY_OF_MONTH]
@@ -55,8 +59,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
             monthSelected = items[0] as Int
             monthSelected++
             setDateAdapter()
-        }
-        else if (items[1] as String == "date") {
+        } else if (items[1] as String == "date") {
             dateelected = items[0] as Int
 //            setDateA` dapter()
         }
@@ -71,6 +74,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
         binding.listener = this
         changeStatusBarColor(ContextCompat.getColor(requireContext(), R.color.white))
         changeStatusBarIconColor(true)
+        background.clear()
+        background.add(R.drawable.ic_background_pink)
+        background.add(R.drawable.ic_background_yellow)
+        background.add(R.drawable.ic_background_blue)
+        background.add(R.drawable.ic_background_green)
+        background.add(R.drawable.ic_background_pruple)
         // viewModel.hitNotificationApi()
         setMonthAdapter()
         setDateAdapter()
@@ -104,48 +113,69 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
 
     @SuppressLint("SimpleDateFormat")
     private fun setDateAdapter() {
-        Log.e("catch_exception","month: ${monthSelected}")
+        Log.e("catch_exception", "month: ${monthSelected}")
         val dateList: ArrayList<DateData> = arrayListOf()
         val dateFormat: DateFormat = SimpleDateFormat("yyyy")
         val date = Date()
-        val yearMonthObject: YearMonth = YearMonth.of(dateFormat.format(date).toInt(), (monthSelected))
+        val yearMonthObject: YearMonth =
+            YearMonth.of(dateFormat.format(date).toInt(), (monthSelected))
         val daysInMonth: Int = yearMonthObject.lengthOfMonth() //28
 
-        for(i in 0 until daysInMonth){
-            val date = SimpleDateFormat("yyyy/MM/dd").parse("${dateFormat.format(date).toInt()}/${monthSelected}/${i+1}")
+        for (i in 0 until daysInMonth) {
+            val date = SimpleDateFormat("yyyy/MM/dd").parse(
+                "${
+                    dateFormat.format(date).toInt()
+                }/${monthSelected}/${i + 1}"
+            )
             val day = SimpleDateFormat("EEE").format(date!!)
-            dateList.add(DateData((i+1).toString(),day))
+            dateList.add(DateData((i + 1).toString(), day))
         }
 
         val dayFormat: DateFormat = SimpleDateFormat("dd")
+        val monthFormat: DateFormat = SimpleDateFormat("MM")
         val day = Date()
-        val adapter = DateAdapter(baseActivity!!, dateList, (dayFormat.format(day).toInt() - 1))
+        val adapter = if (monthSelected != monthFormat.format(day).toInt()) {
+            DateAdapter(baseActivity!!, dateList, 0)
+        } else {
+            DateAdapter(baseActivity!!, dateList, (dayFormat.format(day).toInt() - 1))
+        }
+
         binding.dateRV.adapter = adapter
         adapter.setOnItemClickListener(this)
-        binding.dateRV.scrollToPosition(dayFormat.format(day).toInt() - 1)
+        if (monthSelected != monthFormat.format(day).toInt()) {
+            binding.dateRV.scrollToPosition(0)
+        } else {
+            binding.dateRV.scrollToPosition(dayFormat.format(day).toInt() - 1)
+        }
+
     }
 
-    private fun setEventAdapter(){
-        val adapter = EventsAdapter(baseActivity!!)
+    private fun setEventAdapter() {
+        binding.firstDateTV.visibleView(true)
+        val adapter = EventsAdapter(baseActivity!!, background)
         binding.rollingRV.adapter = adapter
         adapter.setOnItemClickListener(this)
     }
-    private fun setEventDateAdapter(){
-        val adapter = EventDateWiseAdapter(baseActivity!!)
+
+    private fun setEventDateAdapter() {
+
+        binding.firstDateTV.visibleView(false)
+        val adapter = EventDateWiseAdapter(baseActivity!!, background)
         binding.rollingRV.adapter = adapter
         adapter.setOnItemClickListener(this)
     }
 
     override fun onClick(v: View?) {
         super.onClick(v)
-        when(v?.id){
-            R.id.logoutIV ->{
+        when (v?.id) {
+            R.id.logoutIV -> {
                 showLogoutDialog()
             }
-            R.id.notificationIV ->{
+            R.id.notificationIV -> {
                 findNavController().navigate(R.id.action_home_to_notification)
             }
-            R.id.typeLL ->{
+            R.id.typeLL -> {
+                rotate(180f)
                 showPopupReportPost(binding.describeTV)
             }
         }
@@ -172,8 +202,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
             popupView.findViewById(R.id.monthTV) as AppCompatTextView
         popupWindow.showAtLocation(
             popupView,
-            Gravity.TOP or Gravity.LEFT,
-            popupLocateView(view)?.left!!,
+            Gravity.TOP,
+            popupLocateView(view)?.right!!,
             popupLocateView(view)?.top!!
         )
         // show the dim background
@@ -202,17 +232,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
             true
         }
         dayTV.setOnClickListener {
-            binding.typeTV.text = "Day"
+            binding.calenderDatesCL.visibleView(true)
+            binding.typeTV.text = getString(R.string.day)
             popupWindow.dismiss()
             setEventAdapter()
         }
         weekTV.setOnClickListener {
-            binding.typeTV.text = "Week"
+            binding.calenderDatesCL.visibleView(true)
+            binding.typeTV.text = getString(R.string.week)
             popupWindow.dismiss()
             setEventDateAdapter()
         }
         monthTV.setOnClickListener {
-            binding.typeTV.text = "Month"
+            binding.typeTV.text = getString(R.string.month)
+            binding.calenderDatesCL.visibleView(false)
             popupWindow.dismiss()
             setEventDateAdapter()
         }
@@ -222,6 +255,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
         }
 
     }
+
     private fun rotate(degree: Float) {
         val rotateAnim = RotateAnimation(
             0.0f, degree,
@@ -252,7 +286,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
     }
 
     private fun showLogoutDialog() {
-       val  dialog = Dialog(baseActivity!!, android.R.style.Theme_Translucent_NoTitleBar)
+        val dialog = Dialog(baseActivity!!, android.R.style.Theme_Translucent_NoTitleBar)
         dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog?.setContentView(R.layout.dialog_logout)
         dialog?.setCancelable(true)
