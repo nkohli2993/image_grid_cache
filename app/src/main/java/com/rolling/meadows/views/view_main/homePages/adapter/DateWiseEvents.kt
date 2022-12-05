@@ -12,6 +12,7 @@ import com.rolling.meadows.base.BaseActivity
 import com.rolling.meadows.base.BaseAdapter
 import com.rolling.meadows.base.BaseViewHolder
 import com.rolling.meadows.databinding.AdapterRollingEventBinding
+import com.rolling.meadows.views.view_main.MainActivity
 
 class DateWiseEvents(
     val baseActivity: BaseActivity, val background: ArrayList<Int>
@@ -49,6 +50,10 @@ class DateWiseEvents(
         i++
         if (i > 4) {
             i = 0
+        }
+
+        binding.root.setOnClickListener {
+            (baseActivity as MainActivity).navController?.navigate(R.id.home_to_rolling_detail)
         }
 
     }

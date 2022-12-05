@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="@dimen/_15sdp"
-                android:paddingBottom="@dimen/_70sdp">
+                android:paddingBottom="@dimen/_120sdp">
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/loginTitleTV"
@@ -34,7 +34,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_50sdp"
                     android:fontFamily="@font/poppins_bold"
-                    android:text="Login"
+                    android:text="@string/login"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_23sdp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -90,7 +90,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/edtEmail" />
 
-                    <LinearLayout
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/passwordLL"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -107,23 +107,47 @@
                             android:id="@+id/edtPasswd"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:background="@null"
                             android:drawableStart="@drawable/ic_passwd"
                             android:drawablePadding="@dimen/_5sdp"
                             android:hint="@string/enter_your_password"
                             android:inputType="textPassword"
-                            android:padding="@dimen/_4sdp"
+                            android:padding="@dimen/_8sdp"
                             android:textColor="@color/_303030"
-                            android:textSize="14sp" />
+                            android:textSize="@dimen/_14sdp"
+                            app:layout_constraintEnd_toStartOf="@+id/imageViewPasswordToggle"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+
+                            />
+
+                        <!--
+                                                <androidx.appcompat.widget.AppCompatEditText
+                                                    android:id="@+id/edtPasswd"
+                                                    android:layout_width="0dp"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_weight="1"
+                                                    android:background="@null"
+                                                    android:drawableStart="@drawable/ic_passwd"
+                                                    android:drawablePadding="@dimen/_5sdp"
+                                                    android:hint="@string/enter_your_password"
+                                                    android:inputType="textPassword"
+                                                    android:padding="@dimen/_4sdp"
+                                                    android:textColor="@color/_303030"
+                                                    android:textSize="@dimen/_14sdp"/>
+                        -->
 
                         <androidx.appcompat.widget.AppCompatImageView
                             android:id="@+id/imageViewPasswordToggle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="8dp"
-                            android:src="@drawable/ic_eye_close" />
-                    </LinearLayout>
+                            android:src="@drawable/ic_eye_close"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/edtPasswd"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/txtForgotPassword"

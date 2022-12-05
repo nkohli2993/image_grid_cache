@@ -49,7 +49,7 @@ class MonthAdapter(
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
         val binding = holder.binding as AdapterMonthBinding
         binding.monthTV.text = monthList[position]
-        binding.root.setBackgroundResource(R.drawable.background_transparent)
+        binding.root.setBackgroundResource(R.drawable.background_white_light_round)
         binding.monthTV.setTextColor(ContextCompat.getColor(baseActivity, R.color.white))
         if (selectedPosition == position) {
             binding.root.setBackgroundResource(R.drawable.background_white_round)
@@ -58,7 +58,7 @@ class MonthAdapter(
 
         binding.root.setOnClickListener {
             selectedPosition = position
-            onItemClick(position,"month")
+            onItemClick(position, "month")
             notifyDataSetChanged()
         }
     }

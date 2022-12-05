@@ -55,8 +55,9 @@
         android:label="@string/_otp_verification"
         tools:layout="@layout/fragment_otp_verification">
         <action
-            android:id="@+id/action_login"
+            android:id="@+id/action_introFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+
     </fragment>
 
     <fragment

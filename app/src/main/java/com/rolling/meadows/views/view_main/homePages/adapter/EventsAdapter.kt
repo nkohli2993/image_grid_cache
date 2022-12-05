@@ -24,6 +24,8 @@ class EventsAdapter(
         if (i  > 4) {
             i = 0
         }
+
+        binding.root.setOnClickListener { onItemClick(position,"event") }
     }
 
     override fun getItemCount(): Int {

@@ -38,30 +38,22 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
     override fun getLayoutRes() = R.layout.fragment_home
     private var background: ArrayList<Int> = arrayListOf()
     private val lastDayInCalendar = Calendar.getInstance()
-    private val sdf = SimpleDateFormat("MMMM yyyy")
-    private val cal = Calendar.getInstance()
     var monthSelected = -1
     var dateelected = -1
 
-    // current date
-    private val currentDate = Calendar.getInstance()
-    private val currentDay = currentDate[Calendar.DAY_OF_MONTH]
-    private val currentMonth = currentDate[Calendar.MONTH]
-    private val currentYear = currentDate[Calendar.YEAR]
-
-    // selected date
-
-//    private var monthSelected: Int = currentMonth
-//    private var selectedYear: Int = currentYear
-
     override fun onItemClick(vararg items: Any) {
-        if (items[1] as String == "month") {
-            monthSelected = items[0] as Int
-            monthSelected++
-            setDateAdapter()
-        } else if (items[1] as String == "date") {
-            dateelected = items[0] as Int
-//            setDateA` dapter()
+        when {
+            items[1] as String == "month" -> {
+                monthSelected = items[0] as Int
+                monthSelected++
+                setDateAdapter()
+            }
+            items[1] as String == "date" -> {
+                dateelected = items[0] as Int
+            }
+            else -> {
+                findNavController().navigate(R.id.home_to_rolling_detail)
+            }
         }
 
     }
@@ -151,7 +143,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
     }
 
     private fun setEventAdapter() {
-        binding.firstDateTV.visibleView(true)
+        binding.dateTV.visibleView(true)
         val adapter = EventsAdapter(baseActivity!!, background)
         binding.rollingRV.adapter = adapter
         adapter.setOnItemClickListener(this)
@@ -159,7 +151,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
 
     private fun setEventDateAdapter() {
 
-        binding.firstDateTV.visibleView(false)
+        binding.dateTV.visibleView(false)
         val adapter = EventDateWiseAdapter(baseActivity!!, background)
         binding.rollingRV.adapter = adapter
         adapter.setOnItemClickListener(this)

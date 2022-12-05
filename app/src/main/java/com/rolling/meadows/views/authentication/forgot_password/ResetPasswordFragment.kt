@@ -68,18 +68,21 @@ class ResetPasswordFragment : BaseFragment<FragmentResetPasswordBinding>() {
             R.id.continueBT -> {
                 when {
                     binding.passwordET.text.isNullOrEmpty() -> {
-                        binding.passwordET.error =
-                            getString(R.string.plz_enter_new_password)
+                        showError(baseActivity!!,getString(R.string.plz_enter_new_password))
+                    /*    binding.passwordET.error =
+                            getString(R.string.plz_enter_new_password)*/
                         binding.passwordET.requestFocus()
                     }
                     binding.confirmPasswordET.text.isNullOrEmpty() -> {
-                        binding.confirmPasswordET.error =
-                            getString(R.string.plz_enter_confirm_password)
+                        showError(baseActivity!!,getString(R.string.plz_enter_confirm_password))
+                     /*   binding.confirmPasswordET.error =
+                            getString(R.string.plz_enter_confirm_password)*/
                         binding.confirmPasswordET.requestFocus()
                     }
                     binding.passwordET.text.toString() != binding.confirmPasswordET.text.toString() -> {
-                        binding.confirmPasswordET.error =
-                            getString(R.string.new_password_doesnot_matched_with_old_password)
+                        showError(baseActivity!!,getString(R.string.new_password_doesnot_matched_with_old_password))
+                       /* binding.confirmPasswordET.error =
+                            getString(R.string.new_password_doesnot_matched_with_old_password)*/
                         binding.confirmPasswordET.requestFocus()
                     }
                     else -> {

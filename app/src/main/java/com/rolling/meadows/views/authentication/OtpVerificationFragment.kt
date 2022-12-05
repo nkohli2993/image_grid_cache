@@ -111,7 +111,7 @@ class OtpVerificationFragment : BaseFragment<FragmentOtpVerificationBinding>()
             startPos = 19,
             isBold = true,
             onClick = {
-                showInfo(baseActivity!!, "New OTP resend to you.")
+                showInfo(baseActivity!!, getString(R.string.your_new_one_time_will_send_to_you))
                /* viewModel.resendOtpVerificationLiveData.value?.user_id =
                     viewModel.getUser()?.id.toString()
                 viewModel.hitResendOtpVerification()*/
