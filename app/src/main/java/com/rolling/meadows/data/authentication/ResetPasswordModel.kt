@@ -24,6 +24,9 @@ data class ResetPasswordModel(
             newPassword.isNullOrEmpty() -> {
                 errorPassword = R.string.plz_enter_new_password
             }
+            newPassword!!.length < 8 -> {
+                errorPassword = R.string.validPass
+            }
             confirmNewPassword.isNullOrEmpty() -> {
                 errorConfirmPassword = R.string.plz_enter_confirm_password
             }
