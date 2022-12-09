@@ -1,7 +1,7 @@
 package com.rolling.meadows.data.error
 
 /**
- * Created by Nikita kohli 20/09/2022
+ * Created by Nikita kohli
  */
 
 class Error(val code: Int, val description: String) {

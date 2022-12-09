@@ -20,10 +20,9 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class ResetPasswordViewModel  @Inject constructor(
+class ResetPasswordViewModel @Inject constructor(
     private val authRepository: AuthenticationRepository, private var userRepository: UserRepository
 ) : BaseViewModel() {
-
 
 
     var resetPasswordLiveData: MutableLiveData<ResetPasswordModel> =
@@ -60,24 +59,6 @@ class ResetPasswordViewModel  @Inject constructor(
             }
         }
     }
-    fun onClickChangePassword() {
-        changePasswordLiveData.value?.let {
-            when {
-                it.newPassword.isNullOrEmpty() -> {
-                    it.errorPassword = R.string.plz_enter_new_password
-                }
-                it.confirmNewPassword.isNullOrEmpty() -> {
-                    it.errorConfirmPassword = R.string.plz_enter_confirm_password
-                }
-                it.newPassword.toString() != it.confirmNewPassword.toString() ->{
-                    it.errorConfirmPassword = R.string.new_password_doesnot_matched_with_old_password
-                }
-                else -> {
-                    hitChangePassword()
-                }
-            }
-        }
-    }
 
     private fun hitResetPassword() {
         viewModelScope.launch {
@@ -88,22 +69,14 @@ class ResetPasswordViewModel  @Inject constructor(
             }
         }
     }
-    private fun hitChangePassword() {
-        viewModelScope.launch {
-            val response =
-                changePasswordLiveData.value?.let { authRepository.changePassword(it) }
-            withContext(Dispatchers.Main) {
-                response?.collect { _changePasswordResponseLiveData.postValue(Event(it)) }
-            }
-        }
-    }
 
     // Save User to SharePrefs
     fun saveUser(user: UserProfileData?) {
         userRepository.saveUser(user)
     }
- // Save User to SharePrefs
-    fun getSaveUser():UserProfileData? {
+
+    // Save User to SharePrefs
+    fun getSaveUser(): UserProfileData? {
         return userRepository.getUser()
     }
 
@@ -112,4 +85,8 @@ class ResetPasswordViewModel  @Inject constructor(
         userRepository.saveToken(token)
     }
 
+
+    fun clearAllData() {
+        userRepository.clearAllData()
+    }
 }

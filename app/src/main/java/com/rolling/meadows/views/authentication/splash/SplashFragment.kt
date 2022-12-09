@@ -1,6 +1,7 @@
 package com.rolling.meadows.views.authentication.splash
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
@@ -32,18 +33,15 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>() {
 
     override fun onResume() {
         super.onResume()
-        Prefs.saveRideData("ride_data",null)
         lifecycleScope.launch {
             delay(3000)
             activity?.runOnUiThread {
-                findNavController().navigate(R.id.action_introFragment_to_loginFragment)
-/*
+                Log.e("catch_exception_token","token: ${viewModel.getToken()}")
                 if (viewModel.getToken().isNullOrEmpty()) {
                     findNavController().navigate(R.id.action_introFragment_to_loginFragment)
                 } else {
                     viewModel.getProfile()
                 }
-*/
             }
         }
     }

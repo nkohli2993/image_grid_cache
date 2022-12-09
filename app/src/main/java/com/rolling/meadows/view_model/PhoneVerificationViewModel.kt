@@ -62,40 +62,27 @@ class PhoneVerificationViewModel @Inject constructor(
             }
         }
     }
+
     fun onClickResetOtpVerify() {
         otpVerificationLiveData.value?.let {
-            if (it.isValid()) {
-                hitResetOtpVerification()
-
-            } else {
-                it.notifyChange()
-            }
+            hitResetOtpVerification()
         }
     }
 
     private fun hitOtpVerification() {
         viewModelScope.launch {
             val response =
-                otpVerificationLiveData.value?.let { authRepository.verifyPhoneNumber(it) }
-            withContext(Dispatchers.Main) {
-                response?.collect { _otpVerificationResponseLiveData.postValue(Event(it)) }
-            }
-        }
-    }
-    private fun hitResetOtpVerification() {
-        viewModelScope.launch {
-            val response =
-                otpVerificationLiveData.value?.let { authRepository.resetVerifyPhoneNumber(it) }
+                otpVerificationLiveData.value?.let { authRepository.verifyOTP(it) }
             withContext(Dispatchers.Main) {
                 response?.collect { _otpVerificationResponseLiveData.postValue(Event(it)) }
             }
         }
     }
 
-    fun hitResendOtpVerification() {
+    private fun hitResetOtpVerification() {
         viewModelScope.launch {
             val response =
-                resendOtpVerificationLiveData.value?.let { authRepository.resendPhoneNUmberOtp(it) }
+                otpVerificationLiveData.value?.let { authRepository.resendVerificationCOde(it) }
             withContext(Dispatchers.Main) {
                 response?.collect { _resendOtpVerificationResponseLiveData.postValue(Event(it)) }
             }

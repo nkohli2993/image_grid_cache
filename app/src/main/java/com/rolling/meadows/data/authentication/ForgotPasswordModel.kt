@@ -4,29 +4,25 @@ import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import com.rolling.meadows.R
 import com.rolling.meadows.data.FieldErrors
+import com.rolling.meadows.utils.extensions.isValidEmail
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class ForgotPasswordModel(
-    @SerializedName("phone_code")
-    var phoneCode: String? = null,
-    @SerializedName("phone_number")
-    var phoneNumber: String? = null
+    @SerializedName("email")
+    var email: String? = null,
+
 ) : FieldErrors(), Parcelable {
 
     fun isValid(): Boolean {
         reset()
         when {
-            phoneCode.isNullOrEmpty()->{
-                errorPhoneCode = R.string.plz_select_phone_code
+            email.isNullOrEmpty() -> {
+                errorEmail = R.string.plz_enter_email_address
             }
-            phoneNumber.isNullOrEmpty() -> {
-                errorPhoneNum = R.string.plz_enter_phone_number
+            (email!!.trim()).isNotEmpty() && !email!!.trim().isValidEmail() -> {
+                errorEmail = R.string.plz_enter_valid_email_address
             }
-            phoneNumber!!.isNotEmpty() && phoneNumber!!.length<6 -> {
-                errorPhoneNum = R.string.plz_enter_valid_phone_num
-            }
-
             else -> {
                 return true
             }
@@ -35,7 +31,6 @@ data class ForgotPasswordModel(
     }
 
     private fun reset() {
-        errorPhoneCode = null
-        errorPhoneNum = null
+        errorEmail = null
     }
 }

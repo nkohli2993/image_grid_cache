@@ -5,7 +5,7 @@ import com.rolling.meadows.errors.ErrorManager
 import javax.inject.Inject
 
 /**
- * Created by Nikita kohli 20/09/2022
+ * Created by Nikita kohli
  */
 
 abstract class BaseViewModel : ViewModel() {

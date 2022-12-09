@@ -1,7 +1,7 @@
 package com.rolling.meadows.errors
 
 /**
- * Created by Sumit Kumar
+ * Created by Nikita kohli
  */
 
 class Error(val code: Int, val description: String) {

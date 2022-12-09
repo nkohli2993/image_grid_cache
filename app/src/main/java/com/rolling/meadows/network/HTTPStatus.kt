@@ -1,7 +1,7 @@
 package com.rolling.meadows.network
 
 /**
- * Created by Niktia on 20/09/22
+ * Created by Nikita Kohli
  */
 object HTTPStatus {
 

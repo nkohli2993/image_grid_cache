@@ -53,7 +53,6 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_medium"
                     android:gravity="start"
-                    android:text="Rick Doe"
                     android:textColor="@color/_1D1A2F"
                     android:textSize="@dimen/_14sdp"
                     android:textStyle="bold"

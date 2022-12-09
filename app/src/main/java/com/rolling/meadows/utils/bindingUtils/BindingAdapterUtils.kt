@@ -8,6 +8,7 @@ import com.google.android.material.textfield.TextInputLayout
 import com.rolling.meadows.utils.extensions.changeDateFormat
 import com.rolling.meadows.utils.extensions.loadCircleImage
 import com.rolling.meadows.utils.extensions.loadImage
+import com.rolling.meadows.utils.extensions.showError
 
 @BindingAdapter(value = ["imageUrl", "defaultImage"], requireAll = false)
 fun setImage(imageView: ImageView, url: String?, defaultImage: Int = 0) {
@@ -39,15 +40,15 @@ fun setError(textInputLayout: TextInputLayout, error: Int?, enableTouch: Boolean
 @BindingAdapter(value = ["validationError"], requireAll = false)
 fun setTextViewError(textView: TextView, error: Int?) {
     if (error == null || error == 0) {
-       // textView.visibility = View.GONE
+        // textView.visibility = View.GONE
     } else {
+        showError(context = textView.context,textView.context.getString(error))
         textView.visibility = View.VISIBLE
         textView.requestFocus()
-        textView.error = textView.context.getString(error)
+        /* textView.error = textView.context.getString(error)*/
 
     }
 }
-
 
 @BindingAdapter(value = ["setDate", "sourceFormat", "outputFormat"], requireAll = false)
 fun setDate(textView: TextView, date: String?, sourceFormat: String?, outputFormat: String?) {

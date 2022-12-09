@@ -11,7 +11,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 /**
- * Created by Nikita kohli on 20/09/2022
+ * Created by Nikita kohli 
  */
 
 import java.util.concurrent.TimeUnit

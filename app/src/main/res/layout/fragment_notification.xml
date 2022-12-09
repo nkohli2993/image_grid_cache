@@ -28,7 +28,6 @@
                 android:id="@+id/backIV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
                 android:paddingEnd="@dimen/_20sdp"
                 android:onClick="@{listener::onClick}"
                 android:paddingVertical="@dimen/_10sdp"

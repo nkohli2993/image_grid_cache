@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 
 /**
- * Created by  Nikita Kohli 03/10/2022
+ * Created by  Nikita Kohli
  */
 
 @HiltViewModel
@@ -46,7 +46,6 @@ class LoginViewModel @Inject constructor(
         loginLiveData.value?.let {
             if (it.isValid()) {
                 hitLogin()
-
             } else {
                 it.notifyChange()
             }
@@ -55,7 +54,8 @@ class LoginViewModel @Inject constructor(
 
     fun hitLogin() {
         viewModelScope.launch {
-            loginLiveData.value?.fcmToken = getDeviceToken()
+//            loginLiveData.value?.fcmToken = getDeviceToken()
+            loginLiveData.value?.fcmToken = "fcm_token"
             val response = loginLiveData.value?.let { authRepository.loginUser(it) }
             withContext(Dispatchers.Main) {
                 response?.collect { _loginResponseLiveData.postValue(Event(it)) }

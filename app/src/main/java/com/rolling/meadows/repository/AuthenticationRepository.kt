@@ -30,69 +30,20 @@ class AuthenticationRepository @Inject constructor(private val apiService: ApiSe
         }.asFlow().flowOn(Dispatchers.IO)
     }
 
-    suspend fun registerUser(value: RegisterModel): Flow<DataResult<UserDetailResponseModel>> {
+    suspend fun verifyOTP(value: OTPVerificationModel): Flow<DataResult<UserDetailResponseModel>> {
         return object :
             NetworkOnlineDataRepo<UserDetailResponseModel, UserDetailResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<UserDetailResponseModel> {
-                return apiService.registerUser(
-                    value.profileFile.createMultipartBody("profile_file"),
-                    value.email.toString().trim().getRequestBody(),
-                    value.firstName.toString().trim().getRequestBody(),
-                    value.lastName.toString().trim().getRequestBody(),
-                    value.isoCode.toString().trim().getRequestBody(),
-                    value.phoneCode.toString().trim().getRequestBody(),
-                    value.phoneNumber.toString().trim().getRequestBody(),
-                    value.password?.getRequestBody(),
-                    value.fcmToken?.getRequestBody(),
-                    value.deviceType?.getRequestBody(),
-                    value.role?.getRequestBody()
-                )
-            }
-        }.asFlow().flowOn(Dispatchers.IO)
-    }
-    suspend fun registerUserWithoutEmail(value: RegisterModel): Flow<DataResult<UserDetailResponseModel>> {
-        return object :
-            NetworkOnlineDataRepo<UserDetailResponseModel, UserDetailResponseModel>() {
-            override suspend fun fetchDataFromRemoteSource(): Response<UserDetailResponseModel> {
-                return apiService.registerUserWithoutEmail(
-                    value.profileFile.createMultipartBody("profile_file"),
-                    value.firstName.toString().trim().getRequestBody(),
-                    value.lastName.toString().trim().getRequestBody(),
-                    value.isoCode.toString().trim().getRequestBody(),
-                    value.phoneCode.toString().trim().getRequestBody(),
-                    value.phoneNumber.toString().trim().getRequestBody(),
-                    value.password?.getRequestBody(),
-                    value.fcmToken?.getRequestBody(),
-                    value.deviceType?.getRequestBody(),
-                    value.role?.getRequestBody()
-                )
+                return apiService.verifyOTP(value)
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }
 
-    suspend fun verifyPhoneNumber(value: OTPVerificationModel): Flow<DataResult<UserDetailResponseModel>> {
+    suspend fun resendVerificationCOde(value: OTPVerificationModel): Flow<DataResult<UserDetailResponseModel>> {
         return object :
             NetworkOnlineDataRepo<UserDetailResponseModel, UserDetailResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<UserDetailResponseModel> {
-                return apiService.verifyPhoneNumber(value)
-            }
-        }.asFlow().flowOn(Dispatchers.IO)
-    }
-
-    suspend fun resetVerifyPhoneNumber(value: OTPVerificationModel): Flow<DataResult<UserDetailResponseModel>> {
-        return object :
-            NetworkOnlineDataRepo<UserDetailResponseModel, UserDetailResponseModel>() {
-            override suspend fun fetchDataFromRemoteSource(): Response<UserDetailResponseModel> {
-                return apiService.resetVerifyPhoneNumber(value)
-            }
-        }.asFlow().flowOn(Dispatchers.IO)
-    }
-
-    suspend fun resendPhoneNUmberOtp(value: ResendOTPModel): Flow<DataResult<UserDetailResponseModel>> {
-        return object :
-            NetworkOnlineDataRepo<UserDetailResponseModel, UserDetailResponseModel>() {
-            override suspend fun fetchDataFromRemoteSource(): Response<UserDetailResponseModel> {
-                return apiService.resendCode(value)
+                return apiService.resendVerificationCOde(value)
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }
@@ -115,14 +66,6 @@ class AuthenticationRepository @Inject constructor(private val apiService: ApiSe
         }.asFlow().flowOn(Dispatchers.IO)
     }
 
-    suspend fun changePassword(value: ChangePasswordModel): Flow<DataResult<UserDetailResponseModel>> {
-        return object :
-            NetworkOnlineDataRepo<UserDetailResponseModel, UserDetailResponseModel>() {
-            override suspend fun fetchDataFromRemoteSource(): Response<UserDetailResponseModel> {
-                return apiService.changePassword(value)
-            }
-        }.asFlow().flowOn(Dispatchers.IO)
-    }
 
     suspend fun _logout(): Flow<DataResult<BaseResponseModel>> {
         return object : NetworkOnlineDataRepo<BaseResponseModel, BaseResponseModel>() {
@@ -136,20 +79,6 @@ class AuthenticationRepository @Inject constructor(private val apiService: ApiSe
         return object : NetworkOnlineDataRepo<UserDetailResponseModel, UserDetailResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<UserDetailResponseModel> {
                 return apiService.getProfile()
-            }
-        }.asFlow().flowOn(Dispatchers.IO)
-    }
-
-    suspend fun updateUserProfile(value: EditProfileModel): Flow<DataResult<UserDetailResponseModel>> {
-        return object :
-            NetworkOnlineDataRepo<UserDetailResponseModel, UserDetailResponseModel>() {
-            override suspend fun fetchDataFromRemoteSource(): Response<UserDetailResponseModel> {
-                return apiService.updateProfile(
-                    value.profileFile.createMultipartBody("profile_file"),
-                    value.firstName.toString().trim().getRequestBody(),
-                    value.lastName.toString().trim().getRequestBody(),
-                    value.email.toString().trim().getRequestBody()
-                )
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }

@@ -15,17 +15,22 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.rolling.meadows.R
 import com.rolling.meadows.base.BaseAdapter
 import com.rolling.meadows.base.BaseFragment
 import com.rolling.meadows.data.DateData
 import com.rolling.meadows.databinding.FragmentHomeBinding
+import com.rolling.meadows.network.retrofit.DataResult
 import com.rolling.meadows.utils.extensions.visibleView
+import com.rolling.meadows.view_model.EventsViewModel
+import com.rolling.meadows.view_model.ResetPasswordViewModel
 import com.rolling.meadows.views.view_main.homePages.adapter.DateAdapter
 import com.rolling.meadows.views.view_main.homePages.adapter.EventDateWiseAdapter
 import com.rolling.meadows.views.view_main.homePages.adapter.EventsAdapter
 import com.rolling.meadows.views.view_main.homePages.adapter.MonthAdapter
+import dagger.hilt.android.AndroidEntryPoint
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.time.YearMonth
@@ -33,11 +38,15 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 @RequiresApi(Build.VERSION_CODES.O)
+@AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>(),
     BaseAdapter.OnItemClick {
     override fun getLayoutRes() = R.layout.fragment_home
+    private var dialog: Dialog? = null
     private var background: ArrayList<Int> = arrayListOf()
     private val lastDayInCalendar = Calendar.getInstance()
+    private val viewModel: EventsViewModel by viewModels()
+
     var monthSelected = -1
     var dateelected = -1
 
@@ -59,11 +68,32 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
     }
 
     override fun observeViewModel() {
+        viewModel.logoutResponseLiveData.observe(this) {
+            it.getContentIfNotHandled()?.let {
+                when (it) {
+                    is DataResult.Loading -> {
+                        showLoading()
+                    }
+                    is DataResult.Success -> {
+                        hideLoading()
+                        viewModel.saveToken("")
+                        viewModel.clearAllData()
+                        baseActivity!!.goToInitialActivity()
+                    }
+                    is DataResult.Failure -> {
+                        handleFailure(it.message, it.exception, it.errorCode)
+                    }
+                }
+            }
+
+        }
 
     }
 
     override fun initViewBinding() {
         binding.listener = this
+
+        binding.titleTV.text = viewModel.getSavedUser()?.fullName
         changeStatusBarColor(ContextCompat.getColor(requireContext(), R.color.white))
         changeStatusBarIconColor(true)
         background.clear()
@@ -278,7 +308,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
     }
 
     private fun showLogoutDialog() {
-        val dialog = Dialog(baseActivity!!, android.R.style.Theme_Translucent_NoTitleBar)
+        dialog = Dialog(baseActivity!!, android.R.style.Theme_Translucent_NoTitleBar)
         dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog?.setContentView(R.layout.dialog_logout)
         dialog?.setCancelable(true)
@@ -297,8 +327,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
         }
         logoutBT.setOnClickListener {
             dialog?.dismiss()
-//            viewModel.onClickLogout()
-            baseActivity!!.goToInitialActivity()
+            viewModel.onClickLogout()
         }
         dialog?.show()
     }

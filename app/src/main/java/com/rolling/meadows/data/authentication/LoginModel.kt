@@ -5,26 +5,19 @@ import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import com.rolling.meadows.R
 import com.rolling.meadows.data.FieldErrors
+import com.rolling.meadows.utils.extensions.isValidEmail
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class LoginModel(
-    @SerializedName("phone_code")
-    var phoneCode: String? = null,
     @SerializedName("password")
-//    var password: String = "12345678",
     var password: String? = null,
     @SerializedName("fcm_token")
     var fcmToken: String? = null,
     @SerializedName("device_type")
     var deviceType: Int? = null,
-    @SerializedName("role")
-    var role: String? = null,
-    @SerializedName("iso_code")
-    var isoCode:String?=null,
-    @SerializedName("phone_number")
-//    var phone_number: String = "0909090908"
-    var phone_number:String?=null,
+    @SerializedName("email")
+    var email: String? = null,
 
 
 ) : FieldErrors(), Parcelable {
@@ -32,11 +25,11 @@ data class LoginModel(
     fun isValid(): Boolean {
         reset()
         when {
-            phone_number.isNullOrEmpty() ->{
-                errorPhoneNum = R.string.plz_enter_phone_number
+            email.isNullOrEmpty() -> {
+                errorEmail = R.string.plz_enter_email_address
             }
-            phone_number!!.isNotEmpty() && phone_number!!.length<4 -> {
-                errorPhoneNum = R.string.plz_enter_valid_phone_num
+            (email!!.trim()).isNotEmpty() && !email!!.trim().isValidEmail() -> {
+                errorEmail = R.string.plz_enter_valid_email_address
             }
             password.isNullOrEmpty() -> {
                 errorPassword = R.string.plz_enter_password
@@ -52,7 +45,7 @@ data class LoginModel(
     }
 
     private fun reset() {
-        errorPhoneNum = null
+        errorEmail = null
         errorPassword = null
     }
 }

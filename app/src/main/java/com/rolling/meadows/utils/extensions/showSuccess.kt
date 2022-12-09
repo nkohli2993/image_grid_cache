@@ -4,7 +4,7 @@ import android.content.Context
 import es.dmoral.toasty.Toasty
 
 /**
- * Created by Nikita kohli 06/10/2022
+ * Created by Nikita kohli
  */
 
 fun showSuccess(context: Context, msg: String) {

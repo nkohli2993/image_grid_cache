@@ -1,6 +1,6 @@
 package com.rolling.meadows.network.retrofit
 /*
-  Created by  Nikita kohli on 20/09/2022
+  Created by  Nikita kohli
 */
 
 

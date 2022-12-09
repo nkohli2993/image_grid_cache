@@ -8,7 +8,9 @@
         <item name="materialButtonStyle">@style/buttonViewStyle</item>
         <item name="android:radioButtonStyle">@style/radioButtonTheme</item>
         <item name="radioButtonStyle">@style/radioButtonTheme</item>
-<!--        <item name="android:navigationBarColor">@color/_FF24A872</item>-->
+        <item name="android:windowDisablePreview">true</item>
+        <!--        <item name="android:navigationBarColor">@color/_FF24A872</item>-->
+
     </style>
     <style name="dateTimeTheme" parent="@style/ThemeOverlay.MaterialComponents.Dialog">
         <item name="colorPrimary">@color/colorPrimary</item>

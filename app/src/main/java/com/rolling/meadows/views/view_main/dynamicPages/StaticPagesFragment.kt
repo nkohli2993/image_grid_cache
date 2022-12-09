@@ -12,14 +12,12 @@ import com.rolling.meadows.network.retrofit.observeEvent
 import com.rolling.meadows.utils.Constants
 import com.rolling.meadows.utils.extensions.showError
 import com.rolling.meadows.utils.extensions.visibleView
-import com.rolling.meadows.view_model.StaticPagesViewModel
-import com.rolling.meadows.views.view_main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class StaticPagesFragment : BaseFragment<FragmentDynamicPageBinding>() {
     override fun getLayoutRes() = R.layout.fragment_dynamic_page
-    private val staticPagesViewModel: StaticPagesViewModel by viewModels()
+//    private val staticPagesViewModel: StaticPagesViewModel by viewModels()
 
     private fun init() {
         binding.toolbar.visibleView(false)
@@ -29,7 +27,7 @@ class StaticPagesFragment : BaseFragment<FragmentDynamicPageBinding>() {
                 binding.toolbar.visibleView(true)
             }
         }
-        when (arguments?.getString("type")) {
+     /*   when (arguments?.getString("type")) {
             Constants.ABOUT_US -> {
                 // call for about us text
                 staticPagesViewModel.type.value = Constants.PAGE_TYPE_ABOUT_US
@@ -43,13 +41,14 @@ class StaticPagesFragment : BaseFragment<FragmentDynamicPageBinding>() {
                 staticPagesViewModel.type.value = Constants.PAGE_TYPE_TERMS_AND_CONDITION
             }
         }
-        staticPagesViewModel.hitStaticPageApi()
+        staticPagesViewModel.hitStaticPageApi()*/
         binding.ivBack.setOnClickListener {
            findNavController().popBackStack()
         }
     }
 
     override fun observeViewModel() {
+/*
         staticPagesViewModel.staticPageResponseLiveData.observeEvent(this) { result ->
             when (result) {
                 is DataResult.Failure -> {
@@ -66,6 +65,7 @@ class StaticPagesFragment : BaseFragment<FragmentDynamicPageBinding>() {
                 }
             }
         }
+*/
 
 
     }

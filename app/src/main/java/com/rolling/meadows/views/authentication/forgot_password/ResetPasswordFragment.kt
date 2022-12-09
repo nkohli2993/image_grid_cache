@@ -2,6 +2,7 @@ package com.rolling.meadows.views.authentication.forgot_password
 
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -18,7 +19,6 @@ import kotlinx.android.synthetic.main.fragment_reset_password.*
 @AndroidEntryPoint
 class ResetPasswordFragment : BaseFragment<FragmentResetPasswordBinding>() {
     override fun getLayoutRes(): Int = R.layout.fragment_reset_password
-    private var type: String? = null
     private val viewModel: ResetPasswordViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -28,27 +28,28 @@ class ResetPasswordFragment : BaseFragment<FragmentResetPasswordBinding>() {
 
     private fun initUi() {
         binding.listener = this
-        type = arguments?.getString("type")
+        baseActivity!!.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
+        binding.viewModel = viewModel
         removeFlag()
         binding.passwordET.onTextWritten()
         binding.confirmPasswordET.onTextWritten()
 
-        binding.passwordET.doOnTextChanged { text, start, before, count ->
+        binding.passwordET.doOnTextChanged { text, _, _, _ ->
             if (text.toString().isNotEmpty()) {
-                setTextViewDrawableColor(binding.passwordET,R.color._B2D05A)
+                setTextViewDrawableColor(binding.passwordET, R.color._B2D05A)
                 binding.passwordCL.setBackgroundResource(R.drawable.background_stoke_highlight_edittext)
             } else {
-                setTextViewDrawableColor(binding.passwordET,R.color._8F8F8F)
+                setTextViewDrawableColor(binding.passwordET, R.color._8F8F8F)
                 binding.passwordCL.setBackgroundResource(R.drawable.background_stroke_edittext)
             }
         }
 
-        binding.confirmPasswordET.doOnTextChanged { text, start, before, count ->
+        binding.confirmPasswordET.doOnTextChanged { text, _, _, _ ->
             if (text.toString().isNotEmpty()) {
-                setTextViewDrawableColor(binding.confirmPasswordET,R.color._B2D05A)
+                setTextViewDrawableColor(binding.confirmPasswordET, R.color._B2D05A)
                 binding.confirmPasswordCL.setBackgroundResource(R.drawable.background_stoke_highlight_edittext)
             } else {
-                setTextViewDrawableColor(binding.confirmPasswordET,R.color._8F8F8F)
+                setTextViewDrawableColor(binding.confirmPasswordET, R.color._8F8F8F)
                 binding.confirmPasswordCL.setBackgroundResource(R.drawable.background_stroke_edittext)
             }
         }
@@ -66,30 +67,10 @@ class ResetPasswordFragment : BaseFragment<FragmentResetPasswordBinding>() {
                 setBackPress()
             }
             R.id.continueBT -> {
-                when {
-                    binding.passwordET.text.isNullOrEmpty() -> {
-                        showError(baseActivity!!,getString(R.string.plz_enter_new_password))
-                    /*    binding.passwordET.error =
-                            getString(R.string.plz_enter_new_password)*/
-                        binding.passwordET.requestFocus()
-                    }
-                    binding.confirmPasswordET.text.isNullOrEmpty() -> {
-                        showError(baseActivity!!,getString(R.string.plz_enter_confirm_password))
-                     /*   binding.confirmPasswordET.error =
-                            getString(R.string.plz_enter_confirm_password)*/
-                        binding.confirmPasswordET.requestFocus()
-                    }
-                    binding.passwordET.text.toString() != binding.confirmPasswordET.text.toString() -> {
-                        showError(baseActivity!!,getString(R.string.new_password_doesnot_matched_with_old_password))
-                       /* binding.confirmPasswordET.error =
-                            getString(R.string.new_password_doesnot_matched_with_old_password)*/
-                        binding.confirmPasswordET.requestFocus()
-                    }
-                    else -> {
-                        findNavController().navigate(R.id.action_introFragment_to_loginFragment)
-//                        viewModel.onClickResetPassword()
-                    }
-                }
+                viewModel.resetPasswordLiveData.value!!.userId = viewModel.getSaveUser()?.id.toString()
+                viewModel.resetPasswordLiveData.value!!.newPassword = binding.passwordET.text.toString()
+                viewModel.resetPasswordLiveData.value!!.confirmNewPassword = binding.confirmPasswordET.text.toString()
+                viewModel.onClickResetPassword()
             }
         }
     }
@@ -108,8 +89,10 @@ class ResetPasswordFragment : BaseFragment<FragmentResetPasswordBinding>() {
                     }
                     is DataResult.Success -> {
                         hideLoading()
+                        viewModel.saveToken("")
+                        viewModel.clearAllData()
                         showSuccess(baseActivity!!, result.data?.message!!)
-                        setBackPress()
+                        findNavController().navigate(R.id.action_introFragment_to_loginFragment)
                     }
                     is DataResult.Failure -> {
                         handleFailure(result.message, result.exception, result.errorCode)

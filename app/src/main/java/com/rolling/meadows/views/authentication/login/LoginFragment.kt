@@ -3,6 +3,7 @@ package com.rolling.meadows.views.authentication.login
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
+import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
@@ -49,27 +50,11 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         super.onClick(v)
         when (v?.id) {
             R.id.btnLogin -> {
-                when {
-                    binding.edtEmail.text.isNullOrEmpty() -> {
-                        binding.edtEmail.error =
-                            getString(R.string.plz_enter_email_address)
-                        binding.edtEmail.requestFocus()
-                    }
-                    (binding.edtEmail.text?.trim()
-                        ?: "").isNotEmpty() && !isValidEmail() -> {
-                        binding.edtEmail.error =
-                            getString(R.string.plz_enter_valid_email_address)
-                        binding.edtEmail.requestFocus()
-                    }
-                    binding.edtPasswd.text.isNullOrEmpty() -> {
-                        binding.edtPasswd.error =
-                            getString(R.string.plz_enter_password)
-                        binding.edtPasswd.requestFocus()
-                    }
-                    else -> {
-                        baseActivity!!.goToMainActivity()
-                    }
-                }
+                viewModel.loginLiveData.value!!.email = binding.edtEmail.text.toString()
+                viewModel.loginLiveData.value!!.password = binding.edtPasswd.text.toString()
+                viewModel.loginLiveData.value!!.fcmToken = "fcm_token"
+                viewModel.loginLiveData.value!!.deviceType = Constants.DEVICE_TYPE
+                viewModel.onClickLogin()
             }
             R.id.txtForgotPassword -> {
                 findNavController().navigate(R.id.action_loginFragment_to_forgotPasswordFragment)
@@ -77,14 +62,10 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         }
     }
 
-    private fun isValidEmail(): Boolean {
-      return  binding.edtEmail.text.toString().isNotEmpty() &&
-                Patterns.EMAIL_ADDRESS.matcher(binding.edtEmail.text.toString()).matches()
-    }
-
 
     private fun initUi() {
         binding.listener = this
+        binding.viewModel = viewModel
         removeFlag()
         viewModel.loginLiveData.value?.deviceType = Constants.DEVICE_TYPE
         viewModel.loginLiveData.value?.fcmToken = viewModel.getDeviceToken()
@@ -134,20 +115,28 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
                     }
                     is DataResult.Success -> {
                         hideLoading()
+                        showSuccess(baseActivity!!, it.data?.message!!)
+                        Log.e("catch_exception_token","save token: ${it.data.data?.authToken}")
+                        viewModel.saveToken(it.data.data?.authToken)
+                        viewModel.saveId(it.data.data?.id.toString())
+                        viewModel.saveUser(it.data.data)
+                        baseActivity!!.goToMainActivity()
+/*
                         if (it.data?.message == "User logged in successfully") {
                             showSuccess(baseActivity!!, it.data.message!!)
-                            viewModel.saveToken(it.data.data?.auth_token)
+                            viewModel.saveToken(it.data.data?.authToken)
                             viewModel.saveId(it.data.data?.id.toString())
                             viewModel.saveUser(it.data.data)
                             Prefs.save(Constants.RIDE_ID, "login")
                             baseActivity!!.goToMainActivity()
                         } else if (it.data?.message == "Please verify your phone number.") {
                             showSuccess(baseActivity!!, it.data.message!!)
-                            viewModel.saveToken(it.data.data?.auth_token)
+                            viewModel.saveToken(it.data.data?.authToken)
                             viewModel.saveUser(it.data.data)
                             //send email and otp
                             findNavController().navigate(R.id.action_send_otp)
                         }
+*/
                     }
                     is DataResult.Failure -> {
                         handleFailure(it.message, it.exception, it.errorCode)

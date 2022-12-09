@@ -41,21 +41,6 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    fun onClickUpdateProfile() {
-        userProfileData.value.let {
-            updateUserProfile()
-        }
-    }
-
-    private fun updateUserProfile() {
-        viewModelScope.launch {
-            val response = userProfileData.value.let { authRepository.updateUserProfile(it!!) }
-            withContext(Dispatchers.Main) {
-                response.collect { _profileResponseLiveData.postValue(Event(it)) }
-            }
-        }
-    }
-
     // Save User to SharePrefs
     fun saveUser(user: UserProfileData?) {
         userRepository.saveUser(user)

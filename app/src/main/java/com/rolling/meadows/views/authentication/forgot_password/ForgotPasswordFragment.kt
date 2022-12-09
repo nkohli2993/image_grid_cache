@@ -1,7 +1,7 @@
 package com.rolling.meadows.views.authentication.forgot_password
 
-import android.util.Patterns
 import android.view.View
+import android.view.WindowManager
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.rolling.meadows.R
@@ -23,7 +23,9 @@ class ForgotPasswordFragment : BaseFragment<FragmentForgotPasswordBinding>() {
     }
 
     private fun initUi() {
+        baseActivity!!.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         binding.listener = this
+        binding.viewModel = viewModel
         binding.edtEmail.onTextWritten()
         removeFlag()
     }
@@ -33,34 +35,14 @@ class ForgotPasswordFragment : BaseFragment<FragmentForgotPasswordBinding>() {
         super.onClick(v)
         when (v?.id) {
             R.id.submitBT -> {
-                when {
-                    binding.edtEmail.text.isNullOrEmpty() -> {
-                        binding.edtEmail.error =
-                            getString(R.string.plz_enter_email_address)
-                        binding.edtEmail.requestFocus()
-                    }
-                    (binding.edtEmail.text?.trim()
-                        ?: "").isNotEmpty() && !isValidEmail() -> {
-                        binding.edtEmail.error =
-                            getString(R.string.plz_enter_valid_email_address)
-                        binding.edtEmail.requestFocus()
-                    }
-                    else -> {
-                        findNavController().navigate(R.id.action_send_otp)
-                    }
-                }
-
+                viewModel.forgotPasswordLiveData.value!!.email =  binding.edtEmail.text.toString()
+                viewModel.onClickForgotPassword()
 
             }
             R.id.backIV -> {
                 baseActivity!!.onBackPressed()
             }
         }
-    }
-
-    private fun isValidEmail(): Boolean {
-        return binding.edtEmail.text.toString().isNotEmpty() &&
-                Patterns.EMAIL_ADDRESS.matcher(binding.edtEmail.text.toString()).matches()
     }
 
 
@@ -73,8 +55,8 @@ class ForgotPasswordFragment : BaseFragment<FragmentForgotPasswordBinding>() {
                     }
                     is DataResult.Success -> {
                         hideLoading()
-                        showInfo(baseActivity!!, result.data?.message!!)
-                        viewModel.saveUser(result.data.data)
+                        showInfo(baseActivity!!,"OTP for verification is ${result.data?.data?.emailVerificationOtp}")
+                        viewModel.saveUser(result.data?.data)
                         findNavController().navigate(R.id.action_send_otp)
                     }
                     is DataResult.Failure -> {
