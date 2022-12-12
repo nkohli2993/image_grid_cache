@@ -3,19 +3,25 @@ package com.rolling.meadows.views.view_main.homePages.adapter
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Point
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.findNavController
 import com.rolling.meadows.R
 import com.rolling.meadows.base.BaseActivity
 import com.rolling.meadows.base.BaseAdapter
 import com.rolling.meadows.base.BaseViewHolder
+import com.rolling.meadows.data.events.EventDetailData
 import com.rolling.meadows.databinding.AdapterRollingEventBinding
+import com.rolling.meadows.utils.DateFunctions
 import com.rolling.meadows.views.view_main.MainActivity
 
 class DateWiseEvents(
-    val baseActivity: BaseActivity, val background: ArrayList<Int>
+    val baseActivity: BaseActivity,
+    val background: ArrayList<Int>,
+    var eventList: ArrayList<EventDetailData>
 ) : BaseAdapter<AdapterRollingEventBinding>(),
     BaseAdapter.OnItemClick {
     lateinit var context: Context
@@ -47,19 +53,31 @@ class DateWiseEvents(
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
         val binding = holder.binding as AdapterRollingEventBinding
         binding.viewCL.setBackgroundResource(background[i])
+        val data = eventList[position]
+        if (eventList.size > 0) {
+            binding.titleTV.text = data.eventType
+            binding.descriptionTV.text = data.description
+            binding.timeTV.text = DateFunctions.convertDateFormatFromUTC(
+                "yyyy-MM-dd hh:mm:ss",
+                "hh:mm a", data.date.plus(" ${data.time}")
+            )
+        }
+
         i++
         if (i > 4) {
             i = 0
         }
 
         binding.root.setOnClickListener {
-            (baseActivity as MainActivity).navController?.navigate(R.id.home_to_rolling_detail)
+            val bundle = Bundle()
+            bundle.putParcelable("detail",data)
+            (baseActivity as MainActivity).navController?.navigate(R.id.home_to_rolling_detail,bundle)
         }
 
     }
 
     override fun getItemCount(): Int {
-        return 6
+        return eventList.size
     }
 
 }

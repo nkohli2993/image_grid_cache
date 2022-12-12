@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.content.Context
 import android.graphics.Rect
 import android.os.Build
+import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.view.animation.RotateAnimation
@@ -17,15 +18,21 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.rolling.meadows.R
 import com.rolling.meadows.base.BaseAdapter
 import com.rolling.meadows.base.BaseFragment
 import com.rolling.meadows.data.DateData
+import com.rolling.meadows.data.events.EventData
 import com.rolling.meadows.databinding.FragmentHomeBinding
 import com.rolling.meadows.network.retrofit.DataResult
+import com.rolling.meadows.network.retrofit.observeEvent
+import com.rolling.meadows.utils.Constants
+import com.rolling.meadows.utils.DateFunctions
+import com.rolling.meadows.utils.extensions.showError
+import com.rolling.meadows.utils.extensions.showException
 import com.rolling.meadows.utils.extensions.visibleView
 import com.rolling.meadows.view_model.EventsViewModel
-import com.rolling.meadows.view_model.ResetPasswordViewModel
 import com.rolling.meadows.views.view_main.homePages.adapter.DateAdapter
 import com.rolling.meadows.views.view_main.homePages.adapter.EventDateWiseAdapter
 import com.rolling.meadows.views.view_main.homePages.adapter.EventsAdapter
@@ -39,37 +46,69 @@ import kotlin.collections.ArrayList
 
 @RequiresApi(Build.VERSION_CODES.O)
 @AndroidEntryPoint
+@SuppressLint("SimpleDateFormat")
 class HomeFragment : BaseFragment<FragmentHomeBinding>(),
     BaseAdapter.OnItemClick {
     override fun getLayoutRes() = R.layout.fragment_home
+    private var dateList: ArrayList<DateData> = arrayListOf()
+    private var dateAdapter: DateAdapter? = null
+    private var total: Int? = null
+    private var dayEventList: ArrayList<EventData> = arrayListOf()
+    private var eventList: ArrayList<EventData> = arrayListOf()
     private var dialog: Dialog? = null
+    private var multiDayAdapter: EventDateWiseAdapter? = null
+    private var dayEventAdapter: EventsAdapter? = null
     private var background: ArrayList<Int> = arrayListOf()
     private val lastDayInCalendar = Calendar.getInstance()
     private val viewModel: EventsViewModel by viewModels()
+    private var currentPage: Int = 0
+    private var totalPage: Int = 0
+    private var pageNumber: Int = 1
+    private var monthSelected = -1
+    private var dateelected = -1
+    private var startDate = ""
+    private var endDate = ""
+    private var year = ""
+    private var filterType = Constants.EVENT_FILTER_TYPE.DAY.value
 
-    var monthSelected = -1
-    var dateelected = -1
-
-    override fun onItemClick(vararg items: Any) {
-        when {
-            items[1] as String == "month" -> {
-                monthSelected = items[0] as Int
-                monthSelected++
-                setDateAdapter()
-            }
-            items[1] as String == "date" -> {
-                dateelected = items[0] as Int
-            }
-            else -> {
-                findNavController().navigate(R.id.home_to_rolling_detail)
-            }
-        }
-
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        isBinded = false
     }
 
+    override fun onResume() {
+        super.onResume()
+        isBinded = true
+    }
+
+    override fun initViewBinding() {
+        binding.listener = this
+        baseActivity!!.updateStatusBarColor(R.color.transparent, true, R.color._24A872)
+        binding.titleTV.text = viewModel.getSavedUser()?.fullName
+        changeStatusBarColor(ContextCompat.getColor(requireContext(), R.color.white))
+        changeStatusBarIconColor(true)
+        background.clear()
+        background.add(R.drawable.ic_background_pink)
+        background.add(R.drawable.ic_background_yellow)
+        background.add(R.drawable.ic_background_blue)
+        background.add(R.drawable.ic_background_green)
+        background.add(R.drawable.ic_background_pruple)
+        startDate = SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().time)
+        endDate = startDate
+        year = SimpleDateFormat("yyyy").format(Calendar.getInstance().time)
+        binding.yearTV.text = year
+        callEventApi()
+        setMonthAdapter()
+        setDateAdapter()
+        setEventAdapter()
+        setEventDateAdapter()
+        lastDayInCalendar.add(Calendar.MONTH, 3)
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
     override fun observeViewModel() {
-        viewModel.logoutResponseLiveData.observe(this) {
-            it.getContentIfNotHandled()?.let {
+        viewModel.logoutResponseLiveData.observe(this) { resultEvent ->
+            resultEvent.getContentIfNotHandled()?.let {
                 when (it) {
                     is DataResult.Loading -> {
                         showLoading()
@@ -83,32 +122,181 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
                     is DataResult.Failure -> {
                         handleFailure(it.message, it.exception, it.errorCode)
                     }
+                    else -> {}
                 }
             }
 
         }
+        viewModel.eventResponseLiveData.observeEvent(this) { result ->
+            when (result) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    handleFailure(result.message, result.exception, result.errorCode)
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    var list: ArrayList<EventData> = arrayListOf()
+                    result.data?.data?.let {
+                        list = it.list
+                        total = it.totalPages
+                        currentPage = it.currentPage
+                        totalPage = it.totalPages
+                    }
+
+
+                    when (filterType) {
+                        Constants.EVENT_FILTER_TYPE.DAY.value -> {
+                            if (viewModel.page.value == 1) {
+                                dayEventAdapter = null
+                                dayEventList.clear()
+                                setEventAdapter()
+                            }
+                            dayEventList.addAll(list)
+                            dayEventAdapter!!.notifyDataSetChanged()
+
+                            setList(dayEventList)
+                        }
+                        else -> {
+                            if (viewModel.page.value == 1) {
+                                multiDayAdapter = null
+                                eventList.clear()
+                                setEventDateAdapter()
+                            }
+
+                            eventList.addAll(list)
+                            multiDayAdapter!!.notifyDataSetChanged()
+                            setList(eventList)
+                        }
+                    }
+                }
+                else -> {}
+            }
+        }
+    }
+
+    private fun setList(list: ArrayList<EventData>) {
+        if (list.size > 0) {
+            binding.nofoundTV.visibleView(false)
+            binding.rollingRV.visibleView(true)
+        } else {
+            binding.nofoundTV.visibleView(true)
+            binding.rollingRV.visibleView(false)
+        }
 
     }
 
-    override fun initViewBinding() {
-        binding.listener = this
-
-        binding.titleTV.text = viewModel.getSavedUser()?.fullName
-        changeStatusBarColor(ContextCompat.getColor(requireContext(), R.color.white))
-        changeStatusBarIconColor(true)
-        background.clear()
-        background.add(R.drawable.ic_background_pink)
-        background.add(R.drawable.ic_background_yellow)
-        background.add(R.drawable.ic_background_blue)
-        background.add(R.drawable.ic_background_green)
-        background.add(R.drawable.ic_background_pruple)
-        // viewModel.hitNotificationApi()
-        setMonthAdapter()
-        setDateAdapter()
-        setEventAdapter()
-        lastDayInCalendar.add(Calendar.MONTH, 3)
+    private fun setEventAdapter() {
+        binding.dateTV.visibleView(true)
+        dayEventAdapter = EventsAdapter(baseActivity!!, background, dayEventList)
+        binding.rollingRV.adapter = dayEventAdapter
+        dayEventAdapter!!.setOnItemClickListener(this)
+        handleNotificationPagination()
     }
 
+    private fun setEventDateAdapter() {
+        binding.dateTV.visibleView(false)
+        multiDayAdapter = EventDateWiseAdapter(baseActivity!!, background, eventList)
+        binding.rollingRV.adapter = multiDayAdapter
+        multiDayAdapter!!.setOnItemClickListener(this)
+        handleNotificationPagination()
+    }
+
+    @SuppressLint("SetTextI18n")
+    override fun onItemClick(vararg items: Any) {
+        when {
+            items[1] as String == "month" -> {
+                monthSelected = items[0] as Int
+                onMonthSelectStartDate()
+                monthSelected++
+                setDateAdapter()
+                calculateEndDate()
+                callEventApi()
+            }
+            items[1] as String == "date" -> {
+                dateelected = items[0] as Int
+                val date = if (dateelected < 10) {
+                    "0${dateelected + 1}"
+                } else {
+                    (dateelected + 1).toString()
+                }
+                startDate = year.plus("-$monthSelected-$date")
+
+                val selectedDate = SimpleDateFormat("yyyy-MM-dd").parse(startDate)
+                val currentDate = SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().time)
+                if(selectedDate!! == SimpleDateFormat("yyyy-MM-dd").parse(currentDate)){
+                    binding.dateTV.text = "Today"
+                }
+                else{
+                    binding.dateTV.text = DateFunctions.convertDateFormatFromUTC(
+                        "yyyy-MM-dd",
+                        "dd MMM, yyyy", startDate)
+                }
+                when (filterType) {
+                    Constants.EVENT_FILTER_TYPE.WEEK.value -> {
+                        //show selected date of week
+                        dateList.forEachIndexed { index, video ->
+                            video.takeIf { it.isSelected }?.let {
+                                dateList[index] = it.copy(isSelected = false)
+                            }
+                        }
+                        try {
+                            for (i in dateelected until (dateelected + 6)) {
+                                dateList[i].isSelected = true
+                            }
+
+                        } catch (e: Exception) {
+                            showException(e)
+                        }
+                        dateAdapter?.notifyDataSetChanged()
+                    }
+                }
+                calculateEndDate()
+                callEventApi()
+            }
+            else -> {
+                val bundle = Bundle()
+                bundle.putParcelable("detail", dayEventList[0].data[items[0] as Int])
+                findNavController().navigate(R.id.home_to_rolling_detail, bundle)
+            }
+        }
+
+    }
+
+    private fun calculateEndDate() {
+        val calendar = Calendar.getInstance()
+
+        when (filterType) {
+            Constants.EVENT_FILTER_TYPE.DAY.value -> {
+                calendar.time = SimpleDateFormat("yyyy-MM-dd").parse(startDate)!!
+                calendar.add(Calendar.DATE, 0)
+            }
+            Constants.EVENT_FILTER_TYPE.WEEK.value -> {
+                calendar.time = SimpleDateFormat("yyyy-MM-dd").parse(startDate)!!
+                calendar.add(Calendar.DATE, 6)
+            }
+            Constants.EVENT_FILTER_TYPE.MONTH.value -> {
+                calendar.time = SimpleDateFormat("yyyy-MM-dd").parse(startDate)!!
+                val (dateFormat: DateFormat, date, yearMonthObject: YearMonth) = getDaysOfMonth()
+                val daysInMonth: Int = yearMonthObject.lengthOfMonth()
+                calendar.add(Calendar.DATE, daysInMonth - 1)
+            }
+        }
+        endDate = SimpleDateFormat("yyyy-MM-dd").format(calendar.time)
+        Log.e("catch_date", "start: $startDate $endDate")
+    }
+
+    private fun callEventApi() {
+        viewModel.filterBy.value = filterType
+        viewModel.date.value = startDate
+        viewModel.endDate.value = endDate
+        viewModel.page.value = pageNumber
+        viewModel.hitEventApi()
+    }
+
+    @SuppressLint("SimpleDateFormat")
     private fun setMonthAdapter() {
         val months: ArrayList<String> = arrayListOf()
         months.add("January")
@@ -135,13 +323,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
 
     @SuppressLint("SimpleDateFormat")
     private fun setDateAdapter() {
-        Log.e("catch_exception", "month: ${monthSelected}")
-        val dateList: ArrayList<DateData> = arrayListOf()
-        val dateFormat: DateFormat = SimpleDateFormat("yyyy")
-        val date = Date()
-        val yearMonthObject: YearMonth =
-            YearMonth.of(dateFormat.format(date).toInt(), (monthSelected))
-        val daysInMonth: Int = yearMonthObject.lengthOfMonth() //28
+        dateList.clear()
+        val (dateFormat: DateFormat, date, yearMonthObject: YearMonth) = getDaysOfMonth()
+        val daysInMonth: Int = yearMonthObject.lengthOfMonth()
 
         for (i in 0 until daysInMonth) {
             val date = SimpleDateFormat("yyyy/MM/dd").parse(
@@ -156,14 +340,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
         val dayFormat: DateFormat = SimpleDateFormat("dd")
         val monthFormat: DateFormat = SimpleDateFormat("MM")
         val day = Date()
-        val adapter = if (monthSelected != monthFormat.format(day).toInt()) {
-            DateAdapter(baseActivity!!, dateList, 0)
+        dateAdapter = if (monthSelected != monthFormat.format(day).toInt()) {
+            dateList[0].isSelected = true
+            DateAdapter(baseActivity!!, dateList, filterType)
         } else {
-            DateAdapter(baseActivity!!, dateList, (dayFormat.format(day).toInt() - 1))
+            dateList[dayFormat.format(day).toInt() - 1].isSelected = true
+            DateAdapter(baseActivity!!, dateList, filterType)
         }
 
-        binding.dateRV.adapter = adapter
-        adapter.setOnItemClickListener(this)
+        binding.dateRV.adapter = dateAdapter
+        dateAdapter?.setOnItemClickListener(this)
         if (monthSelected != monthFormat.format(day).toInt()) {
             binding.dateRV.scrollToPosition(0)
         } else {
@@ -172,19 +358,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
 
     }
 
-    private fun setEventAdapter() {
-        binding.dateTV.visibleView(true)
-        val adapter = EventsAdapter(baseActivity!!, background)
-        binding.rollingRV.adapter = adapter
-        adapter.setOnItemClickListener(this)
-    }
-
-    private fun setEventDateAdapter() {
-
-        binding.dateTV.visibleView(false)
-        val adapter = EventDateWiseAdapter(baseActivity!!, background)
-        binding.rollingRV.adapter = adapter
-        adapter.setOnItemClickListener(this)
+    private fun getDaysOfMonth(): Triple<DateFormat, Date, YearMonth> {
+        val dateFormat: DateFormat = SimpleDateFormat("yyyy")
+        val date = Date()
+        val yearMonthObject: YearMonth =
+            YearMonth.of(dateFormat.format(date).toInt(), (monthSelected))
+        return Triple(dateFormat, date, yearMonthObject)
     }
 
     override fun onClick(v: View?) {
@@ -254,28 +433,46 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
             true
         }
         dayTV.setOnClickListener {
+            filterType = Constants.EVENT_FILTER_TYPE.DAY.value
             binding.calenderDatesCL.visibleView(true)
             binding.typeTV.text = getString(R.string.day)
+            endDate = startDate
             popupWindow.dismiss()
-            setEventAdapter()
+            calculateEndDate()
+            callEventApi()
         }
         weekTV.setOnClickListener {
+            filterType = Constants.EVENT_FILTER_TYPE.WEEK.value
             binding.calenderDatesCL.visibleView(true)
             binding.typeTV.text = getString(R.string.week)
             popupWindow.dismiss()
-            setEventDateAdapter()
+            setDateAdapter()
+            calculateEndDate()
+            callEventApi()
         }
         monthTV.setOnClickListener {
+            filterType = Constants.EVENT_FILTER_TYPE.MONTH.value
             binding.typeTV.text = getString(R.string.month)
             binding.calenderDatesCL.visibleView(false)
             popupWindow.dismiss()
-            setEventDateAdapter()
+            onMonthSelectStartDate()
+            calculateEndDate()
+            callEventApi()
         }
 
         popupWindow.setOnDismissListener {
             rotate(0f)
         }
 
+    }
+
+    private fun onMonthSelectStartDate() {
+        val month = if (monthSelected < 10) {
+            "0${monthSelected + 1}"
+        } else {
+            (monthSelected + 1).toString()
+        }
+        startDate = year.plus("-$month-01")
     }
 
     private fun rotate(degree: Float) {
@@ -327,9 +524,38 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
         }
         logoutBT.setOnClickListener {
             dialog?.dismiss()
-            viewModel.onClickLogout()
+            viewModel.hitLogOutApi()
         }
         dialog?.show()
+    }
+
+    private fun handleNotificationPagination() {
+        var isScrolling: Boolean
+        var visibleItemCount: Int
+        var totalItemCount: Int
+        var pastVisiblesItems: Int
+
+
+        binding.scrollView.viewTreeObserver.addOnScrollChangedListener {
+            val view = binding.scrollView.getChildAt(binding.scrollView.childCount - 1) as View
+            val diff: Int = view.bottom - (binding.scrollView.height + binding.scrollView
+                .scrollY)
+            if (diff == 0) {
+                isScrolling = true
+                visibleItemCount =
+                    binding.rollingRV.layoutManager!!.childCount
+                totalItemCount =
+                    binding.rollingRV.layoutManager!!.itemCount
+                pastVisiblesItems =
+                    (binding.rollingRV.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+                if (isScrolling && visibleItemCount + pastVisiblesItems >= totalItemCount && (currentPage < totalPage)) {
+                    isScrolling = false
+                    currentPage++
+                    pageNumber++
+                    callEventApi()
+                }
+            }
+        }
     }
 
 

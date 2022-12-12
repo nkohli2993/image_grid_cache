@@ -73,16 +73,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         }
 
         displayMessage(bundle)
-        if (bundle.getString("type") != null) {
-            if (bundle.getString("type")!! == Constants.NotificationType.NOTIFICATION_TYPE_RIDE_COMPLETED.value.toString()
-                || bundle.getString("type")!! == Constants.NotificationType.NOTIFICATION_TYPE_RIDE_CANCELED.value.toString()
-                || bundle.getString("type")!! == Constants.NotificationType.NOTIFICATION_TYPE_RIDE_AUTO_CANCEL.value.toString()
-                || bundle.getString("type")!! == Constants.NotificationType.NOTIFICATION_TYPE_RIDE_REJECTED.value.toString()
-            ) {
-                Prefs.save(Constants.RIDE_ID, "")
-                Prefs.saveRideData("ride_data", null)
-            }
-        }
 
 //        if(bundle.getString("type"))
         sendNotification(bundle)

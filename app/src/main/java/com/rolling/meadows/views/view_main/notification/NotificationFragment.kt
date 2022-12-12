@@ -2,11 +2,9 @@ package com.rolling.meadows.views.view_main.notification
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.rolling.meadows.R
 import com.rolling.meadows.base.BaseAdapter
@@ -15,11 +13,9 @@ import com.rolling.meadows.data.NotificationData
 import com.rolling.meadows.databinding.FragmentNotificationBinding
 import com.rolling.meadows.network.retrofit.DataResult
 import com.rolling.meadows.network.retrofit.observeEvent
-import com.rolling.meadows.utils.Constants
 import com.rolling.meadows.utils.extensions.showError
 import com.rolling.meadows.utils.extensions.visibleView
 import com.rolling.meadows.view_model.NotificationViewModel
-import com.rolling.meadows.views.view_main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 

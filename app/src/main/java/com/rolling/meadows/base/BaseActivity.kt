@@ -19,11 +19,13 @@ import android.os.Handler
 import android.provider.Settings
 import android.view.View
 import android.view.Window
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.annotation.ColorRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.app.ActivityCompat
@@ -79,7 +81,7 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initProgressLoader()
-       // FirebaseApp.initializeApp(this)
+        // FirebaseApp.initializeApp(this)
         //getFirebaseToken()
     }
 
@@ -149,7 +151,10 @@ abstract class BaseActivity : AppCompatActivity() {
         } ?: run {
             when (errorCode) {
                 HTTPStatus.UNAUTHORIZED_AND_VALIDATIONS -> {
-//                    showSessionTimeOutDialog(message)
+                    showError(this, message!!)
+                    viewModel.saveToken("")
+                    viewModel.clearAllData()
+                    goToInitialActivity()
                 }
                 HTTPStatus.NOT_FOUND -> {
                     showError(this, message!!)
@@ -384,5 +389,29 @@ abstract class BaseActivity : AppCompatActivity() {
             }
         }
 
+    fun updateStatusBarColor(
+        @ColorRes colorId: Int,
+        isStatusBarFontDark: Boolean = true,
+        statusBarColor: Int = R.color.transparent
+    ) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val window = window
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+            window.statusBarColor = ContextCompat.getColor(this, R.color.transparent)
+            window.navigationBarColor = ContextCompat.getColor(this, statusBarColor)
+            window.setBackgroundDrawable(ContextCompat.getDrawable(this, colorId))
+            setSystemBarTheme(isStatusBarFontDark)
+        }
+    }
+
+    private fun setSystemBarTheme(isStatusBarFontDark: Boolean) {
+        window.decorView.systemUiVisibility =
+            if (isStatusBarFontDark) {
+                0
+            } else {
+                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+            }
+    }
 
 }

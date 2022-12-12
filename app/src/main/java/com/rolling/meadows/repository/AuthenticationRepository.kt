@@ -1,12 +1,9 @@
 package com.rolling.meadows.repository
 
-import com.rolling.meadows.data.EditProfileModel
 import com.rolling.meadows.data.authentication.*
-import com.rolling.meadows.data.authentication.registration.RegisterModel
 import com.rolling.meadows.data.response_model.BaseResponseModel
 import com.rolling.meadows.data.response_model.LoginUserDetailModel
 import com.rolling.meadows.data.response_model.UserDetailResponseModel
-import com.rolling.meadows.data.static_pages.ChangePasswordModel
 import com.rolling.meadows.network.retrofit.ApiService
 import com.rolling.meadows.network.retrofit.DataResult
 import com.rolling.meadows.network.retrofit.NetworkOnlineDataRepo
@@ -14,8 +11,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import retrofit2.Response
-import com.rolling.meadows.utils.createMultipartBody
-import com.rolling.meadows.utils.getRequestBody
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -62,15 +57,6 @@ class AuthenticationRepository @Inject constructor(private val apiService: ApiSe
             NetworkOnlineDataRepo<UserDetailResponseModel, UserDetailResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<UserDetailResponseModel> {
                 return apiService.resetPassword(value)
-            }
-        }.asFlow().flowOn(Dispatchers.IO)
-    }
-
-
-    suspend fun _logout(): Flow<DataResult<BaseResponseModel>> {
-        return object : NetworkOnlineDataRepo<BaseResponseModel, BaseResponseModel>() {
-            override suspend fun fetchDataFromRemoteSource(): Response<BaseResponseModel> {
-                return apiService.logout()
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }

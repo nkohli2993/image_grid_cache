@@ -85,4 +85,7 @@ class LoginViewModel @Inject constructor(
     fun saveDeviceToken(token: String?) {
         userRepository.saveDeviceToken(token)
     }
+    fun clearAllData() {
+        userRepository.clearAllData()
+    }
 }

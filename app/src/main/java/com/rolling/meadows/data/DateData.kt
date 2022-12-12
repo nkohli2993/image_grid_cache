@@ -9,6 +9,8 @@ data class DateData (
     @SerializedName("date")
     var date: String = "",
     @SerializedName("day")
-    var day: String = ""
+    var day: String = "",
+    @SerializedName("is_selected")
+    var isSelected :Boolean = false
 ): Parcelable
 

@@ -115,6 +115,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_red_circle"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="@+id/notificationIV"
                     app:layout_constraintTop_toTopOf="@+id/notificationIV" />
 
@@ -152,6 +153,17 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:listitem="@layout/adapter_month" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/yearTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/_10sdp"
+                    android:textColor="@color/white"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/monthRV" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -240,13 +252,13 @@
                         android:id="@+id/dateTV"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:paddingVertical="@dimen/_5sdp"
                         android:fontFamily="@font/poppins_medium"
                         android:gravity="start"
+                        android:paddingVertical="@dimen/_5sdp"
                         android:text="Today"
-                        android:visibility="gone"
                         android:textColor="@color/_B7B7B7"
                         android:textSize="@dimen/_10sdp"
+                        android:visibility="gone"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -269,19 +281,19 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/nofoundTV"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
                 android:fontFamily="@font/poppins_semibold"
                 android:gravity="center"
                 android:paddingHorizontal="@dimen/_15sdp"
-                android:text="@string/no_notification"
+                android:text="@string/no_event"
                 android:textColor="@color/_1D1A2F"
                 android:textSize="@dimen/_16sdp"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/calenderDatesCL" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -35,20 +35,6 @@ class LogoutViewModel @Inject constructor(
     var logoutResponseLiveData: LiveData<Event<DataResult<BaseResponseModel>>> =
         _logoutResponseLiveData
 
-    fun onClickLogout() {
-        hitLogOutApi()
-    }
-
-    private fun hitLogOutApi() {
-        viewModelScope.launch {
-            val response =
-                authRepository._logout()
-            withContext(Dispatchers.Main) {
-                response.collect { _logoutResponseLiveData.postValue(Event(it)) }
-            }
-        }
-    }
-
     fun saveToken(token: String?) {
         userRepository.saveToken(token)
     }

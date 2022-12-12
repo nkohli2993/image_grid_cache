@@ -9,8 +9,10 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.rolling.meadows.R
 import com.rolling.meadows.base.BaseFragment
+import com.rolling.meadows.data.events.EventDetailData
 import com.rolling.meadows.databinding.FragmentHomeBinding
 import com.rolling.meadows.databinding.FragmentRollingDetailBinding
+import com.rolling.meadows.utils.DateFunctions
 import java.util.*
 
 
@@ -23,20 +25,34 @@ class RollingDetailFragment : BaseFragment<FragmentRollingDetailBinding>() {
 
     override fun initViewBinding() {
         binding.listener = this
-        changeStatusBarColor(ContextCompat.getColor(requireContext(), R.color.colorAccent))
-        changeStatusBarIconColor(true)
+        baseActivity!!.updateStatusBarColor(R.drawable.detail_bd_new, true, R.color._24A872)
+        setdata()
+    }
+
+    private fun setdata() {
+        val data = arguments?.getParcelable<EventDetailData>("detail")!!
+        binding.dateTV.text = data.date
+        binding.titleTV.text = data.eventType
+        binding.descriptionTV.text = data.description
+        binding.dateTV.text = DateFunctions.getFormattedDate(
+            "yyyy-MM-dd",
+            "dd MMM, yyyy", data.date
+        )
+        binding.timeTV.text = DateFunctions.convertDateFormatFromUTC(
+            "yyyy-MM-dd hh:mm:ss",
+            "hh:mm a", data.date.plus(" ${data.time}")
+        )
 
     }
 
     override fun onClick(v: View?) {
         super.onClick(v)
-        when(v?.id){
-            R.id.backIV ->{
+        when (v?.id) {
+            R.id.backIV -> {
                 findNavController().popBackStack()
             }
         }
     }
-
 
 
 }

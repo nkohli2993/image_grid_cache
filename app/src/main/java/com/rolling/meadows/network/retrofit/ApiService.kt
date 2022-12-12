@@ -1,11 +1,7 @@
 package com.rolling.meadows.network.retrofit
 
 import com.rolling.meadows.data.authentication.*
-import com.rolling.meadows.data.booking.response.*
-import com.rolling.meadows.data.response_model.BaseResponseModel
-import com.rolling.meadows.data.response_model.LoginUserDetailModel
-import com.rolling.meadows.data.response_model.NotificationResponseModel
-import com.rolling.meadows.data.response_model.UserDetailResponseModel
+import com.rolling.meadows.data.response_model.*
 import com.rolling.meadows.utils.ApiConstants
 import retrofit2.Response
 import retrofit2.http.*
@@ -41,5 +37,14 @@ interface ApiService {
         @Query("page_limit") page_limit: Int,
         @Query("page") page: Int
     ): Response<NotificationResponseModel>
+
+    @GET(ApiConstants.Event.API_EVENT_LIST)
+    suspend fun eventList(
+        @Query("filter_by") filter_by: Int,
+        @Query("start_date") start_date: String,
+        @Query("end_date") end_date: String,
+        @Query("page_limit") page_limit: Int,
+        @Query("page") page: Int
+    ): Response<EventResponseModel>
 
 }

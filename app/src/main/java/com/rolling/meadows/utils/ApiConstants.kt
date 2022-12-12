@@ -23,5 +23,9 @@ object ApiConstants {
     object Notification{
         const val API_NOTIFICATION_LIST = "user/notificationList"
     }
+    object Event{
+        const val API_EVENT_LIST = "user/myEvents"
+        const val API_EVENT_DETAIL = "user/eventDetails"
+    }
 
 }

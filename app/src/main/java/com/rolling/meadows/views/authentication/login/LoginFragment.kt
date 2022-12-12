@@ -140,7 +140,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
                     }
                     is DataResult.Failure -> {
                         handleFailure(it.message, it.exception, it.errorCode)
-
                     }
 
                     else -> {}

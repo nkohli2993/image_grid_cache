@@ -76,28 +76,6 @@ class MainActivity : BaseActivity(), View.OnClickListener {
     private fun checkAction(bundle: Bundle) {
         if (viewModel.getToken() != null || viewModel.getToken() != "") {
             if (bundle.getString("type") != null) {
-                when (bundle.getString("type")!!) {
-                    Constants.NotificationType.NOTIFICATION_TYPE_RIDE_BOOK.value.toString(),
-                    Constants.NotificationType.NOTIFICATION_TYPE_RIDE_ACCEPTED.value.toString(),
-                    Constants.NotificationType.NOTIFICATION_TYPE_RIDE_ONGOING.value.toString(),
-                    Constants.NotificationType.NOTIFICATION_TYPE_RIDE_REJECTED.value.toString(),
-                    Constants.NotificationType.NOTIFICATION_TYPE_RIDE_PICKUP.value.toString(),
-                    Constants.NotificationType.NOTIFICATION_TYPE_RIDE_AS_REACHED.value.toString() -> {
-                        navController?.navigate(R.id.homeFragment)
-                    }
-                    else -> {
-                        when (bundle.getString("type")!!) {
-                            Constants.NotificationType.NOTIFICATION_TYPE_RIDE_CANCELED.value.toString(),
-                            Constants.NotificationType.NOTIFICATION_TYPE_RIDE_COMPLETED.value.toString(),
-                            Constants.NotificationType.NOTIFICATION_TYPE_RIDE_AUTO_CANCEL.value.toString() -> {
-                                Prefs.save(Constants.RIDE_ID, "")
-                            }
-                        }
-                        val bundleIntent = Bundle()
-                        bundleIntent.putInt("id", bundle.getString("ride_id")!!.toInt())
-                        //navController?.navigate(R.id., bundleIntent)
-                    }
-                }
 
             } else {
                 navController?.navigate(R.id.homeFragment)
@@ -216,25 +194,6 @@ class MainActivity : BaseActivity(), View.OnClickListener {
                 Constants.DISPLAY_MESSAGE_ACTION -> {
                     val bundle = intent.getBundleExtra("detail")
                     if (bundle!!.containsKey("type")) {
-
-                        when (bundle.getString("type")!!) {
-                            Constants.NotificationType.NOTIFICATION_TYPE_RIDE_BOOK.value.toString(),
-                            Constants.NotificationType.NOTIFICATION_TYPE_RIDE_ACCEPTED.value.toString(),
-                            Constants.NotificationType.NOTIFICATION_TYPE_RIDE_ONGOING.value.toString(),
-                            Constants.NotificationType.NOTIFICATION_TYPE_RIDE_REJECTED.value.toString(),
-                            Constants.NotificationType.NOTIFICATION_TYPE_RIDE_COMPLETED.value.toString(),
-                            Constants.NotificationType.NOTIFICATION_TYPE_RIDE_PICKUP.value.toString(),
-                            Constants.NotificationType.NOTIFICATION_TYPE_RIDE_AS_REACHED.value.toString() -> {
-                                val fragmentList = listOf(R.id.homeFragment)
-                                if (fragmentList.contains(getCurrentFragmentId())) {
-                                    clearNotification()
-                                }
-                            }
-                            Constants.NotificationType.NOTIFICATION_TYPE_RIDE_AUTO_CANCEL.value.toString() -> {
-                                clearNotification()
-                                Prefs.save(Constants.RIDE_ID, "")
-                            }
-                        }
                     } else {
                         openNotificationDialog(bundle)
                     }
@@ -268,7 +227,6 @@ class MainActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun onDestroy() {
-        Prefs.getString(Constants.COUNTRY_CODE, "")
         super.onDestroy()
     }
 
