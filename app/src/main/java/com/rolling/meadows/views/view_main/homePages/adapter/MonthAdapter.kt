@@ -12,12 +12,14 @@ import com.rolling.meadows.R
 import com.rolling.meadows.base.BaseActivity
 import com.rolling.meadows.base.BaseAdapter
 import com.rolling.meadows.base.BaseViewHolder
+import com.rolling.meadows.data.MonthCalendarData
 import com.rolling.meadows.databinding.AdapterMonthBinding
-import com.rolling.meadows.databinding.AdapterNotificationBinding
 import kotlin.collections.ArrayList
 
 class MonthAdapter(
-    val baseActivity: BaseActivity, val monthList: ArrayList<String>, var position: Int
+    val baseActivity: BaseActivity,
+    val monthList: ArrayList<MonthCalendarData>,
+    var position: Int
 ) : BaseAdapter<AdapterMonthBinding>(),
     BaseAdapter.OnItemClick {
     lateinit var context: Context
@@ -48,7 +50,7 @@ class MonthAdapter(
     @SuppressLint("SetTextI18n", "SimpleDateFormat", "NotifyDataSetChanged")
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
         val binding = holder.binding as AdapterMonthBinding
-        binding.monthTV.text = monthList[position]
+        binding.monthTV.text = monthList[position].month.plus(" ${monthList[position].year.substring(2,monthList[position].year.length)}")
         binding.root.setBackgroundResource(R.drawable.background_white_light_round)
         binding.monthTV.setTextColor(ContextCompat.getColor(baseActivity, R.color.white))
         if (selectedPosition == position) {

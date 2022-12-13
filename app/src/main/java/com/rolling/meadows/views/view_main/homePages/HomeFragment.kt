@@ -23,13 +23,13 @@ import com.rolling.meadows.R
 import com.rolling.meadows.base.BaseAdapter
 import com.rolling.meadows.base.BaseFragment
 import com.rolling.meadows.data.DateData
+import com.rolling.meadows.data.MonthCalendarData
 import com.rolling.meadows.data.events.EventData
 import com.rolling.meadows.databinding.FragmentHomeBinding
 import com.rolling.meadows.network.retrofit.DataResult
 import com.rolling.meadows.network.retrofit.observeEvent
 import com.rolling.meadows.utils.Constants
 import com.rolling.meadows.utils.DateFunctions
-import com.rolling.meadows.utils.extensions.showError
 import com.rolling.meadows.utils.extensions.showException
 import com.rolling.meadows.utils.extensions.visibleView
 import com.rolling.meadows.view_model.EventsViewModel
@@ -46,7 +46,7 @@ import kotlin.collections.ArrayList
 
 @RequiresApi(Build.VERSION_CODES.O)
 @AndroidEntryPoint
-@SuppressLint("SimpleDateFormat")
+@SuppressLint("SimpleDateFormat", "NotifyDataSetChanged")
 class HomeFragment : BaseFragment<FragmentHomeBinding>(),
     BaseAdapter.OnItemClick {
     override fun getLayoutRes() = R.layout.fragment_home
@@ -70,6 +70,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
     private var endDate = ""
     private var year = ""
     private var filterType = Constants.EVENT_FILTER_TYPE.DAY.value
+    private var monthList: ArrayList<MonthCalendarData> = arrayListOf()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -105,7 +106,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
         lastDayInCalendar.add(Calendar.MONTH, 3)
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     override fun observeViewModel() {
         viewModel.logoutResponseLiveData.observe(this) { resultEvent ->
             resultEvent.getContentIfNotHandled()?.let {
@@ -208,7 +208,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
     override fun onItemClick(vararg items: Any) {
         when {
             items[1] as String == "month" -> {
-                monthSelected = items[0] as Int
+                year = monthList[items[0] as Int].year
+                monthSelected = monthList[items[0] as Int].monthId
                 onMonthSelectStartDate()
                 monthSelected++
                 setDateAdapter()
@@ -226,33 +227,21 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
 
                 val selectedDate = SimpleDateFormat("yyyy-MM-dd").parse(startDate)
                 val currentDate = SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().time)
-                if(selectedDate!! == SimpleDateFormat("yyyy-MM-dd").parse(currentDate)){
+                if (selectedDate!! == SimpleDateFormat("yyyy-MM-dd").parse(currentDate)) {
                     binding.dateTV.text = "Today"
-                }
-                else{
+                } else {
                     binding.dateTV.text = DateFunctions.convertDateFormatFromUTC(
                         "yyyy-MM-dd",
-                        "dd MMM, yyyy", startDate)
+                        "dd MMM, yyyy", startDate
+                    )
                 }
-                when (filterType) {
-                    Constants.EVENT_FILTER_TYPE.WEEK.value -> {
-                        //show selected date of week
-                        dateList.forEachIndexed { index, video ->
-                            video.takeIf { it.isSelected }?.let {
-                                dateList[index] = it.copy(isSelected = false)
-                            }
-                        }
-                        try {
-                            for (i in dateelected until (dateelected + 6)) {
-                                dateList[i].isSelected = true
-                            }
-
-                        } catch (e: Exception) {
-                            showException(e)
-                        }
-                        dateAdapter?.notifyDataSetChanged()
+                dateList.forEachIndexed { index, video ->
+                    video.takeIf { it.isSelected }?.let {
+                        dateList[index] = it.copy(isSelected = false)
                     }
                 }
+
+                highLightedDaysWeek()
                 calculateEndDate()
                 callEventApi()
             }
@@ -263,6 +252,31 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
             }
         }
 
+    }
+
+    private fun highLightedDaysWeek() {
+        dateList.forEachIndexed { index, video ->
+            video.takeIf { it.isSelected }?.let {
+                dateList[index] = it.copy(isSelected = false)
+            }
+        }
+        when(filterType){
+            Constants.EVENT_FILTER_TYPE.DAY.value->{
+                dateList[dateelected].isSelected = true
+            }
+            else->{
+                try {
+                    for (i in dateelected until (dateelected + 6)) {
+                        dateList[i].isSelected = true
+                    }
+
+                } catch (e: Exception) {
+                    showException(e)
+                }
+
+            }
+        }
+        dateAdapter?.notifyDataSetChanged()
     }
 
     private fun calculateEndDate() {
@@ -298,23 +312,27 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
 
     @SuppressLint("SimpleDateFormat")
     private fun setMonthAdapter() {
-        val months: ArrayList<String> = arrayListOf()
-        months.add("January")
-        months.add("February")
-        months.add("March")
-        months.add("April")
-        months.add("May")
-        months.add("June")
-        months.add("July")
-        months.add("August")
-        months.add("September")
-        months.add("October")
-        months.add("November")
-        months.add("December")
+        val monthsArray = resources.getStringArray(R.array.month)
+        var currentYear = year
+        var ids = 0
+        for (i in 0 until 24) {
+            val data = MonthCalendarData()
+            data.id = i
+            data.monthId = ids
+            data.month = monthsArray[ids]
+            data.year = currentYear
+            ids++
+            if(i == 11){
+                ids = 0
+                currentYear = (currentYear.toInt()+1).toString()
+            }
+            monthList.add(data)
+        }
         val dateFormat: DateFormat = SimpleDateFormat("MM")
         val date = Date()
         monthSelected = dateFormat.format(date).toInt()
-        val adapter = MonthAdapter(baseActivity!!, months, (dateFormat.format(date).toInt() - 1))
+        Log.e("catch_ids","$monthList")
+        val adapter = MonthAdapter(baseActivity!!, monthList, (dateFormat.format(date).toInt() - 1))
         binding.monthRV.adapter = adapter
         adapter.setOnItemClickListener(this)
         binding.monthRV.scrollToPosition(dateFormat.format(date).toInt() - 1)
@@ -326,11 +344,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
         dateList.clear()
         val (dateFormat: DateFormat, date, yearMonthObject: YearMonth) = getDaysOfMonth()
         val daysInMonth: Int = yearMonthObject.lengthOfMonth()
-
         for (i in 0 until daysInMonth) {
             val date = SimpleDateFormat("yyyy/MM/dd").parse(
                 "${
-                    dateFormat.format(date).toInt()
+                    year.toInt()
                 }/${monthSelected}/${i + 1}"
             )
             val day = SimpleDateFormat("EEE").format(date!!)
@@ -351,8 +368,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
         binding.dateRV.adapter = dateAdapter
         dateAdapter?.setOnItemClickListener(this)
         if (monthSelected != monthFormat.format(day).toInt()) {
+            dateelected = 0
             binding.dateRV.scrollToPosition(0)
         } else {
+            dateelected = dayFormat.format(day).toInt() - 1
             binding.dateRV.scrollToPosition(dayFormat.format(day).toInt() - 1)
         }
 
@@ -362,7 +381,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
         val dateFormat: DateFormat = SimpleDateFormat("yyyy")
         val date = Date()
         val yearMonthObject: YearMonth =
-            YearMonth.of(dateFormat.format(date).toInt(), (monthSelected))
+            YearMonth.of(year.toInt(), (monthSelected))
         return Triple(dateFormat, date, yearMonthObject)
     }
 
@@ -440,6 +459,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
             popupWindow.dismiss()
             calculateEndDate()
             callEventApi()
+            dateList.forEachIndexed { index, video ->
+                video.takeIf { it.isSelected }?.let {
+                    dateList[index] = it.copy(isSelected = false)
+                }
+            }
+            setDateAdapter()
         }
         weekTV.setOnClickListener {
             filterType = Constants.EVENT_FILTER_TYPE.WEEK.value
@@ -449,6 +474,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
             setDateAdapter()
             calculateEndDate()
             callEventApi()
+            highLightedDaysWeek()
         }
         monthTV.setOnClickListener {
             filterType = Constants.EVENT_FILTER_TYPE.MONTH.value

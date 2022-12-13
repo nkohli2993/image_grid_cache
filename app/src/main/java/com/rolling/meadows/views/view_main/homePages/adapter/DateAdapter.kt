@@ -36,7 +36,7 @@ class DateAdapter(
         }
 
         binding.root.setOnClickListener {
-            when (type) {
+          /*  when (type) {
                 Constants.EVENT_FILTER_TYPE.DAY.value -> {
                     dateList.forEachIndexed { index, video ->
                         video.takeIf { it.isSelected }?.let {
@@ -46,9 +46,8 @@ class DateAdapter(
                     data.isSelected = true
                     notifyDataSetChanged()
                 }
-            }
+            }*/
             onItemClick(position, "date", data.date)
-
         }
     }
 

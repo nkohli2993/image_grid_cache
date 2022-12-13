@@ -9,19 +9,20 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/rootLayout"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_margin="@dimen/_5sdp"
         android:background="@drawable/background_white_round">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/monthTV"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:fontFamily="@font/poppins_medium"
             android:paddingHorizontal="@dimen/_10sdp"
             android:paddingVertical="@dimen/_5sdp"
             android:gravity="center"
             android:text="May"
+            android:textSize="@dimen/_10ssp"
             android:minWidth="@dimen/_80sdp"
             app:layout_constraintEnd_toEndOf="parent"
             android:textColor="@color/_083000"

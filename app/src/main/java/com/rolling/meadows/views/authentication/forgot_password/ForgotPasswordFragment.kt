@@ -55,7 +55,8 @@ class ForgotPasswordFragment : BaseFragment<FragmentForgotPasswordBinding>() {
                     }
                     is DataResult.Success -> {
                         hideLoading()
-                        showInfo(baseActivity!!,"OTP for verification is ${result.data?.data?.emailVerificationOtp}")
+                        showInfo(baseActivity!!,result.data?.message!!)
+//                        showInfo(baseActivity!!,"OTP for verification is ${result.data?.data?.emailVerificationOtp}")
                         viewModel.saveUser(result.data?.data)
                         findNavController().navigate(R.id.action_send_otp)
                     }

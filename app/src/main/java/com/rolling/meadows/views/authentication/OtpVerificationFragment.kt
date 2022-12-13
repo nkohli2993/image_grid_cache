@@ -100,10 +100,13 @@ class OtpVerificationFragment : BaseFragment<FragmentOtpVerificationBinding>() {
                     }
                     is DataResult.Success -> {
                         hideLoading()
+                        showSuccess(baseActivity!!,result.data?.message!!)
+/*
                         showSuccess(
                             baseActivity!!,
                             result.data?.message!!.replace("otp", "OTP").replace("Otp", "OTP").plus(". New Otp is  ${result.data?.data?.emailVerificationOtp}")
                         )
+*/
                     }
                     is DataResult.Failure -> {
                         handleFailure(result.message, result.exception, result.errorCode)

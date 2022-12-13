@@ -68,14 +68,26 @@
     <string name="notification">Notifications</string>
     <string name="no_notification">No notification found</string>
     <string name="no_event">No Event found</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="enter_your_email">Enter your email</string>
     <string name="enter_your_password">Enter your password</string>
     <string name="detail_txt">Greetings from the Rolling Meadows Library! I am your resident librarian and bibliophile. Watch this space for news related to reading in general as well as things specific to our Rolling Meadows library.\n\n\n Soon, you will receive a survey from me. If you are at all interested, please fill it out and return it to the tray at the front desk.\n\n\n  You may have noticed a few changes recently. The nonfiction books have been re-tagged NF instead of Biography and History. This is because I plan to add some nonfiction books that do not fit either of these categories. Also, all books have been color-coded to make.</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="event">Event</string>
     <string name="day">Day</string>
     <string name="week">Week</string>
     <string name="month">Month</string>
     <string name="your_new_one_time_will_send_to_you">Your new One Time Pin (OTP) resend successfully.</string>
+    <string-array name="month">
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </string-array>
 </resources>
