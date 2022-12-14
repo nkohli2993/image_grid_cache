@@ -67,6 +67,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         binding.listener = this
         binding.viewModel = viewModel
         removeFlag()
+        binding.edtEmail.setText("")
+        binding.edtPasswd.setText("")
         viewModel.loginLiveData.value?.deviceType = Constants.DEVICE_TYPE
         viewModel.loginLiveData.value?.fcmToken = viewModel.getDeviceToken()
         binding.imageViewPasswordToggle.tag = R.drawable.ic_eye_close

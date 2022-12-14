@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.rolling.meadows.BuildConfig
 import com.rolling.meadows.R
 import com.rolling.meadows.base.BaseAdapter
 import com.rolling.meadows.base.BaseFragment
@@ -262,11 +263,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
                 dateList[index] = it.copy(isSelected = false)
             }
         }
-        when(filterType){
-            Constants.EVENT_FILTER_TYPE.DAY.value->{
+        when (filterType) {
+            Constants.EVENT_FILTER_TYPE.DAY.value -> {
                 dateList[dateelected].isSelected = true
             }
-            else->{
+            else -> {
                 try {
                     for (i in dateelected until (dateelected + 6)) {
                         dateList[i].isSelected = true
@@ -291,7 +292,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
             }
             Constants.EVENT_FILTER_TYPE.WEEK.value -> {
                 calendar.time = SimpleDateFormat("yyyy-MM-dd").parse(startDate)!!
-                calendar.add(Calendar.DATE, 6)
+
+                val (dateFormat: DateFormat, date, yearMonthObject: YearMonth) = getDaysOfMonth()
+                val daysInMonth: Int = yearMonthObject.lengthOfMonth()
+                val days = daysInMonth - dateelected
+                if (days <= 6) {
+                    calendar.add(Calendar.DATE, days - 1)
+                } else {
+                    calendar.add(Calendar.DATE, 6)
+                }
             }
             Constants.EVENT_FILTER_TYPE.MONTH.value -> {
                 calendar.time = SimpleDateFormat("yyyy-MM-dd").parse(startDate)!!
@@ -301,7 +310,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
             }
         }
         endDate = SimpleDateFormat("yyyy-MM-dd").format(calendar.time)
-        Log.e("catch_date", "start: $startDate $endDate")
+        if (BuildConfig.DEBUG) {
+            Log.e("catch_date", "start: $startDate $endDate")
+        }
     }
 
     private fun callEventApi() {
@@ -324,16 +335,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
             data.month = monthsArray[ids]
             data.year = currentYear
             ids++
-            if(i == 11){
+            if (i == 11) {
                 ids = 0
-                currentYear = (currentYear.toInt()+1).toString()
+                currentYear = (currentYear.toInt() + 1).toString()
             }
             monthList.add(data)
         }
         val dateFormat: DateFormat = SimpleDateFormat("MM")
         val date = Date()
         monthSelected = dateFormat.format(date).toInt()
-        Log.e("catch_ids","$monthList")
+        Log.e("catch_ids", "$monthList")
         val adapter = MonthAdapter(baseActivity!!, monthList, (dateFormat.format(date).toInt() - 1))
         binding.monthRV.adapter = adapter
         adapter.setOnItemClickListener(this)
