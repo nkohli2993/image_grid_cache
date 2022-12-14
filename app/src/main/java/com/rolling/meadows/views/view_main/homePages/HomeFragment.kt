@@ -212,8 +212,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
                 monthSelected = monthList[items[0] as Int].monthId
                 onMonthSelectStartDate()
                 monthSelected++
+
                 setDateAdapter()
                 calculateEndDate()
+                highLightedDaysWeek()
                 callEventApi()
             }
             items[1] as String == "date" -> {
