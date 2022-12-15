@@ -156,7 +156,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
                                 setEventAdapter()
                             }
                             dayEventList.addAll(list)
-                            dayEventAdapter!!.notifyDataSetChanged()
+                            if(dayEventAdapter == null){
+                                setEventAdapter()
+                            }
+                            else{
+                                dayEventAdapter!!.notifyDataSetChanged()
+                            }
 
                             setList(dayEventList)
                         }
@@ -190,11 +195,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
     }
 
     private fun setEventAdapter() {
-        binding.dateTV.visibleView(true)
-        dayEventAdapter = EventsAdapter(baseActivity!!, background, dayEventList)
-        binding.rollingRV.adapter = dayEventAdapter
-        dayEventAdapter!!.setOnItemClickListener(this)
-        handleNotificationPagination()
+        if(dayEventList.size>0){
+            binding.dateTV.visibleView(true)
+            dayEventAdapter = EventsAdapter(baseActivity!!, background, dayEventList[0].data)
+            binding.rollingRV.adapter = dayEventAdapter
+            dayEventAdapter!!.setOnItemClickListener(this)
+            handleNotificationPagination()
+        }
+
     }
 
     private fun setEventDateAdapter() {
@@ -269,7 +277,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
             }
             else -> {
                 try {
-                    for (i in dateelected until (dateelected + 6)) {
+                    for (i in dateelected until (dateelected + 7)) {
                         dateList[i].isSelected = true
                     }
 
@@ -299,7 +307,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
                 if (days <= 6) {
                     calendar.add(Calendar.DATE, days - 1)
                 } else {
-                    calendar.add(Calendar.DATE, 6)
+                    calendar.add(Calendar.DATE, 7)
                 }
             }
             Constants.EVENT_FILTER_TYPE.MONTH.value -> {

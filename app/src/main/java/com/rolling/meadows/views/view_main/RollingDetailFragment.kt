@@ -38,7 +38,7 @@ class RollingDetailFragment : BaseFragment<FragmentRollingDetailBinding>() {
             "yyyy-MM-dd",
             "dd MMM, yyyy", data.date
         )
-        binding.timeTV.text = DateFunctions.convertDateFormatFromUTC(
+        binding.timeTV.text = DateFunctions.getFormattedDate(
             "yyyy-MM-dd hh:mm:ss",
             "hh:mm a", data.date.plus(" ${data.time}")
         )

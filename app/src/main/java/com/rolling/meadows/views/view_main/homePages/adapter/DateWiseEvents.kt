@@ -57,7 +57,7 @@ class DateWiseEvents(
         if (eventList.size > 0) {
             binding.titleTV.text = data.eventType
             binding.descriptionTV.text = data.description
-            binding.timeTV.text = DateFunctions.convertDateFormatFromUTC(
+            binding.timeTV.text = DateFunctions.getFormattedDate(
                 "yyyy-MM-dd hh:mm:ss",
                 "hh:mm a", data.date.plus(" ${data.time}")
             )
