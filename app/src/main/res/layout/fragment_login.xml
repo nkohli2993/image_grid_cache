@@ -66,7 +66,6 @@
 
                     <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/edtEmail"
-                        validationError="@{viewModel.loginLiveData.errorEmail}"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"
@@ -110,7 +109,6 @@
 
                         <androidx.appcompat.widget.AppCompatEditText
                             android:id="@+id/edtPasswd"
-                            validationError="@{viewModel.loginLiveData.errorPassword}"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:background="@null"

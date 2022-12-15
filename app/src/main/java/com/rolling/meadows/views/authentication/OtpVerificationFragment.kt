@@ -100,7 +100,7 @@ class OtpVerificationFragment : BaseFragment<FragmentOtpVerificationBinding>() {
                     }
                     is DataResult.Success -> {
                         hideLoading()
-                        showSuccess(baseActivity!!,result.data?.message!!)
+                        showSuccess(baseActivity!!,result.data?.message!!.replace("otp", "OTP").replace("Otp", "OTP"))
 /*
                         showSuccess(
                             baseActivity!!,
@@ -128,7 +128,7 @@ class OtpVerificationFragment : BaseFragment<FragmentOtpVerificationBinding>() {
                     }
                     is DataResult.Success -> {
                         hideLoading()
-                        showToast(
+                        showSuccess(baseActivity!!,
                             result.data?.message!!.replace("otp", "OTP").replace("Otp", "OTP")
                         )
                         if (result.data.status == ApiConstants.SUCCESS) {

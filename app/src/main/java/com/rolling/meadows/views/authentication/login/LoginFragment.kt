@@ -31,6 +31,7 @@ import org.jetbrains.annotations.NotNull
 class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     override fun getLayoutRes(): Int = R.layout.fragment_login
     private val viewModel: LoginViewModel by viewModels()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -54,7 +55,25 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
                 viewModel.loginLiveData.value!!.password = binding.edtPasswd.text.toString()
                 viewModel.loginLiveData.value!!.fcmToken = "fcm_token"
                 viewModel.loginLiveData.value!!.deviceType = Constants.DEVICE_TYPE
-                viewModel.onClickLogin()
+                when{
+                    viewModel.loginLiveData.value!!.email.isNullOrEmpty() -> {
+                        showError(baseActivity!!,getString(R.string.plz_enter_email_address))
+                    }
+                    (viewModel.loginLiveData.value!!.email!!.trim()).isNotEmpty() && !viewModel.loginLiveData.value!!.email!!.trim().isValidEmail() -> {
+                        showError(baseActivity!!,getString(R.string.plz_enter_valid_email_address))
+                    }
+                    viewModel.loginLiveData.value!!.password.isNullOrEmpty() -> {
+                        showError(baseActivity!!,getString(R.string.plz_enter_password))
+                    }
+                   /* viewModel.loginLiveData.value!!.password!!.length < 8 -> {
+                        showError(baseActivity!!,getString(R.string.validPass))
+                    }*/
+                    else ->{
+                        viewModel.onClickLogin()
+                    }
+                }
+
+
             }
             R.id.txtForgotPassword -> {
                 findNavController().navigate(R.id.action_loginFragment_to_forgotPasswordFragment)
@@ -63,12 +82,12 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     }
 
 
+
     private fun initUi() {
         binding.listener = this
         binding.viewModel = viewModel
         removeFlag()
-        binding.edtEmail.setText("")
-        binding.edtPasswd.setText("")
+
         viewModel.loginLiveData.value?.deviceType = Constants.DEVICE_TYPE
         viewModel.loginLiveData.value?.fcmToken = viewModel.getDeviceToken()
         binding.imageViewPasswordToggle.tag = R.drawable.ic_eye_close
@@ -103,6 +122,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
     override fun onResume() {
         super.onResume()
+        binding.edtEmail.setText("")
+        binding.edtPasswd.setText("")
         //  baseActivity!!.getFirebaseToken()
     }
 

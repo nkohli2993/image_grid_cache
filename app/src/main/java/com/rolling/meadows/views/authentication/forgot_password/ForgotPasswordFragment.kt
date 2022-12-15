@@ -35,12 +35,12 @@ class ForgotPasswordFragment : BaseFragment<FragmentForgotPasswordBinding>() {
         super.onClick(v)
         when (v?.id) {
             R.id.submitBT -> {
-                viewModel.forgotPasswordLiveData.value!!.email =  binding.edtEmail.text.toString()
+                viewModel.forgotPasswordLiveData.value!!.email = binding.edtEmail.text.toString()
                 viewModel.onClickForgotPassword()
 
             }
             R.id.backIV -> {
-                baseActivity!!.onBackPressed()
+                findNavController().popBackStack()
             }
         }
     }
@@ -55,7 +55,10 @@ class ForgotPasswordFragment : BaseFragment<FragmentForgotPasswordBinding>() {
                     }
                     is DataResult.Success -> {
                         hideLoading()
-                        showInfo(baseActivity!!,result.data?.message!!)
+                        showInfo(
+                            baseActivity!!,
+                            result.data?.message!!.replace("otp", "OTP").replace("Otp", "OTP")
+                        )
 //                        showInfo(baseActivity!!,"OTP for verification is ${result.data?.data?.emailVerificationOtp}")
                         viewModel.saveUser(result.data?.data)
                         findNavController().navigate(R.id.action_send_otp)
