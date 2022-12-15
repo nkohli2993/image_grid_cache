@@ -31,8 +31,8 @@ class ResetPasswordFragment : BaseFragment<FragmentResetPasswordBinding>() {
         baseActivity!!.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         binding.viewModel = viewModel
         removeFlag()
-        binding.passwordET.onTextWritten()
-        binding.confirmPasswordET.onTextWritten()
+//        binding.passwordET.onTextWritten()
+//        binding.confirmPasswordET.onTextWritten()
 
         binding.passwordET.doOnTextChanged { text, _, _, _ ->
             if (text.toString().isNotEmpty()) {
@@ -128,6 +128,11 @@ class ResetPasswordFragment : BaseFragment<FragmentResetPasswordBinding>() {
 
     }
 
+    override fun onPause() {
+        super.onPause()
+        viewModel.saveUser(null)
+        viewModel.saveToken(null)
+    }
     override fun initViewBinding() {
 
     }
