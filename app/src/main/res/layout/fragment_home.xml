@@ -55,7 +55,9 @@
                     android:gravity="start"
                     android:textColor="@color/_1D1A2F"
                     android:textSize="@dimen/_14sdp"
+                    android:maxLines="3"
                     android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@+id/typeLL"
                     app:layout_constraintStart_toStartOf="@+id/helloTV"
                     app:layout_constraintTop_toBottomOf="@id/helloTV" />
 
