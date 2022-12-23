@@ -69,7 +69,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
                         showError(baseActivity!!,getString(R.string.validPass))
                     }*/
                     else ->{
-                        viewModel.onClickLogin()
+                        viewModel.hitLogin()
                     }
                 }
 

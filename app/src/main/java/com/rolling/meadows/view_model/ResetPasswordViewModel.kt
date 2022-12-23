@@ -60,7 +60,7 @@ class ResetPasswordViewModel @Inject constructor(
         }
     }
 
-    private fun hitResetPassword() {
+     fun hitResetPassword() {
         viewModelScope.launch {
             val response =
                 resetPasswordLiveData.value?.let { authRepository.resetPassword(it) }
