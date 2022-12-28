@@ -156,10 +156,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
                                 setEventAdapter()
                             }
                             dayEventList.addAll(list)
-                            if(dayEventAdapter == null){
+                            if (dayEventAdapter == null) {
                                 setEventAdapter()
-                            }
-                            else{
+                            } else {
                                 dayEventAdapter!!.notifyDataSetChanged()
                             }
 
@@ -195,7 +194,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
     }
 
     private fun setEventAdapter() {
-        if(dayEventList.size>0){
+        if (dayEventList.size > 0) {
             binding.dateTV.visibleView(true)
             dayEventAdapter = EventsAdapter(baseActivity!!, background, dayEventList[0].data)
             binding.rollingRV.adapter = dayEventAdapter
@@ -220,7 +219,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
                 year = monthList[items[0] as Int].year
                 monthSelected = monthList[items[0] as Int].monthId
                 onMonthSelectStartDate()
-                monthSelected++
+                monthSelected
 
                 setDateAdapter()
                 calculateEndDate()
@@ -351,8 +350,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
         }
         val dateFormat: DateFormat = SimpleDateFormat("MM")
         val date = Date()
-        monthSelected = dateFormat.format(date).toInt()
-        Log.e("catch_ids", "$monthList")
+        monthSelected = dateFormat.format(date).toInt() - 1
         val adapter = MonthAdapter(baseActivity!!, monthList, (dateFormat.format(date).toInt() - 1))
         binding.monthRV.adapter = adapter
         adapter.setOnItemClickListener(this)
@@ -369,7 +367,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
             val date = SimpleDateFormat("yyyy/MM/dd").parse(
                 "${
                     year.toInt()
-                }/${monthSelected}/${i + 1}"
+                }/${(monthSelected + 1)}/${i + 1}"
             )
             val day = SimpleDateFormat("EEE").format(date!!)
             dateList.add(DateData((i + 1).toString(), day))
@@ -378,7 +376,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
         val dayFormat: DateFormat = SimpleDateFormat("dd")
         val monthFormat: DateFormat = SimpleDateFormat("MM")
         val day = Date()
-        dateAdapter = if (monthSelected != monthFormat.format(day).toInt()) {
+        dateAdapter = if ((monthSelected + 1) != monthFormat.format(day).toInt()) {
             dateList[0].isSelected = true
             DateAdapter(baseActivity!!, dateList, filterType)
         } else {
@@ -388,7 +386,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
 
         binding.dateRV.adapter = dateAdapter
         dateAdapter?.setOnItemClickListener(this)
-        if (monthSelected != monthFormat.format(day).toInt()) {
+        if (((monthSelected + 1)) != monthFormat.format(day).toInt()) {
             dateelected = 0
             binding.dateRV.scrollToPosition(0)
         } else {
@@ -402,7 +400,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
         val dateFormat: DateFormat = SimpleDateFormat("yyyy")
         val date = Date()
         val yearMonthObject: YearMonth =
-            YearMonth.of(year.toInt(), (monthSelected))
+            YearMonth.of(year.toInt(), (monthSelected + 1))
         return Triple(dateFormat, date, yearMonthObject)
     }
 
@@ -478,6 +476,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
             binding.typeTV.text = getString(R.string.day)
             endDate = startDate
             popupWindow.dismiss()
+            if ((monthSelected + 1) == SimpleDateFormat("MM").format(Calendar.getInstance().time)
+                    .toInt()
+            ) {
+                startDate = SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().time)
+            }
             calculateEndDate()
             callEventApi()
             dateList.forEachIndexed { index, video ->
@@ -492,6 +495,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
             binding.calenderDatesCL.visibleView(true)
             binding.typeTV.text = getString(R.string.week)
             popupWindow.dismiss()
+            if ((monthSelected + 1) == SimpleDateFormat("MM").format(Calendar.getInstance().time)
+                    .toInt()
+            ) {
+                startDate = SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().time)
+            }
             setDateAdapter()
             calculateEndDate()
             callEventApi()
@@ -514,7 +522,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
     }
 
     private fun onMonthSelectStartDate() {
-        val month = if (monthSelected < 10) {
+        Log.e("catch_date", "month: $monthSelected")
+        val monthS = monthSelected
+        val month = if ((monthS + 1) < 10) {
             "0${monthSelected + 1}"
         } else {
             (monthSelected + 1).toString()

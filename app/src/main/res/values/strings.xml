@@ -30,9 +30,6 @@
     <string name="new_password">New Password</string>
     <string name="verify_otp">Verify OTP</string>
     <string name="otp_forgot_password_text">Enter the four-digit code we sent you via email to continue.</string>
-    <string name="account_verified">Account Verified</string>
-    <string name="hey_">Hey!</string>
-    <string name="hey_account_verifed_text">account has been \nsuccessfully verified.</string>
     <string name="dont_have_account_resend_otp">Didn\'t get the code? Resend code</string>
     <string name="no_internet">Please check your internet connection</string>
     <string name="network_error">Network error, could get data,please try again!</string>
@@ -42,7 +39,6 @@
     <string name="search_error">There is no such request</string>
     <string name="done">Done</string>
     <!--    You will be reach at your destination in 41 mins.-->
-    <string name="plz_select_profile_picture">Please select profile picture</string>
     <string name="plz_select_phone_code">Please select phone code</string>
     <string name="plz_enter_email_address">Please enter email address</string>
     <string name="plz_enter_valid_email_address">Please enter valid email address</string>
@@ -70,12 +66,10 @@
     <string name="no_event">No Event found</string>
     <string name="enter_your_email">Enter your email</string>
     <string name="enter_your_password">Enter your password</string>
-    <string name="detail_txt">Greetings from the Rolling Meadows Library! I am your resident librarian and bibliophile. Watch this space for news related to reading in general as well as things specific to our Rolling Meadows library.\n\n\n Soon, you will receive a survey from me. If you are at all interested, please fill it out and return it to the tray at the front desk.\n\n\n  You may have noticed a few changes recently. The nonfiction books have been re-tagged NF instead of Biography and History. This is because I plan to add some nonfiction books that do not fit either of these categories. Also, all books have been color-coded to make.</string>
     <string name="event">Event</string>
     <string name="day">Day</string>
     <string name="week">Week</string>
     <string name="month">Month</string>
-    <string name="your_new_one_time_will_send_to_you">Your new One Time Pin (OTP) resend successfully.</string>
     <string-array name="month">
         <item>January</item>
         <item>February</item>
