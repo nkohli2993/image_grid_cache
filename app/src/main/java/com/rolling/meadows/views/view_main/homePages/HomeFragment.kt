@@ -233,7 +233,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
                 } else {
                     (dateelected + 1).toString()
                 }
-                startDate = year.plus("-$monthSelected-$date")
+                startDate = year.plus("-${(monthSelected+1)}-$date")
 
                 val selectedDate = SimpleDateFormat("yyyy-MM-dd").parse(startDate)
                 val currentDate = SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().time)

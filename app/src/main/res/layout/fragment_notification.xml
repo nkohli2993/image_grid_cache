@@ -98,7 +98,6 @@
                 android:text="@string/no_notification"
                 android:textColor="@color/_1D1A2F"
                 android:textSize="@dimen/_16sdp"
-                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

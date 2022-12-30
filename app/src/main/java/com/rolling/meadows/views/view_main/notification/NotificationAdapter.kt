@@ -56,7 +56,7 @@ class NotificationAdapter(
     }
 
     override fun getItemCount(): Int {
-        return 5
+        return notification.size
     }
 
 }
