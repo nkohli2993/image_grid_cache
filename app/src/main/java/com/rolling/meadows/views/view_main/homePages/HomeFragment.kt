@@ -219,8 +219,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
                 year = monthList[items[0] as Int].year
                 monthSelected = monthList[items[0] as Int].monthId
                 onMonthSelectStartDate()
-                monthSelected
-
+                if ((monthSelected + 1) == SimpleDateFormat("MM").format(Calendar.getInstance().time)
+                        .toInt()
+                ) {
+                    startDate = SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().time)
+                }
                 setDateAdapter()
                 calculateEndDate()
                 highLightedDaysWeek()

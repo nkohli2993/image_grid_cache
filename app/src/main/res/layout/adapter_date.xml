@@ -7,7 +7,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/_35sdp"
         android:layout_height="wrap_content"
        >
 
@@ -29,9 +29,8 @@
             android:gravity="center"
             android:layout_marginTop="@dimen/_8sdp"
             android:minWidth="@dimen/_28sdp"
-            android:paddingHorizontal="@dimen/_5sdp"
+            android:paddingHorizontal="@dimen/_3sdp"
             android:paddingVertical="@dimen/_5sdp"
-            android:text="1"
             android:textColor="@color/white"
             android:textSize="@dimen/_11sdp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -45,11 +44,10 @@
             android:fontFamily="@font/poppins_medium"
             android:gravity="center"
             android:minWidth="@dimen/_32sdp"
-            android:paddingHorizontal="@dimen/_10sdp"
             android:paddingTop="@dimen/_5sdp"
-            android:text="Wed"
+            android:text=""
             android:textColor="@color/_B1B1B1"
-            android:textSize="@dimen/_10sdp"
+            android:textSize="@dimen/_8sdp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/dateTV" />
     </androidx.constraintlayout.widget.ConstraintLayout>
