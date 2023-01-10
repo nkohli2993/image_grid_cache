@@ -39,13 +39,27 @@
                 android:fontFamily="@font/poppins_regular"
                 android:gravity="start|center"
                 android:maxLines="2"
-                android:minHeight="@dimen/_40sdp"
                 android:paddingVertical="@dimen/_5sdp"
                 android:textColor="@color/_1D1A2F"
                 android:textSize="@dimen/_14sdp"
                 app:layout_constraintEnd_toStartOf="@+id/deleteIV"
                 app:layout_constraintStart_toEndOf="@+id/notificationIV"
                 app:layout_constraintTop_toTopOf="parent" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/timeTV"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:ellipsize="end"
+                android:fontFamily="@font/poppins_regular"
+                android:gravity="start|center"
+                android:maxLines="2"
+                android:paddingBottom="@dimen/_5sdp"
+                android:textColor="@color/_8F8F8F"
+                android:textSize="@dimen/_9sdp"
+                app:layout_constraintEnd_toStartOf="@+id/deleteIV"
+                app:layout_constraintStart_toEndOf="@+id/notificationIV"
+                app:layout_constraintTop_toBottomOf="@+id/descriptionTV" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/deleteIV"

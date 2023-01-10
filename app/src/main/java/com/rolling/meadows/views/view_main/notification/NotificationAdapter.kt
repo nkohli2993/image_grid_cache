@@ -33,7 +33,7 @@ class NotificationAdapter(
             )
             binding.card.setCardBackgroundColor(ContextCompat.getColor(baseActivity, R.color.white))
         }
-
+        binding.timeTV.text = data.time
         binding.root.setOnClickListener {
             onItemClick(data, position, "read")
         }
