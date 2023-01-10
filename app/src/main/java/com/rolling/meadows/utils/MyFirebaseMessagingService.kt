@@ -55,7 +55,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     override fun onNewToken(token: String) {
         super.onNewToken(token)
         if (BuildConfig.DEBUG) {
-            Log.e("catch_exception", "token :" + token);
+            Log.e("catch_exception", "token :$token");
         }
     }
 
@@ -63,7 +63,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         super.onMessageReceived(remoteMessage)
         val data = remoteMessage.data
         if (BuildConfig.DEBUG) {
-            Log.e("catch_exception", "Notification data :" + data);
+            Log.e("catch_exception", "Notification data :$data");
         }
 
 
@@ -74,7 +74,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         displayMessage(bundle)
 
-//        if(bundle.getString("type"))
         sendNotification(bundle)
 
     }
@@ -91,10 +90,11 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
-        val message = bundle.getString("title")
+        val message = bundle.getString("description")
+        val title = bundle.getString("title")
         val channelId = getString(R.string.app_name)
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-        val largeIcon = BitmapFactory.decodeResource(resources, R.mipmap.ic_user_notification)
+        val largeIcon = BitmapFactory.decodeResource(resources, R.drawable.notification_icon_overlay)
         val vibrate = longArrayOf(100, 100, 100, 100, 100)
         val mPowerManager = this.getSystemService(Context.POWER_SERVICE) as PowerManager
         var wl: PowerManager.WakeLock? = null
@@ -108,8 +108,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
 
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
-            .setSmallIcon(R.mipmap.ic_user_notification)
-            .setContentTitle(getString(R.string.app_name))
+            .setSmallIcon(R.drawable.notification_icon_overlay)
+            .setContentTitle(title)
             .setContentText(message)
             .setAutoCancel(true)
             .setVibrate(vibrate)

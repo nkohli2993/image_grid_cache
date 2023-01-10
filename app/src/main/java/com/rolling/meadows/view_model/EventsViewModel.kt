@@ -7,6 +7,7 @@ import com.rolling.meadows.base.BaseViewModel
 import com.rolling.meadows.cache.UserRepository
 import com.rolling.meadows.data.authentication.UserProfileData
 import com.rolling.meadows.data.response_model.BaseResponseModel
+import com.rolling.meadows.data.response_model.EventDetailResponseModel
 import com.rolling.meadows.data.response_model.EventResponseModel
 import com.rolling.meadows.network.retrofit.DataResult
 import com.rolling.meadows.network.retrofit.Event
@@ -47,13 +48,22 @@ class EventsViewModel @Inject constructor(
         MutableLiveData<Int>().apply {
             value = 1
         }
+    var eventId: MutableLiveData<Int> =
+        MutableLiveData<Int>().apply {
+            value = -1
+        }
 
     private var _eventResponseLiveData =
         MutableLiveData<Event<DataResult<EventResponseModel>>>()
 
-
     var eventResponseLiveData: LiveData<Event<DataResult<EventResponseModel>>> =
         _eventResponseLiveData
+
+    private var _eventDetailResponseLiveData =
+        MutableLiveData<Event<DataResult<EventDetailResponseModel>>>()
+
+    var eventDetailResponseLiveData: LiveData<Event<DataResult<EventDetailResponseModel>>> =
+        _eventDetailResponseLiveData
 
     private var _logoutResponseLiveData =
         MutableLiveData<Event<DataResult<BaseResponseModel>>>()
@@ -84,6 +94,17 @@ class EventsViewModel @Inject constructor(
                 )
             withContext(Dispatchers.Main) {
                 response.collect { _eventResponseLiveData.postValue(Event(it)) }
+            }
+        }
+    }
+    fun hitEventDetailApi() {
+        viewModelScope.launch {
+            val response =
+                eventRepository.eventDetail(
+                    eventId.value!!
+                )
+            withContext(Dispatchers.Main) {
+                response.collect { _eventDetailResponseLiveData.postValue(Event(it)) }
             }
         }
     }

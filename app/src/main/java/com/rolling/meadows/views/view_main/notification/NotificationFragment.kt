@@ -2,14 +2,17 @@ package com.rolling.meadows.views.view_main.notification
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.rolling.meadows.R
 import com.rolling.meadows.base.BaseAdapter
 import com.rolling.meadows.base.BaseFragment
 import com.rolling.meadows.data.NotificationData
+import com.rolling.meadows.data.events.EventDetailData
 import com.rolling.meadows.databinding.FragmentNotificationBinding
 import com.rolling.meadows.network.retrofit.DataResult
 import com.rolling.meadows.network.retrofit.observeEvent
@@ -23,6 +26,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class NotificationFragment : BaseFragment<FragmentNotificationBinding>(),
     BaseAdapter.OnItemClick {
     override fun getLayoutRes() = R.layout.fragment_notification
+    private var selectedPosition: Int? = null
     private var currentPage: Int = 0
     private var totalPage: Int = 0
     private var total: Int = 0
@@ -79,45 +83,67 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(),
                 else -> {}
             }
         }
+        viewModel.notificationReadResponseLiveData.observeEvent(this) { result ->
+            when (result) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    showError(baseActivity!!, result.message.toString())
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    notificationList.removeAt(selectedPosition!!)
+                    adapter!!.notifyItemRangeChanged(selectedPosition!!, notificationList.size)
+                    val data = result.data?.data
+                    val eventData = EventDetailData(
+                        data!!.date,
+                        data.description,
+                        data.eventType,
+                        data.id,
+                        data.time
+                    )
+                    val bundle = Bundle()
+                    bundle.putParcelable("detail", eventData)
+                    findNavController().navigate(R.id.notification_to_rolling_detail, bundle)
+                }
+                else -> {}
+            }
+        }
 
     }
 
     override fun onItemClick(vararg items: Any) {
+        selectedPosition = items[1] as Int
         val data = items[0] as NotificationData
-/*
-        when(data.notificationType){
-            Constants.NotificationType.NOTIFICATION_TYPE_RIDE_BOOK.value.toString(),
-            Constants.NotificationType.NOTIFICATION_TYPE_RIDE_ACCEPTED.value.toString(),
-            Constants.NotificationType.NOTIFICATION_TYPE_RIDE_ONGOING.value.toString(),
-            Constants.NotificationType.NOTIFICATION_TYPE_RIDE_REJECTED.value.toString(),
-            Constants.NotificationType.NOTIFICATION_TYPE_RIDE_COMPLETED.value.toString(),
-            Constants.NotificationType.NOTIFICATION_TYPE_RIDE_PICKUP.value.toString(),
-            Constants.NotificationType.NOTIFICATION_TYPE_RIDE_AS_REACHED.value.toString(),
-            Constants.NotificationType.NOTIFICATION_TYPE_RIDE_CANCELED.value.toString() ->{
-                val bundle = Bundle()
-                bundle.putInt("id", data.rideId)
-                findNavController().navigate(R.id.action_booking_request_detail, bundle)
-            }
+        if (data.read == "UN_READ") {
+            viewModel.notificationRead(data.id)
+        } else {
+            val bundle = Bundle()
+            bundle.putInt("event_id", data.eventId)
+            findNavController().navigate(R.id.notification_to_rolling_detail, bundle)
         }
-*/
+
     }
 
 
     override fun onClick(v: View?) {
         super.onClick(v)
-        when(v?.id){
-            R.id.backIV ->{
+        when (v?.id) {
+            R.id.backIV -> {
                 baseActivity!!.onBackPressed()
             }
         }
     }
+
     override fun initViewBinding() {
         binding.listener = this
         changeStatusBarColor(ContextCompat.getColor(requireContext(), R.color.white))
         changeStatusBarIconColor(true)
         viewModel.page.value = 1
         viewModel.limit.value = 20
-       // viewModel.hitNotificationApi()
+        viewModel.hitNotificationApi()
         setAdapter()
     }
 

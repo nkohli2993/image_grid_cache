@@ -20,13 +20,10 @@ class NotificationAdapter(
     @SuppressLint("SetTextI18n", "SimpleDateFormat")
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
         val binding = holder.binding as AdapterNotificationBinding
-      /*  val data = notification[position]
+        val data = notification[position]
         binding.descriptionTV.text = data.message
-        binding.timeTV.text = data.timeAgo
-        binding.notificationIV.setImageResource(R.drawable.ic_read_notificatyion)
         binding.descriptionTV.setTextColor(ContextCompat.getColor(baseActivity, R.color._787F84))
         if (data.read == "UN_READ") {
-            binding.notificationIV.setImageResource(R.drawable.ic_un_read_notification)
             binding.descriptionTV.setTextColor(
                 ContextCompat.getColor(
                     baseActivity,
@@ -36,8 +33,8 @@ class NotificationAdapter(
         }
 
         binding.root.setOnClickListener {
-            onItemClick(data)
-        }*/
+            onItemClick(data,position)
+        }
     }
 
     fun addNotification(notificationList: ArrayList<NotificationData>) {

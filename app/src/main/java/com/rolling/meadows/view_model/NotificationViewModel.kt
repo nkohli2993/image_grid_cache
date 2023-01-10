@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.rolling.meadows.base.BaseViewModel
 import com.rolling.meadows.cache.UserRepository
 import com.rolling.meadows.data.authentication.UserProfileData
+import com.rolling.meadows.data.response_model.NotificationReadResponseModel
 import com.rolling.meadows.data.response_model.NotificationResponseModel
 import com.rolling.meadows.network.retrofit.DataResult
 import com.rolling.meadows.network.retrofit.Event
@@ -42,12 +43,29 @@ class NotificationViewModel  @Inject constructor(
         _notificationResponseLiveData
 
 
+    private var _notificationReadResponseLiveData =
+        MutableLiveData<Event<DataResult<NotificationReadResponseModel>>>()
+
+
+    var notificationReadResponseLiveData: LiveData<Event<DataResult<NotificationReadResponseModel>>> =
+        _notificationReadResponseLiveData
+
+
     fun hitNotificationApi() {
         viewModelScope.launch {
             val response =
                 notiRepository.getNotificationList(page.value!!,limit.value!!)
             withContext(Dispatchers.Main) {
                 response.collect { _notificationResponseLiveData.postValue(Event(it)) }
+            }
+        }
+    }
+    fun notificationRead(id:Int) {
+        viewModelScope.launch {
+            val response =
+                notiRepository.notificationRead(id)
+            withContext(Dispatchers.Main) {
+                response.collect { _notificationReadResponseLiveData.postValue(Event(it)) }
             }
         }
     }

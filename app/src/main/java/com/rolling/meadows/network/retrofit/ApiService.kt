@@ -1,5 +1,6 @@
 package com.rolling.meadows.network.retrofit
 
+import com.rolling.meadows.data.NotificationReadModel
 import com.rolling.meadows.data.authentication.*
 import com.rolling.meadows.data.response_model.*
 import com.rolling.meadows.utils.ApiConstants
@@ -38,6 +39,11 @@ interface ApiService {
         @Query("page") page: Int
     ): Response<NotificationResponseModel>
 
+    @POST(ApiConstants.Notification.API_NOTIFICATION_READ)
+    suspend fun notificationRead(
+        @Body value: NotificationReadModel
+    ): Response<NotificationReadResponseModel>
+
     @GET(ApiConstants.Event.API_EVENT_LIST)
     suspend fun eventList(
         @Query("filter_by") filter_by: Int,
@@ -46,5 +52,10 @@ interface ApiService {
         @Query("page_limit") page_limit: Int,
         @Query("page") page: Int
     ): Response<EventResponseModel>
+
+    @GET(ApiConstants.Event.API_EVENT_DETAIL)
+    suspend fun eventDetail(
+        @Query("event_id") event_id: Int,
+    ): Response<EventDetailResponseModel>
 
 }

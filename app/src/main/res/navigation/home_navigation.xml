@@ -31,8 +31,8 @@
         android:label="@string/notification"
         tools:layout="@layout/fragment_notification">
         <action
-            android:id="@+id/action_detail_rolling"
-            app:destination="@id/detailRollingDetail" />
+            android:id="@+id/notification_to_rolling_detail"
+            app:destination="@+id/detailRollingDetail" />
     </fragment>
 
 <!--    <activity android:name="com.rolling.meadows.views.view_main.MainActivity" />-->

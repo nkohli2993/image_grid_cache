@@ -1,6 +1,7 @@
 package com.rolling.meadows.repository
 
 import com.rolling.meadows.data.response_model.BaseResponseModel
+import com.rolling.meadows.data.response_model.EventDetailResponseModel
 import com.rolling.meadows.data.response_model.EventResponseModel
 import com.rolling.meadows.network.retrofit.ApiService
 import com.rolling.meadows.network.retrofit.DataResult
@@ -26,6 +27,15 @@ class EventRepository @Inject constructor(private val apiService: ApiService) {
         return object : NetworkOnlineDataRepo<EventResponseModel, EventResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<EventResponseModel> {
                 return apiService.eventList(filter_by, date,endDate, page_limit, page)
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
+    suspend fun eventDetail(
+        eventId: Int
+    ): Flow<DataResult<EventDetailResponseModel>> {
+        return object : NetworkOnlineDataRepo<EventDetailResponseModel, EventDetailResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<EventDetailResponseModel> {
+                return apiService.eventDetail(eventId)
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }

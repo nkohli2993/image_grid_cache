@@ -1,7 +1,7 @@
 package com.rolling.meadows.utils
 
 object ApiConstants {
-    const val BASE_URL = "http://rollingmeadows.itechnolabs.tech/api/v1/"
+    const val BASE_URL = "https://rollingmeadows.itechnolabs.tech/api/v1/"
     const val SUCCESS = "success"
 
     object Authentication {
@@ -14,14 +14,9 @@ object ApiConstants {
         const val LOGOUT = "user/logout"
     }
 
-    object Pages {
-        const val CONTACT_US = "user/contactUs"
-        const val STATIC_PAGES = "user/getPage"
-        const val CHANGE_PASSWORD = "user/changePassword"
-    }
-
     object Notification{
         const val API_NOTIFICATION_LIST = "user/notificationList"
+        const val API_NOTIFICATION_READ = "user/notificatioRead"
     }
     object Event{
         const val API_EVENT_LIST = "user/myEvents"

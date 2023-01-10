@@ -17,6 +17,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.provider.Settings
+import android.util.Log
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
@@ -39,6 +40,7 @@ import com.lassi.common.utils.KeyUtils
 import com.lassi.data.media.MiMedia
 import com.lassi.domain.media.LassiOption
 import com.lassi.presentation.builder.Lassi
+import com.rolling.meadows.BuildConfig
 import com.rolling.meadows.R
 import com.rolling.meadows.cache.CacheConstants
 import com.rolling.meadows.cache.Prefs
@@ -81,8 +83,8 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initProgressLoader()
-        // FirebaseApp.initializeApp(this)
-        //getFirebaseToken()
+        FirebaseApp.initializeApp(this)
+        getFirebaseToken()
     }
 
     fun hideKeyBoard(): Boolean {
@@ -248,6 +250,9 @@ abstract class BaseActivity : AppCompatActivity() {
         FirebaseMessaging.getInstance().token.addOnCompleteListener { task: Task<String> ->
             if (!task.isSuccessful) {
                 return@addOnCompleteListener
+            }
+            if (BuildConfig.DEBUG) {
+                Log.e("catch_token", "token: ${task.result?.toString()}")
             }
             viewModel.saveDeviceToken(task.result?.toString())
         }

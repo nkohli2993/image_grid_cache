@@ -54,8 +54,7 @@ class LoginViewModel @Inject constructor(
 
     fun hitLogin() {
         viewModelScope.launch {
-//            loginLiveData.value?.fcmToken = getDeviceToken()
-            loginLiveData.value?.fcmToken = "fcm_token"
+            loginLiveData.value?.fcmToken = getDeviceToken()
             val response = loginLiveData.value?.let { authRepository.loginUser(it) }
             withContext(Dispatchers.Main) {
                 response?.collect { _loginResponseLiveData.postValue(Event(it)) }

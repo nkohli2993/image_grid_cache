@@ -15,6 +15,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.gms.tasks.Task
+import com.google.firebase.messaging.FirebaseMessaging
 import com.rolling.meadows.R
 import com.rolling.meadows.base.BaseFragment
 import com.rolling.meadows.cache.Prefs
@@ -55,20 +57,21 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
                 viewModel.loginLiveData.value!!.password = binding.edtPasswd.text.toString()
                 viewModel.loginLiveData.value!!.fcmToken = "fcm_token"
                 viewModel.loginLiveData.value!!.deviceType = Constants.DEVICE_TYPE
-                when{
+                when {
                     viewModel.loginLiveData.value!!.email.isNullOrEmpty() -> {
-                        showError(baseActivity!!,getString(R.string.plz_enter_email_address))
+                        showError(baseActivity!!, getString(R.string.plz_enter_email_address))
                     }
-                    (viewModel.loginLiveData.value!!.email!!.trim()).isNotEmpty() && !viewModel.loginLiveData.value!!.email!!.trim().isValidEmail() -> {
-                        showError(baseActivity!!,getString(R.string.plz_enter_valid_email_address))
+                    (viewModel.loginLiveData.value!!.email!!.trim()).isNotEmpty() && !viewModel.loginLiveData.value!!.email!!.trim()
+                        .isValidEmail() -> {
+                        showError(baseActivity!!, getString(R.string.plz_enter_valid_email_address))
                     }
                     viewModel.loginLiveData.value!!.password.isNullOrEmpty() -> {
-                        showError(baseActivity!!,getString(R.string.plz_enter_password))
+                        showError(baseActivity!!, getString(R.string.plz_enter_password))
                     }
-                   /* viewModel.loginLiveData.value!!.password!!.length < 8 -> {
-                        showError(baseActivity!!,getString(R.string.validPass))
-                    }*/
-                    else ->{
+                    /* viewModel.loginLiveData.value!!.password!!.length < 8 -> {
+                         showError(baseActivity!!,getString(R.string.validPass))
+                     }*/
+                    else -> {
                         viewModel.hitLogin()
                     }
                 }
@@ -82,7 +85,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     }
 
 
-
     private fun initUi() {
         binding.listener = this
         binding.viewModel = viewModel
@@ -90,6 +92,15 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
         viewModel.loginLiveData.value?.deviceType = Constants.DEVICE_TYPE
         viewModel.loginLiveData.value?.fcmToken = viewModel.getDeviceToken()
+        if (viewModel.getDeviceToken() == "") {
+            FirebaseMessaging.getInstance().token.addOnCompleteListener { task: Task<String> ->
+                if (!task.isSuccessful) {
+                    return@addOnCompleteListener
+                }
+                viewModel.saveDeviceToken(task.result?.toString())
+                viewModel.loginLiveData.value?.fcmToken = task.result?.toString()
+            }
+        }
         binding.imageViewPasswordToggle.tag = R.drawable.ic_eye_close
         binding.imageViewPasswordToggle.showHidePassword(binding.edtPasswd)
         binding.edtEmail.onTextWritten()
@@ -124,7 +135,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         super.onResume()
         binding.edtEmail.setText("")
         binding.edtPasswd.setText("")
-        //  baseActivity!!.getFirebaseToken()
+        baseActivity!!.getFirebaseToken()
     }
 
     override fun observeViewModel() {
@@ -139,27 +150,11 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
                     is DataResult.Success -> {
                         hideLoading()
                         showSuccess(baseActivity!!, it.data?.message!!)
-                        Log.e("catch_exception_token","save token: ${it.data.data?.authToken}")
+                        Log.e("catch_exception_token", "save token: ${it.data.data?.authToken}")
                         viewModel.saveToken(it.data.data?.authToken)
                         viewModel.saveId(it.data.data?.id.toString())
                         viewModel.saveUser(it.data.data)
                         baseActivity!!.goToMainActivity()
-/*
-                        if (it.data?.message == "User logged in successfully") {
-                            showSuccess(baseActivity!!, it.data.message!!)
-                            viewModel.saveToken(it.data.data?.authToken)
-                            viewModel.saveId(it.data.data?.id.toString())
-                            viewModel.saveUser(it.data.data)
-                            Prefs.save(Constants.RIDE_ID, "login")
-                            baseActivity!!.goToMainActivity()
-                        } else if (it.data?.message == "Please verify your phone number.") {
-                            showSuccess(baseActivity!!, it.data.message!!)
-                            viewModel.saveToken(it.data.data?.authToken)
-                            viewModel.saveUser(it.data.data)
-                            //send email and otp
-                            findNavController().navigate(R.id.action_send_otp)
-                        }
-*/
                     }
                     is DataResult.Failure -> {
                         handleFailure(it.message, it.exception, it.errorCode)

@@ -176,6 +176,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
                             setList(eventList)
                         }
                     }
+
+                    binding.unReadNotificationIV.visibleView(false)
+                    if(result.data?.data!!.unreadNotificationCount!=null &&result.data.data!!.unreadNotificationCount>0 ){
+                        binding.unReadNotificationIV.visibleView(true)
+                    }
                 }
                 else -> {}
             }

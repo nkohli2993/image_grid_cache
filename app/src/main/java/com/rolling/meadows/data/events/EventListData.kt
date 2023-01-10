@@ -17,7 +17,9 @@ data class EventListData(
     @SerializedName("total")
     var total: Int = 0,
     @SerializedName("total_pages")
-    var totalPages: Int = 0
+    var totalPages: Int = 0,
+    @SerializedName("unread_notification_count")
+    var unreadNotificationCount: Int = 0
 ):Parcelable
 
 

@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.google.android.libraries.places.api.Places
 import com.rolling.meadows.R
 import com.rolling.meadows.base.BaseActivity
@@ -61,11 +62,9 @@ class MainActivity : BaseActivity(), View.OnClickListener {
     private fun init() {
         binding.listener = this
 
-/*
         if (intent != null && intent.hasExtra("isPush")) {
             intent.getBundleExtra("detail")?.let { checkAction(it) }
         }
-*/
     }
 
     override fun onStop() {
@@ -75,8 +74,10 @@ class MainActivity : BaseActivity(), View.OnClickListener {
 
     private fun checkAction(bundle: Bundle) {
         if (viewModel.getToken() != null || viewModel.getToken() != "") {
-            if (bundle.getString("type") != null) {
-
+            if (bundle.getString("event_id") != null) {
+                val notificationBundle = Bundle()
+                notificationBundle.putInt("event_id", bundle.getString("event_id")!!.toInt())
+                navController?.navigate(R.id.home_to_rolling_detail,notificationBundle)
             } else {
                 navController?.navigate(R.id.homeFragment)
             }

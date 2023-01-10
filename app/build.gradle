@@ -6,9 +6,9 @@ plugins {
     id 'androidx.navigation.safeargs'
     id 'com.google.firebase.crashlytics'
     id 'dagger.hilt.android.plugin'
-
+    id 'com.google.gms.google-services'
 }
-//    id 'com.google.gms.google-services'
+//
 android {
 
     compileSdkVersion 33
