@@ -44,6 +44,11 @@ interface ApiService {
         @Body value: NotificationReadModel
     ): Response<NotificationReadResponseModel>
 
+    @POST(ApiConstants.Notification.API_DELETE_NOTIFICATION)
+    suspend fun deleteNotification(
+        @Body value: NotificationReadModel
+    ): Response<BaseResponseModel>
+
     @GET(ApiConstants.Event.API_EVENT_LIST)
     suspend fun eventList(
         @Query("filter_by") filter_by: Int,

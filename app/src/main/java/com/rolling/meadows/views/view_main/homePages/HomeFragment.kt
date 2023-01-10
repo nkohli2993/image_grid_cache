@@ -16,6 +16,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -31,9 +32,11 @@ import com.rolling.meadows.network.retrofit.DataResult
 import com.rolling.meadows.network.retrofit.observeEvent
 import com.rolling.meadows.utils.Constants
 import com.rolling.meadows.utils.DateFunctions
+import com.rolling.meadows.utils.extensions.isNullOrZero
 import com.rolling.meadows.utils.extensions.showException
 import com.rolling.meadows.utils.extensions.visibleView
 import com.rolling.meadows.view_model.EventsViewModel
+import com.rolling.meadows.views.ViewTypeOpenViewModel
 import com.rolling.meadows.views.view_main.homePages.adapter.DateAdapter
 import com.rolling.meadows.views.view_main.homePages.adapter.EventDateWiseAdapter
 import com.rolling.meadows.views.view_main.homePages.adapter.EventsAdapter
@@ -72,6 +75,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
     private var year = ""
     private var filterType = Constants.EVENT_FILTER_TYPE.DAY.value
     private var monthList: ArrayList<MonthCalendarData> = arrayListOf()
+    private val viewModelCount: ViewTypeOpenViewModel by activityViewModels()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -105,6 +109,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
         setEventAdapter()
         setEventDateAdapter()
         lastDayInCalendar.add(Calendar.MONTH, 3)
+
+        binding.unReadNotificationIV.visibleView(false)
+        viewModelCount.selectedItem.observe(baseActivity!!) { item ->
+            binding.unReadNotificationIV.visibleView(false)
+            if (!item.isNullOrZero()) {
+                binding.unReadNotificationIV.visibleView(true)
+            }
+        }
+
     }
 
     override fun observeViewModel() {

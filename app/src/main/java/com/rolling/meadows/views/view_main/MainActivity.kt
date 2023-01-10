@@ -32,6 +32,7 @@ import com.rolling.meadows.utils.extensions.showAlertDialog
 import com.rolling.meadows.utils.extensions.showException
 import com.rolling.meadows.utils.extensions.visibleView
 import com.rolling.meadows.view_model.LogoutViewModel
+import com.rolling.meadows.views.ViewTypeOpenViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
@@ -44,6 +45,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
     var preferences: SharedPreferences? = null
     var editor: SharedPreferences.Editor? = null
     private val viewModel: LogoutViewModel by viewModels()
+    private val viewModelClick: ViewTypeOpenViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,7 +79,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
             if (bundle.getString("event_id") != null) {
                 val notificationBundle = Bundle()
                 notificationBundle.putInt("event_id", bundle.getString("event_id")!!.toInt())
-                navController?.navigate(R.id.home_to_rolling_detail,notificationBundle)
+                navController?.navigate(R.id.home_to_rolling_detail, notificationBundle)
             } else {
                 navController?.navigate(R.id.homeFragment)
             }
@@ -148,7 +150,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         if (destArray.contains(getCurrentFragmentId())) {
             // check for view  to open
             backAction()
-        }  else {
+        } else {
             navController?.popBackStack()
         }
     }
@@ -194,11 +196,13 @@ class MainActivity : BaseActivity(), View.OnClickListener {
             when (intent?.action) {
                 Constants.DISPLAY_MESSAGE_ACTION -> {
                     val bundle = intent.getBundleExtra("detail")
-                    if (bundle!!.containsKey("type")) {
-                    } else {
-                        openNotificationDialog(bundle)
+                    if (bundle!!.containsKey("unread_notification_count")) {
+                        if (bundle.getString("unread_notification_count") != null) {
+                            viewModelClick.selectItem(
+                                bundle.getString("unread_notification_count")!!.toInt()
+                            )
+                        }
                     }
-
                 }
             }
         }

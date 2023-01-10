@@ -1,6 +1,7 @@
 package com.rolling.meadows.repository
 
 import com.rolling.meadows.data.NotificationReadModel
+import com.rolling.meadows.data.response_model.BaseResponseModel
 import com.rolling.meadows.data.response_model.NotificationReadResponseModel
 import com.rolling.meadows.data.response_model.NotificationResponseModel
 import com.rolling.meadows.network.retrofit.ApiService
@@ -28,6 +29,13 @@ class NotificationRepository @Inject constructor(private val apiService: ApiServ
         return object : NetworkOnlineDataRepo<NotificationReadResponseModel, NotificationReadResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<NotificationReadResponseModel> {
                 return apiService.notificationRead(NotificationReadModel(id))
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
+    suspend fun deleteNotification(id:Int): Flow<DataResult<BaseResponseModel>> {
+        return object : NetworkOnlineDataRepo<BaseResponseModel, BaseResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<BaseResponseModel> {
+                return apiService.deleteNotification(NotificationReadModel(id))
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }

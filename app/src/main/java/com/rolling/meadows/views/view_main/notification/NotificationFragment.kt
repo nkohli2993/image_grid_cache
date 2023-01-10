@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -19,6 +20,7 @@ import com.rolling.meadows.network.retrofit.observeEvent
 import com.rolling.meadows.utils.extensions.showError
 import com.rolling.meadows.utils.extensions.visibleView
 import com.rolling.meadows.view_model.NotificationViewModel
+import com.rolling.meadows.views.ViewTypeOpenViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -34,7 +36,7 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(),
     private val viewModel: NotificationViewModel by viewModels()
     private var adapter: NotificationAdapter? = null
     private var notificationList: ArrayList<NotificationData> = arrayListOf()
-
+    private val viewModelClick: ViewTypeOpenViewModel by viewModels()
     override fun onAttach(context: Context) {
         super.onAttach(context)
         isBinded = false
@@ -72,6 +74,11 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(),
                     }
                     notificationList.addAll(list)
                     adapter!!.notifyDataSetChanged()
+                    binding.nofoundTV.visibleView(false)
+                    if (notificationList.size <= 0) {
+                        binding.nofoundTV.visibleView(true)
+                        viewModelClick.selectItem(0)
+                    }
                     if (notificationList.size > 0) {
                         binding.nofoundTV.visibleView(false)
                         binding.notificationRV.visibleView(true)
@@ -94,8 +101,11 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(),
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    notificationList.removeAt(selectedPosition!!)
-                    adapter!!.notifyItemRangeChanged(selectedPosition!!, notificationList.size)
+                    binding.nofoundTV.visibleView(false)
+                    if (notificationList.size <= 0) {
+                        binding.nofoundTV.visibleView(true)
+                        viewModelClick.selectItem(0)
+                    }
                     val data = result.data?.data
                     val eventData = EventDetailData(
                         data!!.date,
@@ -111,19 +121,46 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(),
                 else -> {}
             }
         }
+        viewModel.notificationDeleteResponseLiveData.observeEvent(this) { result ->
+            when (result) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    showError(baseActivity!!, result.message.toString())
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    notificationList.removeAt(selectedPosition!!)
+                    adapter!!.notifyItemRangeRemoved(selectedPosition!!, notificationList.size)
+                    adapter!!.notifyDataSetChanged()
+                    binding.nofoundTV.visibleView(false)
+                    if (notificationList.size <= 0) {
+                        binding.nofoundTV.visibleView(true)
+                    }
+                }
+                else -> {}
+            }
+        }
 
     }
 
     override fun onItemClick(vararg items: Any) {
         selectedPosition = items[1] as Int
         val data = items[0] as NotificationData
-        if (data.read == "UN_READ") {
-            viewModel.notificationRead(data.id)
+        if (items[2] as String == "delete") {
+            viewModel.deleteNotification(data.id)
         } else {
-            val bundle = Bundle()
-            bundle.putInt("event_id", data.eventId)
-            findNavController().navigate(R.id.notification_to_rolling_detail, bundle)
+            if (data.read == "UN_READ") {
+                viewModel.notificationRead(data.id)
+            } else {
+                val bundle = Bundle()
+                bundle.putInt("event_id", data.eventId)
+                findNavController().navigate(R.id.notification_to_rolling_detail, bundle)
+            }
         }
+
 
     }
 
