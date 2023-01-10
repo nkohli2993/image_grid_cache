@@ -23,7 +23,7 @@ class NotificationAdapter(
         val data = notification[position]
         binding.descriptionTV.text = data.message
         binding.descriptionTV.setTextColor(ContextCompat.getColor(baseActivity, R.color._787F84))
-        binding.card.setCardBackgroundColor(ContextCompat.getColor(baseActivity, R.color._9D9D9D))
+        binding.card.setBackgroundColor(ContextCompat.getColor(baseActivity, R.color._808F8F8F))
         if (data.read == "UN_READ") {
             binding.descriptionTV.setTextColor(
                 ContextCompat.getColor(
@@ -31,9 +31,9 @@ class NotificationAdapter(
                     R.color._1D1A2F
                 )
             )
-            binding.card.setCardBackgroundColor(ContextCompat.getColor(baseActivity, R.color.white))
+            binding.card.setBackgroundColor(ContextCompat.getColor(baseActivity, R.color.white))
         }
-        binding.timeTV.text = data.time
+        binding.timeTV.text = data.timeAgo
         binding.root.setOnClickListener {
             onItemClick(data, position, "read")
         }

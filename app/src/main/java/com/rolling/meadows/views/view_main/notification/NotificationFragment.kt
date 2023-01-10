@@ -101,6 +101,10 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(),
                 }
                 is DataResult.Success -> {
                     hideLoading()
+                    if (selectedPosition != null) {
+                        notificationList[selectedPosition!!].read = "READ"
+                        adapter!!.notifyItemChanged(selectedPosition!!, notificationList.size)
+                    }
                     binding.nofoundTV.visibleView(false)
                     if (notificationList.size <= 0) {
                         binding.nofoundTV.visibleView(true)
