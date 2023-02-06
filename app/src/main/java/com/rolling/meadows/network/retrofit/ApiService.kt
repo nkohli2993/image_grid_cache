@@ -15,6 +15,9 @@ interface ApiService {
     @POST(ApiConstants.Authentication.LOGIN)
     suspend fun login(@Body value: LoginModel): Response<LoginUserDetailModel>
 
+    @POST(ApiConstants.Authentication.LOGIN)
+    suspend fun loginWithOutEmail(@Body value: LoginRequestModelData): Response<LoginUserDetailModel>
+
     @POST(ApiConstants.Authentication.VERIFY_OTP)
     suspend fun verifyOTP(@Body value: OTPVerificationModel): Response<UserDetailResponseModel>
 

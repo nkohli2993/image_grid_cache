@@ -6,7 +6,9 @@ import androidx.lifecycle.viewModelScope
 import com.rolling.meadows.base.BaseViewModel
 import com.rolling.meadows.cache.UserRepository
 import com.rolling.meadows.data.EditProfileModel
+import com.rolling.meadows.data.authentication.LoginRequestModelData
 import com.rolling.meadows.data.authentication.UserProfileData
+import com.rolling.meadows.data.response_model.LoginUserDetailModel
 import com.rolling.meadows.data.response_model.UserDetailResponseModel
 import com.rolling.meadows.network.retrofit.DataResult
 import com.rolling.meadows.network.retrofit.Event
@@ -32,11 +34,27 @@ class ProfileViewModel @Inject constructor(
     var profileResponseLiveData: LiveData<Event<DataResult<UserDetailResponseModel>>> =
         _profileResponseLiveData
 
+
+    private var _loginResponseLiveData = MutableLiveData<Event<DataResult<LoginUserDetailModel>>>()
+
+    var loginResponseLiveData: LiveData<Event<DataResult<LoginUserDetailModel>>> =
+        _loginResponseLiveData
+
     fun getProfile() {
         viewModelScope.launch {
             val response = authRepository.getProfile()
             withContext(Dispatchers.Main) {
                 response.collect { _profileResponseLiveData.postValue(Event(it)) }
+            }
+        }
+    }
+
+    fun hitLogin(data:LoginRequestModelData) {
+        viewModelScope.launch {
+
+            val response = authRepository.loginWithOutEmail(data)
+            withContext(Dispatchers.Main) {
+                response.collect { _loginResponseLiveData.postValue(Event(it)) }
             }
         }
     }

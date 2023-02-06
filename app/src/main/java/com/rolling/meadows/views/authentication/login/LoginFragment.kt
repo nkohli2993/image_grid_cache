@@ -56,7 +56,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
                 viewModel.loginLiveData.value!!.email = binding.edtEmail.text.toString()
                 viewModel.loginLiveData.value!!.password = binding.edtPasswd.text.toString()
                 viewModel.loginLiveData.value!!.fcmToken = "fcm_token"
-                viewModel.loginLiveData.value!!.deviceType = Constants.DEVICE_TYPE
+                viewModel.loginLiveData.value!!.deviceType = Constants.DEVICE_TYPE.toInt()
                 when {
                     viewModel.loginLiveData.value!!.email.isNullOrEmpty() -> {
                         showError(baseActivity!!, getString(R.string.plz_enter_email_address))
@@ -90,7 +90,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         binding.viewModel = viewModel
         removeFlag()
 
-        viewModel.loginLiveData.value?.deviceType = Constants.DEVICE_TYPE
+        viewModel.loginLiveData.value?.deviceType = Constants.DEVICE_TYPE.toInt()
         viewModel.loginLiveData.value?.fcmToken = viewModel.getDeviceToken()
         if (viewModel.getDeviceToken() == "") {
             FirebaseMessaging.getInstance().token.addOnCompleteListener { task: Task<String> ->

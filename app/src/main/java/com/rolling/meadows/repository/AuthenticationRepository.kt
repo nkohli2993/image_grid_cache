@@ -24,6 +24,13 @@ class AuthenticationRepository @Inject constructor(private val apiService: ApiSe
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }
+    suspend fun loginWithOutEmail(value: LoginRequestModelData): Flow<DataResult<LoginUserDetailModel>> {
+        return object : NetworkOnlineDataRepo<LoginUserDetailModel, LoginUserDetailModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<LoginUserDetailModel> {
+                return apiService.loginWithOutEmail(value)
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
 
     suspend fun verifyOTP(value: OTPVerificationModel): Flow<DataResult<UserDetailResponseModel>> {
         return object :

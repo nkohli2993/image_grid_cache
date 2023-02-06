@@ -2,7 +2,7 @@ package com.rolling.meadows.utils;
 
 object Constants {
 
-    const val DEVICE_TYPE = 1
+    const val DEVICE_TYPE = "1"
     const val DISPLAY_MESSAGE_ACTION = "com.rollingMeadows.DISPLAY_MESSAGE"
 
     const val RESET_PASSWORD = "reset_password"
