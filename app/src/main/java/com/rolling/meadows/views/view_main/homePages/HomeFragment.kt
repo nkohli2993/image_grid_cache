@@ -20,10 +20,12 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.rolling.meadows.BuildConfig
 import com.rolling.meadows.R
 import com.rolling.meadows.base.BaseAdapter
 import com.rolling.meadows.base.BaseFragment
+import com.rolling.meadows.data.CategoryData
 import com.rolling.meadows.data.DateData
 import com.rolling.meadows.data.MonthCalendarData
 import com.rolling.meadows.data.events.EventData
@@ -37,10 +39,7 @@ import com.rolling.meadows.utils.extensions.showException
 import com.rolling.meadows.utils.extensions.visibleView
 import com.rolling.meadows.view_model.EventsViewModel
 import com.rolling.meadows.views.ViewTypeOpenViewModel
-import com.rolling.meadows.views.view_main.homePages.adapter.DateAdapter
-import com.rolling.meadows.views.view_main.homePages.adapter.EventDateWiseAdapter
-import com.rolling.meadows.views.view_main.homePages.adapter.EventsAdapter
-import com.rolling.meadows.views.view_main.homePages.adapter.MonthAdapter
+import com.rolling.meadows.views.view_main.homePages.adapter.*
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -54,6 +53,8 @@ import kotlin.collections.ArrayList
 class HomeFragment : BaseFragment<FragmentHomeBinding>(),
     BaseAdapter.OnItemClick {
     override fun getLayoutRes() = R.layout.fragment_home
+    private var popupFilterWindow: PopupWindow?=null
+    private var categoryList: ArrayList<CategoryData> = arrayListOf()
     private var dateList: ArrayList<DateData> = arrayListOf()
     private var dateAdapter: DateAdapter? = null
     private var total: Int? = null
@@ -75,6 +76,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
     private var year = ""
     private var filterType = Constants.EVENT_FILTER_TYPE.DAY.value
     private var filterTypeEvents = Constants.EVENT_FILTER.ALL.value
+    private var filterTypeEventsName =  "All"
     private var monthList: ArrayList<MonthCalendarData> = arrayListOf()
     private val viewModelCount: ViewTypeOpenViewModel by activityViewModels()
 
@@ -133,6 +135,29 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
                         viewModel.saveToken("")
                         viewModel.clearAllData()
                         baseActivity!!.goToInitialActivity()
+                    }
+                    is DataResult.Failure -> {
+                        handleFailure(it.message, it.exception, it.errorCode)
+                    }
+                    else -> {}
+                }
+            }
+
+        }
+        viewModel.categoriesResponseLiveData.observe(this) { resultEvent ->
+            resultEvent.getContentIfNotHandled()?.let {
+                when (it) {
+                    is DataResult.Loading -> {
+                        showLoading()
+                    }
+                    is DataResult.Success -> {
+                        hideLoading()
+                        categoryList.clear()
+                        it.data?.data?.let {
+                            categoryList = it
+                        }
+                        categoryList.add(0,CategoryData(0,getString(R.string.all)))
+                        showFilterPopup(binding.describeTV)
                     }
                     is DataResult.Failure -> {
                         handleFailure(it.message, it.exception, it.errorCode)
@@ -233,8 +258,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
 
     @SuppressLint("SetTextI18n")
     override fun onItemClick(vararg items: Any) {
-        when {
-            items[1] as String == "month" -> {
+        when(items[1] as String) {
+            "month" -> {
                 year = monthList[items[0] as Int].year
                 monthSelected = monthList[items[0] as Int].monthId
                 onMonthSelectStartDate()
@@ -248,7 +273,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
                 highLightedDaysWeek()
                 callEventApi()
             }
-            items[1] as String == "date" -> {
+            "date" -> {
                 dateelected = items[0] as Int
                 val date = if (dateelected < 10) {
                     "0${dateelected + 1}"
@@ -276,6 +301,35 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
                 highLightedDaysWeek()
                 calculateEndDate()
                 callEventApi()
+            }
+            "filter"->{
+                val data = items[0] as CategoryData
+                binding.eventTV.text = data.name
+                filterTypeEventsName = data.name
+                setData(filterTypeEventsName)
+                when(data.id){
+                    Constants.EVENT_FILTER.ANNOUNCEMENTS.value ->{
+                        filterTypeEvents = Constants.EVENT_FILTER.ANNOUNCEMENTS.value
+                        calculateEndDate()
+                        callEventApi()
+                    }
+                    Constants.EVENT_FILTER.EVENTS.value ->{
+                        filterTypeEvents = Constants.EVENT_FILTER.EVENTS.value
+                        calculateEndDate()
+                        callEventApi()
+                    }
+                    Constants.EVENT_FILTER.MENU.value ->{
+                        filterTypeEvents = Constants.EVENT_FILTER.MENU.value
+                        calculateEndDate()
+                        callEventApi()
+                    }
+                    else ->{
+                        filterTypeEvents = Constants.EVENT_FILTER.ALL.value
+                        calculateEndDate()
+                        callEventApi()
+                    }
+                }
+                popupFilterWindow?.dismiss()
             }
             else -> {
                 val bundle = Bundle()
@@ -351,7 +405,60 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
         viewModel.page.value = pageNumber
         viewModel.category_id.value = filterTypeEvents
         viewModel.hitEventApi()
+        setData(filterTypeEventsName)
     }
+
+    @SuppressLint("SetTextI18n")
+    private fun setData(type:String){
+        if(filterTypeEventsName == "All"){
+            when (filterType) {
+                Constants.EVENT_FILTER_TYPE.WEEK.value -> {
+                    binding.eventTV.text = "Weekly"
+                }
+                Constants.EVENT_FILTER_TYPE.MONTH.value -> {
+                    binding.eventTV.text = "Monthly"
+                }
+                else -> {
+                    val selectedDate = SimpleDateFormat("yyyy-MM-dd").parse(startDate)
+                    val currentDate = SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().time)
+                    if (selectedDate!! == SimpleDateFormat("yyyy-MM-dd").parse(currentDate)) {
+                        binding.eventTV.text = "Today's"
+                    } else {
+                        binding.eventTV.text = DateFunctions.convertDateFormatFromUTC(
+                            "yyyy-MM-dd",
+                            "dd MMM", startDate
+                        )
+                    }
+                }
+            }
+
+        }
+        else{
+            when (filterType) {
+                Constants.EVENT_FILTER_TYPE.WEEK.value -> {
+                    binding.eventTV.text = "Weekly $type"
+                }
+                Constants.EVENT_FILTER_TYPE.MONTH.value -> {
+                    binding.eventTV.text = "Monthly $type"
+                }
+                else -> {
+                    val selectedDate = SimpleDateFormat("yyyy-MM-dd").parse(startDate)
+                    val currentDate = SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().time)
+                    if (selectedDate!! == SimpleDateFormat("yyyy-MM-dd").parse(currentDate)) {
+                        binding.eventTV.text = "Today's  $type"
+                    } else {
+                        binding.eventTV.text = DateFunctions.convertDateFormatFromUTC(
+                            "yyyy-MM-dd",
+                            "dd MMM", startDate
+                        ).plus(" $type")
+                    }
+                }
+            }
+
+        }
+
+    }
+
 
     @SuppressLint("SimpleDateFormat")
     private fun setMonthAdapter() {
@@ -434,9 +541,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
 //                showLogoutDialog()
 //            }
             R.id.filterIV ->{
-                //fetch all categories
-//                viewModel.getCategoriesList()
-                showFilterPopup(binding.describeTV)
+                viewModel.getCategoriesList()
+//                showFilterPopup(binding.describeTV)
             }
             R.id.notificationIV -> {
                 findNavController().navigate(R.id.action_home_to_notification)
@@ -562,7 +668,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
         val width: Int = LinearLayout.LayoutParams.WRAP_CONTENT
         val height: Int = LinearLayout.LayoutParams.WRAP_CONTENT
         val focusable = true // lets taps outside the popup also dismiss it
-        val popupWindow = PopupWindow(popupView, width, height, focusable)
+        popupFilterWindow = PopupWindow(popupView, width, height, focusable)
+        val filterTypeRV: RecyclerView =
+            popupView.findViewById(R.id.filterTypeRV) as RecyclerView
         val allTV: AppCompatTextView =
             popupView.findViewById(R.id.allTV) as AppCompatTextView
         val eventsTV: AppCompatTextView =
@@ -571,27 +679,31 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
             popupView.findViewById(R.id.announcementsTV) as AppCompatTextView
         val menuTV: AppCompatTextView =
             popupView.findViewById(R.id.menuTV) as AppCompatTextView
-        popupWindow.showAtLocation(
+
+        val adapter = FilterAdapter(baseActivity!!, categoryList)
+        filterTypeRV.adapter = adapter
+        adapter.setOnItemClickListener(this)
+        popupFilterWindow?.showAtLocation(
             popupView,
             Gravity.TOP,
             popupLocateView(view)?.right!!,
             popupLocateView(view)?.top!!
         )
         // show the dim background
-        val container: View = if (popupWindow.background == null) {
+        val container: View = if (popupFilterWindow?.background == null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                popupWindow.contentView.parent as View
+                popupFilterWindow!!.contentView.parent as View
             } else {
-                popupWindow.contentView
+                popupFilterWindow!!.contentView
             }
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                popupWindow.contentView.parent.parent as View
+                popupFilterWindow!!.contentView.parent.parent as View
             } else {
-                popupWindow.contentView.parent as View
+                popupFilterWindow!!.contentView.parent as View
             }
         }
-        val context: Context = popupWindow.contentView.context
+        val context: Context = popupFilterWindow!!.contentView.context
         val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val p = container.layoutParams as WindowManager.LayoutParams
         p.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
@@ -599,7 +711,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
         p.horizontalMargin = 10.0f
         wm.updateViewLayout(container, p)
         popupView.setOnTouchListener { v, event ->
-            popupWindow.dismiss()
+            popupFilterWindow!!.dismiss()
             true
         }
         allTV.setOnClickListener {
@@ -622,7 +734,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
             calculateEndDate()
             callEventApi()
         }
-        popupWindow.setOnDismissListener {
+        popupFilterWindow!!.setOnDismissListener {
             rotate(0f)
         }
 

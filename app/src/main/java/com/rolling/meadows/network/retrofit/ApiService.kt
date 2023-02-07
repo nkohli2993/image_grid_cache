@@ -68,6 +68,6 @@ interface ApiService {
     ): Response<EventDetailResponseModel>
 
     @GET(ApiConstants.Event.API_GET_CATEGORIES)
-    suspend fun getCategoriesList( ): Response<BaseResponseModel>
+    suspend fun getCategoriesList( ): Response<CategoriesReposnseModel>
 
 }

@@ -7,6 +7,7 @@ import com.rolling.meadows.base.BaseViewModel
 import com.rolling.meadows.cache.UserRepository
 import com.rolling.meadows.data.authentication.UserProfileData
 import com.rolling.meadows.data.response_model.BaseResponseModel
+import com.rolling.meadows.data.response_model.CategoriesReposnseModel
 import com.rolling.meadows.data.response_model.EventDetailResponseModel
 import com.rolling.meadows.data.response_model.EventResponseModel
 import com.rolling.meadows.network.retrofit.DataResult
@@ -77,10 +78,10 @@ class EventsViewModel @Inject constructor(
         _logoutResponseLiveData
 
     private var _categoriesResponseLiveData =
-        MutableLiveData<Event<DataResult<BaseResponseModel>>>()
+        MutableLiveData<Event<DataResult<CategoriesReposnseModel>>>()
 
 
-    var categoriesResponseLiveData: LiveData<Event<DataResult<BaseResponseModel>>> =
+    var categoriesResponseLiveData: LiveData<Event<DataResult<CategoriesReposnseModel>>> =
         _categoriesResponseLiveData
 
     fun hitLogOutApi() {
