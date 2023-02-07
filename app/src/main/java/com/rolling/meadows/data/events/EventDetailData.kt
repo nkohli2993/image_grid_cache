@@ -15,5 +15,9 @@ data class EventDetailData(
     @SerializedName("id")
     var id: Int = 0,
     @SerializedName("time")
-    var time: String = ""
+    var time: String = "",
+    @SerializedName("event_category_name")
+    var event_category_name: String = "",
+    @SerializedName("event_category_id")
+    var event_category_id:  Int = 0,
 ):Parcelable

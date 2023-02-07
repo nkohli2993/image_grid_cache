@@ -22,6 +22,7 @@ object ApiConstants {
     object Event{
         const val API_EVENT_LIST = "user/myEvents"
         const val API_EVENT_DETAIL = "user/eventDetails"
+        const val API_GET_CATEGORIES = "user/getEventCategories"
     }
 
 }

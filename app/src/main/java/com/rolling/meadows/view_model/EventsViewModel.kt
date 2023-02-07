@@ -32,6 +32,10 @@ class EventsViewModel @Inject constructor(
         MutableLiveData<Int>().apply {
             value = 0
         }
+    var category_id: MutableLiveData<Int> =
+        MutableLiveData<Int>().apply {
+            value = 0
+        }
     var date: MutableLiveData<String> =
         MutableLiveData<String>().apply {
             value = ""
@@ -72,12 +76,29 @@ class EventsViewModel @Inject constructor(
     var logoutResponseLiveData: LiveData<Event<DataResult<BaseResponseModel>>> =
         _logoutResponseLiveData
 
-     fun hitLogOutApi() {
+    private var _categoriesResponseLiveData =
+        MutableLiveData<Event<DataResult<BaseResponseModel>>>()
+
+
+    var categoriesResponseLiveData: LiveData<Event<DataResult<BaseResponseModel>>> =
+        _categoriesResponseLiveData
+
+    fun hitLogOutApi() {
         viewModelScope.launch {
             val response =
                 eventRepository._logout()
             withContext(Dispatchers.Main) {
                 response.collect { _logoutResponseLiveData.postValue(Event(it)) }
+            }
+        }
+    }
+
+    fun getCategoriesList() {
+        viewModelScope.launch {
+            val response =
+                eventRepository.getCategoriesList()
+            withContext(Dispatchers.Main) {
+                response.collect { _categoriesResponseLiveData.postValue(Event(it)) }
             }
         }
     }
@@ -90,13 +111,15 @@ class EventsViewModel @Inject constructor(
                     date.value!!,
                     endDate.value!!,
                     pageLimit.value!!,
-                    page.value!!
+                    page.value!!,
+                    category_id.value!!
                 )
             withContext(Dispatchers.Main) {
                 response.collect { _eventResponseLiveData.postValue(Event(it)) }
             }
         }
     }
+
     fun hitEventDetailApi() {
         viewModelScope.launch {
             val response =

@@ -74,6 +74,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
     private var endDate = ""
     private var year = ""
     private var filterType = Constants.EVENT_FILTER_TYPE.DAY.value
+    private var filterTypeEvents = Constants.EVENT_FILTER.ALL.value
     private var monthList: ArrayList<MonthCalendarData> = arrayListOf()
     private val viewModelCount: ViewTypeOpenViewModel by activityViewModels()
 
@@ -348,6 +349,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
         viewModel.date.value = startDate
         viewModel.endDate.value = endDate
         viewModel.page.value = pageNumber
+        viewModel.category_id.value = filterTypeEvents
         viewModel.hitEventApi()
     }
 
@@ -428,8 +430,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
     override fun onClick(v: View?) {
         super.onClick(v)
         when (v?.id) {
-            R.id.logoutIV -> {
-                showLogoutDialog()
+//            R.id.logoutIV -> {
+//                showLogoutDialog()
+//            }
+            R.id.filterIV ->{
+                //fetch all categories
+//                viewModel.getCategoriesList()
+                showFilterPopup(binding.describeTV)
             }
             R.id.notificationIV -> {
                 findNavController().navigate(R.id.action_home_to_notification)
@@ -536,6 +543,85 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
             callEventApi()
         }
 
+        popupWindow.setOnDismissListener {
+            rotate(0f)
+        }
+
+    }
+
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun showFilterPopup(
+        view: AppCompatTextView
+    ) {
+        val popupView: View =
+            LayoutInflater.from(baseActivity!!).inflate(
+                R.layout.popup_filter,
+                null
+            )
+        val width: Int = LinearLayout.LayoutParams.WRAP_CONTENT
+        val height: Int = LinearLayout.LayoutParams.WRAP_CONTENT
+        val focusable = true // lets taps outside the popup also dismiss it
+        val popupWindow = PopupWindow(popupView, width, height, focusable)
+        val allTV: AppCompatTextView =
+            popupView.findViewById(R.id.allTV) as AppCompatTextView
+        val eventsTV: AppCompatTextView =
+            popupView.findViewById(R.id.eventsTV) as AppCompatTextView
+        val announcementsTV: AppCompatTextView =
+            popupView.findViewById(R.id.announcementsTV) as AppCompatTextView
+        val menuTV: AppCompatTextView =
+            popupView.findViewById(R.id.menuTV) as AppCompatTextView
+        popupWindow.showAtLocation(
+            popupView,
+            Gravity.TOP,
+            popupLocateView(view)?.right!!,
+            popupLocateView(view)?.top!!
+        )
+        // show the dim background
+        val container: View = if (popupWindow.background == null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                popupWindow.contentView.parent as View
+            } else {
+                popupWindow.contentView
+            }
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                popupWindow.contentView.parent.parent as View
+            } else {
+                popupWindow.contentView.parent as View
+            }
+        }
+        val context: Context = popupWindow.contentView.context
+        val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val p = container.layoutParams as WindowManager.LayoutParams
+        p.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
+        p.dimAmount = 0.1f
+        p.horizontalMargin = 10.0f
+        wm.updateViewLayout(container, p)
+        popupView.setOnTouchListener { v, event ->
+            popupWindow.dismiss()
+            true
+        }
+        allTV.setOnClickListener {
+            filterTypeEvents = Constants.EVENT_FILTER.ALL.value
+            calculateEndDate()
+            callEventApi()
+        }
+        eventsTV.setOnClickListener {
+            filterTypeEvents = Constants.EVENT_FILTER.EVENTS.value
+            calculateEndDate()
+            callEventApi()
+        }
+        announcementsTV.setOnClickListener {
+            filterTypeEvents = Constants.EVENT_FILTER.ANNOUNCEMENTS.value
+            calculateEndDate()
+            callEventApi()
+        }
+        menuTV.setOnClickListener {
+            filterTypeEvents = Constants.EVENT_FILTER.MENU.value
+            calculateEndDate()
+            callEventApi()
+        }
         popupWindow.setOnDismissListener {
             rotate(0f)
         }

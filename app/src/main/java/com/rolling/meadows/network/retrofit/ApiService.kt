@@ -58,12 +58,16 @@ interface ApiService {
         @Query("start_date") start_date: String,
         @Query("end_date") end_date: String,
         @Query("page_limit") page_limit: Int,
-        @Query("page") page: Int
+        @Query("page") page: Int,
+        @Query("category_id") category_id: Int
     ): Response<EventResponseModel>
 
     @GET(ApiConstants.Event.API_EVENT_DETAIL)
     suspend fun eventDetail(
         @Query("event_id") event_id: Int,
     ): Response<EventDetailResponseModel>
+
+    @GET(ApiConstants.Event.API_GET_CATEGORIES)
+    suspend fun getCategoriesList( ): Response<BaseResponseModel>
 
 }

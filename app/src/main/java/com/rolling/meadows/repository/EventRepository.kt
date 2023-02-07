@@ -22,11 +22,12 @@ class EventRepository @Inject constructor(private val apiService: ApiService) {
         date: String,
         endDate: String,
         page_limit: Int,
-        page: Int
+        page: Int,
+        category_id: Int
     ): Flow<DataResult<EventResponseModel>> {
         return object : NetworkOnlineDataRepo<EventResponseModel, EventResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<EventResponseModel> {
-                return apiService.eventList(filter_by, date,endDate, page_limit, page)
+                return apiService.eventList(filter_by, date,endDate, page_limit, page,category_id)
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }
@@ -46,6 +47,15 @@ class EventRepository @Inject constructor(private val apiService: ApiService) {
         return object : NetworkOnlineDataRepo<BaseResponseModel, BaseResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<BaseResponseModel> {
                 return apiService.logout()
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
+
+
+    suspend fun getCategoriesList(): Flow<DataResult<BaseResponseModel>> {
+        return object : NetworkOnlineDataRepo<BaseResponseModel, BaseResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<BaseResponseModel> {
+                return apiService.getCategoriesList()
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }

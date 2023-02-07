@@ -14,4 +14,10 @@ object Constants {
         MONTH(3),
 
     }
+    enum class EVENT_FILTER(val value:Int){
+        ALL(0),
+        EVENTS(2),
+        ANNOUNCEMENTS(1),
+        MENU(3)
+    }
 }

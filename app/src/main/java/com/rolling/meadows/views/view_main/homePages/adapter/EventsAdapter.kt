@@ -8,6 +8,7 @@ import com.rolling.meadows.base.BaseAdapter
 import com.rolling.meadows.base.BaseViewHolder
 import com.rolling.meadows.data.events.EventDetailData
 import com.rolling.meadows.databinding.AdapterRollingEventDayBinding
+import com.rolling.meadows.utils.Constants
 import com.rolling.meadows.utils.DateFunctions.getFormattedDate
 
 class EventsAdapter(
@@ -17,6 +18,7 @@ class EventsAdapter(
 ) : BaseAdapter<AdapterRollingEventDayBinding>(),
     BaseAdapter.OnItemClick {
     private var i: Int = 0
+
     init {
         setHasStableIds(true)
     }
@@ -26,15 +28,27 @@ class EventsAdapter(
     @SuppressLint("SetTextI18n", "SimpleDateFormat")
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
         val binding = holder.binding as AdapterRollingEventDayBinding
-        if(eventList.size>0){
+        if (eventList.size > 0) {
             val data = eventList[position]
-            binding.titleTV.text  = data.eventType
+            binding.titleTV.text = data.eventType
             binding.descriptionTV.text = data.description
             binding.timeTV.text = getFormattedDate(
                 "yyyy-MM-dd hh:mm:ss",
-                "hh:mm a",data.date.plus(" ${data.time}")
+                "hh:mm a", data.date.plus(" ${data.time}")
             )
+            when (data.event_category_id) {
+                Constants.EVENT_FILTER.EVENTS.value -> {
+                    binding.imageIV.setImageResource(R.drawable.ic_event_icon)
+                }
+                Constants.EVENT_FILTER.ANNOUNCEMENTS.value -> {
+                    binding.imageIV.setImageResource(R.drawable.ic_announcement_icon)
+                }
+                else -> {
+                    binding.imageIV.setImageResource(R.drawable.ic_menu_icon)
+                }
+            }
         }
+
 
         binding.viewCL.setBackgroundResource(background[i])
         i++
@@ -48,7 +62,7 @@ class EventsAdapter(
     override fun getItemId(position: Int): Long = position.toLong()
 
     override fun getItemCount(): Int {
-        Log.e("catch_exception","size: ${eventList.size}")
+        Log.e("catch_exception", "size: ${eventList.size}")
         return eventList.size
     }
 

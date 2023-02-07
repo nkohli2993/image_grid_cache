@@ -31,6 +31,7 @@ class RollingDetailFragment : BaseFragment<FragmentRollingDetailBinding>() {
                         binding.dateTV.text = data.date
                         binding.titleTV.text = data.eventType
                         binding.descriptionTV.text = data.description
+                        binding.typeTV.text = data.event_category_name
                         binding.dateTV.text = DateFunctions.getFormattedDate(
                             "yyyy-MM-dd",
                             "dd MMM, yyyy", data.date
@@ -58,14 +59,14 @@ class RollingDetailFragment : BaseFragment<FragmentRollingDetailBinding>() {
     }
 
     private fun setdata() {
-        if(arguments!=null && requireArguments().containsKey("event_id")){
+        if (arguments != null && requireArguments().containsKey("event_id")) {
             viewModel.eventId.value = arguments?.getInt("event_id")!!
             viewModel.hitEventDetailApi()
-        }
-        else if(arguments!=null && requireArguments().containsKey("detail")){
+        } else if (arguments != null && requireArguments().containsKey("detail")) {
             val data = arguments?.getParcelable<EventDetailData>("detail")!!
             binding.dateTV.text = data.date
             binding.titleTV.text = data.eventType
+            binding.typeTV.text = data.event_category_name
             binding.descriptionTV.text = data.description
             binding.dateTV.text = DateFunctions.getFormattedDate(
                 "yyyy-MM-dd",

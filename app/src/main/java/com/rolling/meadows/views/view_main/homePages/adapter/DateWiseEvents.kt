@@ -15,6 +15,7 @@ import com.rolling.meadows.base.BaseAdapter
 import com.rolling.meadows.base.BaseViewHolder
 import com.rolling.meadows.data.events.EventDetailData
 import com.rolling.meadows.databinding.AdapterRollingEventBinding
+import com.rolling.meadows.utils.Constants
 import com.rolling.meadows.utils.DateFunctions
 import com.rolling.meadows.views.view_main.MainActivity
 
@@ -61,6 +62,18 @@ class DateWiseEvents(
                 "yyyy-MM-dd hh:mm:ss",
                 "hh:mm a", data.date.plus(" ${data.time}")
             )
+            when (data.event_category_id) {
+                Constants.EVENT_FILTER.EVENTS.value -> {
+                    binding.imageIV.setImageResource(R.drawable.ic_event_icon)
+                }
+                Constants.EVENT_FILTER.ANNOUNCEMENTS.value -> {
+                    binding.imageIV.setImageResource(R.drawable.ic_announcement_icon)
+                }
+                else -> {
+                    binding.imageIV.setImageResource(R.drawable.ic_menu_icon)
+                }
+            }
+
         }
 
         i++
@@ -70,8 +83,11 @@ class DateWiseEvents(
 
         binding.root.setOnClickListener {
             val bundle = Bundle()
-            bundle.putParcelable("detail",data)
-            (baseActivity as MainActivity).navController?.navigate(R.id.home_to_rolling_detail,bundle)
+            bundle.putParcelable("detail", data)
+            (baseActivity as MainActivity).navController?.navigate(
+                R.id.home_to_rolling_detail,
+                bundle
+            )
         }
 
     }

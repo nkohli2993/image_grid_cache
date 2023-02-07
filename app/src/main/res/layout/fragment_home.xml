@@ -38,11 +38,13 @@
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/helloTV"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_regular"
+                    android:layout_height="0dp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:gravity="center"
                     android:text="Hello"
-                    android:textColor="@color/_B1B1B1"
-                    android:textSize="@dimen/_11sdp"
+                    android:textColor="@color/_3D466F"
+                    android:textSize="@dimen/_13sdp"
+                    app:layout_constraintBottom_toBottomOf="@+id/typeLL"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -56,6 +58,7 @@
                     android:textColor="@color/_1D1A2F"
                     android:textSize="@dimen/_14sdp"
                     android:textStyle="bold"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toStartOf="@+id/typeLL"
                     app:layout_constraintStart_toStartOf="@+id/helloTV"
                     app:layout_constraintTop_toBottomOf="@id/helloTV" />
@@ -108,7 +111,7 @@
                     android:onClick="@{listener::onClick}"
                     android:src="@drawable/ic_notification"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/logoutIV"
+                    app:layout_constraintEnd_toStartOf="@+id/filterIV"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <de.hdodenhof.circleimageview.CircleImageView
@@ -121,11 +124,11 @@
                     app:layout_constraintTop_toTopOf="@+id/notificationIV" />
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/logoutIV"
+                    android:id="@+id/filterIV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="@{listener::onClick}"
-                    android:src="@drawable/ic_logout"
+                    android:src="@drawable/ic_filter"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
