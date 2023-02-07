@@ -27,8 +27,10 @@
 
         <View
             android:id="@+id/view1"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="@dimen/_1sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/nameTV"
             app:layout_constraintTop_toBottomOf="@+id/nameTV" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
