@@ -91,11 +91,11 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>() {
                     }
                     is DataResult.Success -> {
                         hideLoading()
-                        showSuccess(baseActivity!!, it.data?.message!!)
-                        Log.e("catch_exception_token", "save token: ${it.data.data?.authToken}")
-                        viewModel.saveToken(it.data.data?.authToken)
-                        viewModel.saveId(it.data.data?.id.toString())
-                        viewModel.saveUser(it.data.data)
+//                        showSuccess(baseActivity!!, it.data?.message!!)
+                        Log.e("catch_exception_token", "save token: ${it.data?.data?.authToken}")
+                        viewModel.saveToken(it.data?.data?.authToken)
+                        viewModel.saveId(it.data?.data?.id.toString())
+                        viewModel.saveUser(it.data?.data)
                         baseActivity!!.goToMainActivity()
                     }
                     is DataResult.Failure -> {
