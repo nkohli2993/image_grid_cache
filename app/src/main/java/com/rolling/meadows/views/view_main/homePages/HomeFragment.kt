@@ -88,6 +88,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
     override fun onResume() {
         super.onResume()
         isBinded = true
+        // Check fro POST Notification permission in Android 13 or above
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (!baseActivity!!.checkNotificationPermission()) {
+                baseActivity!!.requestPostNotificationPermission()
+            }
+        }
     }
 
     override fun initViewBinding() {

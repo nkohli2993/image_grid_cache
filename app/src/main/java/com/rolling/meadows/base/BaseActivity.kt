@@ -27,6 +27,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.ColorRes
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.app.ActivityCompat
@@ -63,6 +64,7 @@ abstract class BaseActivity : AppCompatActivity() {
     private val viewModel: LoginViewModel by viewModels()
     var selectedFile: MutableLiveData<File> = MutableLiveData()
     private val PERMISSION_REQUEST_CODE = 200
+    private val PERMISSION_REQUEST_CODE_POST_NOTIFICATIONS = 700
     fun hideKeyBoard(input: View?) {
 
         input?.let {
@@ -330,6 +332,17 @@ abstract class BaseActivity : AppCompatActivity() {
                     }
                 }
             }
+            PERMISSION_REQUEST_CODE_POST_NOTIFICATIONS -> {
+                if (grantResults.isNotEmpty()) {
+                    val postNotificationPermissionAccepted =
+                        grantResults[0] == PackageManager.PERMISSION_GRANTED
+                    if (postNotificationPermissionAccepted) {
+                        return
+                    }
+                }
+
+            }
+
         }
 
     }
@@ -419,4 +432,23 @@ abstract class BaseActivity : AppCompatActivity() {
             }
     }
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    fun checkNotificationPermission(): Boolean {
+        return ContextCompat.checkSelfPermission(
+            applicationContext,
+            Manifest.permission.POST_NOTIFICATIONS
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    fun requestPostNotificationPermission() {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(
+                Manifest.permission.POST_NOTIFICATIONS,
+            ),
+            PERMISSION_REQUEST_CODE_POST_NOTIFICATIONS
+        )
+    }
 }

@@ -30,15 +30,11 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         showCustomUI()
-//        changeStatusBarColor(ContextCompat.getColor(baseActivity!!, R.color.colorPrimary))
-//        changeStatusBarIconColor(false)
     }
 
     override fun onResume() {
         super.onResume()
-
-
-        // on below line we are getting device id.
+        baseActivity!!.getFirebaseToken()
         val android_device_id =
             Settings.Secure.getString(context?.contentResolver, Settings.Secure.ANDROID_ID)
         Log.e("catch_exception","unique:id: ${android_device_id}")
@@ -46,12 +42,6 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>() {
             delay(3000)
             activity?.runOnUiThread {
                 viewModel.hitLogin(LoginRequestModelData(com.rolling.meadows.utils.Constants.DEVICE_TYPE,viewModel.getDeviceToken(),android_device_id!!))
-//                Log.e("catch_exception_token", "token: ${viewModel.getToken()}")
-               /* if (viewModel.getToken().isNullOrEmpty()) {
-                    findNavController().navigate(R.id.action_introFragment_to_loginFragment)
-                } else {
-                    viewModel.getProfile()
-                }*/
             }
         }
     }

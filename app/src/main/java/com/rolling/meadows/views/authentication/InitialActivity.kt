@@ -19,6 +19,7 @@ class InitialActivity : BaseActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_initial)
         navController = findNavController(R.id.nav_host_fragment)
 
+/*
         when (intent.getStringExtra("page_open") ?: "splash") {
             "splash" -> {
                 navController?.navigate(R.id.splashFragment)
@@ -27,6 +28,8 @@ class InitialActivity : BaseActivity() {
                 navController?.navigate(R.id.loginFragment)
             }
         }
+*/
+        navController?.navigate(R.id.splashFragment)
         initDestinationChangeListener()
     }
 

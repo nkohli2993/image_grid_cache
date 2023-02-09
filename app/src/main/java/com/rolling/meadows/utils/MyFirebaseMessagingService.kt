@@ -21,6 +21,7 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.rolling.meadows.BuildConfig
 import com.rolling.meadows.R
+import com.rolling.meadows.cache.CacheConstants
 import com.rolling.meadows.cache.Prefs
 import com.rolling.meadows.views.view_main.MainActivity
 
@@ -54,6 +55,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)
+        Prefs.save(CacheConstants.DEVICE_TOKEN, token)
         if (BuildConfig.DEBUG) {
             Log.e("catch_exception", "token :$token");
         }

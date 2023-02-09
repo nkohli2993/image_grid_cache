@@ -74,6 +74,7 @@
     <string name="announcement">Announcement</string>
     <string name="events">Events</string>
     <string name="all">All</string>
+    <string name="hello">Hello</string>
     <string-array name="month">
         <item>January</item>
         <item>February</item>

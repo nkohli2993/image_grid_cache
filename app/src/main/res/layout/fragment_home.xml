@@ -40,13 +40,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:fontFamily="@font/poppins_semibold"
-                    android:gravity="center"
-                    android:text="Hello"
+                    android:gravity="center_vertical"
+                    android:paddingTop="@dimen/_2sdp"
+                    android:text="@string/hello"
                     android:textColor="@color/_3D466F"
                     android:textSize="@dimen/_13sdp"
                     app:layout_constraintBottom_toBottomOf="@+id/typeLL"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="@+id/typeLL" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/titleTV"
@@ -207,8 +208,8 @@
                 android:text="@string/event"
                 android:textColor="@color/_1D1A2F"
                 android:textSize="@dimen/_16sdp"
-                app:layout_constraintEnd_toStartOf="@+id/emojiIV"
                 app:layout_constraintBottom_toBottomOf="@id/emojiIV"
+                app:layout_constraintEnd_toStartOf="@+id/emojiIV"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/emojiIV" />
 
