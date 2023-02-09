@@ -207,12 +207,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
                                 dayEventAdapter!!.notifyDataSetChanged()
                             }
 
-                            setList(dayEventList)
+                            if(dayEventList.size<=0){
+
+                            }else{
+                                setList(dayEventList)
+                            }
+
                         }
                         else -> {
                             if (viewModel.page.value == 1) {
                                 multiDayAdapter = null
                                 eventList.clear()
+
                                 setEventDateAdapter()
                             }
 
@@ -277,6 +283,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
                 setDateAdapter()
                 calculateEndDate()
                 highLightedDaysWeek()
+                pageNumber = 1
                 callEventApi()
             }
             "date" -> {

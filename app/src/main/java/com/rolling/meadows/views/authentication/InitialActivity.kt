@@ -19,30 +19,12 @@ class InitialActivity : BaseActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_initial)
         navController = findNavController(R.id.nav_host_fragment)
 
-/*
-        when (intent.getStringExtra("page_open") ?: "splash") {
-            "splash" -> {
-                navController?.navigate(R.id.splashFragment)
-            }
-            else -> {
-                navController?.navigate(R.id.loginFragment)
-            }
-        }
-*/
         navController?.navigate(R.id.splashFragment)
         initDestinationChangeListener()
     }
 
     private fun initDestinationChangeListener() {
         navController?.addOnDestinationChangedListener { controller, destination, arguments ->
-//            val destArray = listOf<Int>(R.id.privacyFragment)
-//            if (destArray.contains(destination.id)) {
-//                supportActionBar?.show()
-//                setToolbar(showLightStatusBar = false)
-//            } else {
-//                supportActionBar?.hide()
-//                setToolbar(showLightStatusBar = true)
-//            }
         }
     }
 
