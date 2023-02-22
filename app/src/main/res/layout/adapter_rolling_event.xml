@@ -29,6 +29,7 @@
             android:layout_height="wrap_content"
             android:drawableStart="@drawable/ic_timer_black"
             android:drawablePadding="@dimen/_10sdp"
+            android:visibility="gone"
             android:text="09:00 AM"
             android:textColor="@color/_303030"
             app:layout_constraintEnd_toEndOf="parent"
