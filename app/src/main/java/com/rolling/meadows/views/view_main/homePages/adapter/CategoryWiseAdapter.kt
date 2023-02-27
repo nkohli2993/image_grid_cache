@@ -2,11 +2,9 @@ package com.rolling.meadows.views.view_main.homePages.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Point
+import android.content.res.TypedArray
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.view.WindowManager
-import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
@@ -18,10 +16,7 @@ import com.rolling.meadows.base.BaseViewHolder
 import com.rolling.meadows.data.events.ListEventData
 import com.rolling.meadows.databinding.AdapterRollingEventDateWiseBinding
 import com.rolling.meadows.utils.Constants
-import com.rolling.meadows.utils.DateFunctions
 import com.rolling.meadows.utils.extensions.visibleView
-import java.text.SimpleDateFormat
-import java.util.*
 import kotlin.collections.ArrayList
 
 class CategoryWiseAdapter(
@@ -47,6 +42,20 @@ class CategoryWiseAdapter(
         binding.dateTV.typeface = ResourcesCompat.getFont(baseActivity, R.font.poppins_semibold)
         binding.dateTV.setTextColor(ContextCompat.getColor(baseActivity, R.color.black))
         binding.dateTV.text = data.name
+
+
+        background.clear()
+        when {
+            data.name.lowercase().contains("announcements") -> {
+                background.addAll(baseActivity.announcementBackgroundList())
+            }
+            data.name.lowercase().contains("event") -> {
+                background.addAll(baseActivity.eventBackgroundList())
+            }
+            else -> {
+                background.addAll(baseActivity.menuBackgroundList())
+            }
+        }
         val adapter = DateWiseEvents(baseActivity, background, data.childList!!, 0)
         binding.rollingRV.adapter = adapter
         binding.rollingRV.layoutManager =

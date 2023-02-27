@@ -1,8 +1,13 @@
 package com.rolling.meadows.views.view_main.homePages.adapter
 
 import android.annotation.SuppressLint
+import android.content.res.TypedArray
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.rolling.meadows.R
 import com.rolling.meadows.base.BaseActivity
@@ -32,39 +37,22 @@ class EventsAdapter(
     @SuppressLint("SetTextI18n", "SimpleDateFormat")
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
         val binding = holder.binding as AdapterRollingEventDateWiseBinding
-        /*   if (eventList.size > 0) {
-               val data = eventList[position]
-               binding.titleTV.text = data.eventType
-               binding.descriptionTV.text = data.description
-               *//* binding.timeTV.text = getFormattedDate(
-                 "yyyy-MM-dd hh:mm:ss",
-                 "hh:mm a", data.date.plus(" ${data.time}")
-             )*//*
-            when (data.event_category_id) {
-                Constants.EVENT_FILTER.EVENTS.value -> {
-                    binding.imageIV.setImageResource(R.drawable.ic_event_icon)
-                }
-                Constants.EVENT_FILTER.ANNOUNCEMENTS.value -> {
-                    binding.imageIV.setImageResource(R.drawable.ic_announcement_icon)
-                }
-                else -> {
-                    binding.imageIV.setImageResource(R.drawable.ic_menu_icon)
-                }
-            }
-        }
-
-
-        binding.viewCL.setBackgroundResource(background[i])
-        i++
-        if (i > 4) {
-            i = 0
-        }
-*/
-
         val data = eventList[position]
         binding.dateTV.text = data.name
         binding.dateTV.typeface = ResourcesCompat.getFont(baseActivity, R.font.poppins_semibold)
         binding.dateTV.setTextColor(ContextCompat.getColor(baseActivity, R.color.black))
+        background.clear()
+        when {
+            data.name.lowercase().contains("announcements") -> {
+                background.addAll(baseActivity.announcementBackgroundList())
+            }
+            data.name.lowercase().contains("event") -> {
+                background.addAll(baseActivity.eventBackgroundList())
+            }
+            else -> {
+                background.addAll(baseActivity.menuBackgroundList())
+            }
+        }
         val adapter = DateWiseEvents(baseActivity, background, data.childList!!,type)
         binding.rollingRV.adapter = adapter
         binding.dateTV.visibleView(false)
@@ -77,13 +65,19 @@ class EventsAdapter(
                     LinearLayoutManager(baseActivity, LinearLayoutManager.HORIZONTAL, false)
             }
         }
-        // binding.root.setOnClickListener { onItemClick(position, "event") }
     }
 
     override fun getItemId(position: Int): Long = position.toLong()
 
     override fun getItemCount(): Int {
         return eventList.size
+    }
+
+    private fun setBackgroundList(list: TypedArray) {
+        for (i in 0 until 4) {
+            background.add(list.getResourceId(i, -1))
+        }
+        list.recycle()
     }
 
 }

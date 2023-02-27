@@ -291,7 +291,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
                 if ((monthSelected + 1) == SimpleDateFormat("MM").format(Calendar.getInstance().time)
                         .toInt()
                 ) {
-                    startDate = SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().time)
+                    startDate = if (filterType == Constants.EVENT_FILTER_TYPE.MONTH.value) {
+                        year.plus("-${monthSelected + 1}-01")
+                    } else {
+                        SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().time)
+                    }
+
                 }
                 setDateAdapter()
                 calculateEndDate()
@@ -408,7 +413,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
                 if (days <= 6) {
                     calendar.add(Calendar.DATE, days - 1)
                 } else {
-                    calendar.add(Calendar.DATE, 7)
+                    calendar.add(Calendar.DATE, 6)
                 }
             }
             Constants.EVENT_FILTER_TYPE.MONTH.value -> {

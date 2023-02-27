@@ -89,4 +89,23 @@
         <item>November</item>
         <item>December</item>
     </string-array>
+
+    <integer-array name="background_announcements">
+        <item>@drawable/ic_background_pink</item>
+        <item>@drawable/ic_background_yellow</item>
+        <item>@drawable/ic_background_green</item>
+        <item>@drawable/ic_background_pruple</item>
+    </integer-array>
+    <integer-array name="background_events">
+        <item>@drawable/ic_background_yellow</item>
+        <item>@drawable/ic_background_green</item>
+        <item>@drawable/ic_background_pruple</item>
+        <item>@drawable/ic_background_pink</item>
+    </integer-array>
+    <integer-array name="background_menu">
+        <item>@drawable/ic_background_green</item>
+        <item>@drawable/ic_background_pruple</item>
+        <item>@drawable/ic_background_pink</item>
+        <item>@drawable/ic_background_yellow</item>
+    </integer-array>
 </resources>

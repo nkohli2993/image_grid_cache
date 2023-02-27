@@ -36,7 +36,7 @@ class EventDateWiseAdapter(
         binding.dateTV.visibleView(true)
         val data = eventList[position]
         binding.dateTV.typeface = ResourcesCompat.getFont(baseActivity, R.font.poppins_medium)
-        binding.dateTV.setTextColor(ContextCompat.getColor(baseActivity, R.color._B7B7B7))
+        binding.dateTV.setTextColor(ContextCompat.getColor(baseActivity, R.color.colorPrimaryDark))
         val selectedDate = SimpleDateFormat("yyyy-MM-dd").parse(data.date)
         val currentDate = SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().time)
         if (selectedDate!! == SimpleDateFormat("yyyy-MM-dd").parse(currentDate)) {

@@ -451,4 +451,35 @@ abstract class BaseActivity : AppCompatActivity() {
             PERMISSION_REQUEST_CODE_POST_NOTIFICATIONS
         )
     }
+
+    fun announcementBackgroundList():ArrayList<Int>{
+        val announcementBackgroundList =
+            resources.obtainTypedArray(R.array.background_announcements)
+        val list :ArrayList<Int> = arrayListOf()
+        for (i in 0 until 4) {
+            list.add(announcementBackgroundList.getResourceId(i, -1))
+        }
+        announcementBackgroundList.recycle()
+        return list
+    }
+    fun eventBackgroundList():ArrayList<Int>{
+        val eventBackgroundList =
+            resources.obtainTypedArray(R.array.background_events)
+        val list :ArrayList<Int> = arrayListOf()
+        for (i in 0 until 4) {
+            list.add(eventBackgroundList.getResourceId(i, -1))
+        }
+        eventBackgroundList.recycle()
+        return list
+    }
+    fun menuBackgroundList():ArrayList<Int>{
+        val menuBackgroundList =
+            resources.obtainTypedArray(R.array.background_menu)
+        val list :ArrayList<Int> = arrayListOf()
+        for (i in 0 until 4) {
+            list.add(menuBackgroundList.getResourceId(i, -1))
+        }
+        menuBackgroundList.recycle()
+        return list
+    }
 }
