@@ -28,6 +28,7 @@ import com.rolling.meadows.base.BaseFragment
 import com.rolling.meadows.data.CategoryData
 import com.rolling.meadows.data.DateData
 import com.rolling.meadows.data.MonthCalendarData
+import com.rolling.meadows.data.events.EventCategoryData
 import com.rolling.meadows.data.events.EventData
 import com.rolling.meadows.databinding.FragmentHomeBinding
 import com.rolling.meadows.network.retrofit.DataResult
@@ -53,7 +54,7 @@ import kotlin.collections.ArrayList
 class HomeFragment : BaseFragment<FragmentHomeBinding>(),
     BaseAdapter.OnItemClick {
     override fun getLayoutRes() = R.layout.fragment_home
-    private var popupFilterWindow: PopupWindow?=null
+    private var popupFilterWindow: PopupWindow? = null
     private var categoryList: ArrayList<CategoryData> = arrayListOf()
     private var dateList: ArrayList<DateData> = arrayListOf()
     private var dateAdapter: DateAdapter? = null
@@ -76,7 +77,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
     private var year = ""
     private var filterType = Constants.EVENT_FILTER_TYPE.DAY.value
     private var filterTypeEvents = Constants.EVENT_FILTER.ALL.value
-    private var filterTypeEventsName =  "All"
+    private var filterTypeEventsName = "All"
     private var monthList: ArrayList<MonthCalendarData> = arrayListOf()
     private val viewModelCount: ViewTypeOpenViewModel by activityViewModels()
 
@@ -162,7 +163,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
                         it.data?.data?.let {
                             categoryList = it
                         }
-                        categoryList.add(0,CategoryData(0,getString(R.string.all)))
+                        categoryList.add(0, CategoryData(0, getString(R.string.all)))
                         showFilterPopup(binding.describeTV)
                     }
                     is DataResult.Failure -> {
@@ -186,7 +187,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
                     hideLoading()
                     var list: ArrayList<EventData> = arrayListOf()
                     result.data?.data?.let {
-                        list = it.list
+                        list = it.list!!
                         total = it.totalPages
                         currentPage = it.currentPage
                         totalPage = it.totalPages
@@ -207,9 +208,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
                                 dayEventAdapter!!.notifyDataSetChanged()
                             }
 
-                            if(dayEventList.size<=0){
-
-                            }else{
+                            if (dayEventList.size <= 0) {
+                                binding.nofoundTV.visibleView(true)
+                                binding.rollingRV.visibleView(false)
+                            } else {
                                 setList(dayEventList)
                             }
 
@@ -218,10 +220,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
                             if (viewModel.page.value == 1) {
                                 multiDayAdapter = null
                                 eventList.clear()
-
                                 setEventDateAdapter()
                             }
-
                             eventList.addAll(list)
                             multiDayAdapter!!.notifyDataSetChanged()
                             setList(eventList)
@@ -229,7 +229,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
                     }
 
                     binding.unReadNotificationIV.visibleView(false)
-                    if(result.data?.data!!.unreadNotificationCount!=null &&result.data.data!!.unreadNotificationCount>0 ){
+                    if (result.data?.data!!.unreadNotificationCount != null && result.data.data!!.unreadNotificationCount > 0) {
                         binding.unReadNotificationIV.visibleView(true)
                     }
                 }
@@ -249,10 +249,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
 
     }
 
+
+    /*
+    * Data for Single day
+    * */
     private fun setEventAdapter() {
         if (dayEventList.size > 0) {
-            binding.dateTV.visibleView(true)
-            dayEventAdapter = EventsAdapter(baseActivity!!, background, dayEventList[0].data)
+            binding.dateTV.visibleView(false)
+            dayEventAdapter = EventsAdapter(
+                baseActivity!!,
+                background,
+                dayEventList[0].data!!.listData!!,
+                filterTypeEvents
+            )
             binding.rollingRV.adapter = dayEventAdapter
             dayEventAdapter!!.setOnItemClickListener(this)
             handleNotificationPagination()
@@ -260,9 +269,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
 
     }
 
+    /*
+    * Data for Week or month
+    * */
     private fun setEventDateAdapter() {
         binding.dateTV.visibleView(false)
-        multiDayAdapter = EventDateWiseAdapter(baseActivity!!, background, eventList)
+        multiDayAdapter =
+            EventDateWiseAdapter(baseActivity!!, background, eventList, filterTypeEvents)
         binding.rollingRV.adapter = multiDayAdapter
         multiDayAdapter!!.setOnItemClickListener(this)
         handleNotificationPagination()
@@ -270,7 +283,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
 
     @SuppressLint("SetTextI18n")
     override fun onItemClick(vararg items: Any) {
-        when(items[1] as String) {
+        when (items[1] as String) {
             "month" -> {
                 year = monthList[items[0] as Int].year
                 monthSelected = monthList[items[0] as Int].monthId
@@ -293,7 +306,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
                 } else {
                     (dateelected + 1).toString()
                 }
-                startDate = year.plus("-${(monthSelected+1)}-$date")
+                startDate = year.plus("-${(monthSelected + 1)}-$date")
 
                 val selectedDate = SimpleDateFormat("yyyy-MM-dd").parse(startDate)
                 val currentDate = SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().time)
@@ -315,28 +328,28 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
                 calculateEndDate()
                 callEventApi()
             }
-            "filter"->{
+            "filter" -> {
                 val data = items[0] as CategoryData
                 binding.eventTV.text = data.name
                 filterTypeEventsName = data.name
                 setData(filterTypeEventsName)
-                when(data.id){
-                    Constants.EVENT_FILTER.ANNOUNCEMENTS.value ->{
+                when (data.id) {
+                    Constants.EVENT_FILTER.ANNOUNCEMENTS.value -> {
                         filterTypeEvents = Constants.EVENT_FILTER.ANNOUNCEMENTS.value
                         calculateEndDate()
                         callEventApi()
                     }
-                    Constants.EVENT_FILTER.EVENTS.value ->{
+                    Constants.EVENT_FILTER.EVENTS.value -> {
                         filterTypeEvents = Constants.EVENT_FILTER.EVENTS.value
                         calculateEndDate()
                         callEventApi()
                     }
-                    Constants.EVENT_FILTER.MENU.value ->{
+                    Constants.EVENT_FILTER.MENU.value -> {
                         filterTypeEvents = Constants.EVENT_FILTER.MENU.value
                         calculateEndDate()
                         callEventApi()
                     }
-                    else ->{
+                    else -> {
                         filterTypeEvents = Constants.EVENT_FILTER.ALL.value
                         calculateEndDate()
                         callEventApi()
@@ -345,9 +358,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
                 popupFilterWindow?.dismiss()
             }
             else -> {
-                val bundle = Bundle()
-                bundle.putParcelable("detail", dayEventList[0].data[items[0] as Int])
-                findNavController().navigate(R.id.home_to_rolling_detail, bundle)
+//                val bundle = Bundle()
+//                bundle.putParcelable("detail", dayEventList[0].data[items[0] as Int])
+//                findNavController().navigate(R.id.home_to_rolling_detail, bundle)
             }
         }
 
@@ -422,8 +435,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
     }
 
     @SuppressLint("SetTextI18n")
-    private fun setData(type:String){
-        if(filterTypeEventsName == "All"){
+    private fun setData(type: String) {
+        if (filterTypeEventsName == "All") {
             when (filterType) {
                 Constants.EVENT_FILTER_TYPE.WEEK.value -> {
                     binding.eventTV.text = "Weekly"
@@ -433,7 +446,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
                 }
                 else -> {
                     val selectedDate = SimpleDateFormat("yyyy-MM-dd").parse(startDate)
-                    val currentDate = SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().time)
+                    val currentDate =
+                        SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().time)
                     if (selectedDate!! == SimpleDateFormat("yyyy-MM-dd").parse(currentDate)) {
                         binding.eventTV.text = "Today's"
                     } else {
@@ -445,8 +459,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
                 }
             }
 
-        }
-        else{
+        } else {
             when (filterType) {
                 Constants.EVENT_FILTER_TYPE.WEEK.value -> {
                     binding.eventTV.text = "Weekly $type"
@@ -456,7 +469,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
                 }
                 else -> {
                     val selectedDate = SimpleDateFormat("yyyy-MM-dd").parse(startDate)
-                    val currentDate = SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().time)
+                    val currentDate =
+                        SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().time)
                     if (selectedDate!! == SimpleDateFormat("yyyy-MM-dd").parse(currentDate)) {
                         binding.eventTV.text = "Today's  $type"
                     } else {
@@ -553,7 +567,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
 //            R.id.logoutIV -> {
 //                showLogoutDialog()
 //            }
-            R.id.filterIV ->{
+            R.id.filterIV -> {
                 viewModel.getCategoriesList()
 //                showFilterPopup(binding.describeTV)
             }

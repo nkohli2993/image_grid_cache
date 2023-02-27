@@ -9,7 +9,7 @@ data class EventListData(
     @SerializedName("current_page")
     var currentPage: Int = 0,
     @SerializedName("list")
-    var list: ArrayList<EventData> = arrayListOf(),
+    var list: ArrayList<EventData>? = null,
     @SerializedName("next_page")
     var nextPage: Boolean = false,
     @SerializedName("per_page")
