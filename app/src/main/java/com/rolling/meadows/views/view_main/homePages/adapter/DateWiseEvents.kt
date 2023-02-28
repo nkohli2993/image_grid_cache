@@ -17,6 +17,8 @@ import com.rolling.meadows.base.BaseViewHolder
 import com.rolling.meadows.data.events.EventDetailData
 import com.rolling.meadows.databinding.AdapterRollingEventBinding
 import com.rolling.meadows.utils.Constants
+import com.rolling.meadows.utils.DateFunctions
+import com.rolling.meadows.utils.extensions.visibleView
 import com.rolling.meadows.views.view_main.MainActivity
 
 class DateWiseEvents(
@@ -64,13 +66,15 @@ class DateWiseEvents(
         if (eventList.size > 0) {
             binding.titleTV.text = data.eventType
             binding.descriptionTV.text = data.description
-            /* binding.timeTV.text = DateFunctions.getFormattedDate(
-                 "yyyy-MM-dd hh:mm:ss",
-                 "hh:mm a", data.date.plus(" ${data.time}")
-             )*/
+            binding.timeTV.visibleView(false)
             when (data.event_category_id) {
                 Constants.EVENT_FILTER.EVENTS.value -> {
+                    binding.timeTV.visibleView(true)
                     binding.imageIV.setImageResource(R.drawable.ic_event_icon)
+                    binding.timeTV.text = DateFunctions.getFormattedDate(
+                        "yyyy-MM-dd hh:mm:ss",
+                        "hh:mm a", data.date.plus(" ${data.time}")
+                    )
                 }
                 Constants.EVENT_FILTER.ANNOUNCEMENTS.value -> {
                     binding.imageIV.setImageResource(R.drawable.ic_announcement_icon)

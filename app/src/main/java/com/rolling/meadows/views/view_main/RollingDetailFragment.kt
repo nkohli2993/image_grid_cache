@@ -8,7 +8,9 @@ import com.rolling.meadows.base.BaseFragment
 import com.rolling.meadows.data.events.EventDetailData
 import com.rolling.meadows.databinding.FragmentRollingDetailBinding
 import com.rolling.meadows.network.retrofit.DataResult
+import com.rolling.meadows.utils.Constants
 import com.rolling.meadows.utils.DateFunctions
+import com.rolling.meadows.utils.extensions.visibleView
 import com.rolling.meadows.view_model.EventsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -36,10 +38,24 @@ class RollingDetailFragment : BaseFragment<FragmentRollingDetailBinding>() {
                             "yyyy-MM-dd",
                             "dd MMM, yyyy", data.date
                         )
-                     /*   binding.timeTV.text = DateFunctions.getFormattedDate(
-                            "yyyy-MM-dd hh:mm:ss",
-                            "hh:mm a", data.date.plus(" ${data.time}")
-                        )*/
+
+                        when (data.event_category_id) {
+                            Constants.EVENT_FILTER.EVENTS.value -> {
+                                binding.timeTV.visibleView(true)
+                                binding.timeTV.text = DateFunctions.getFormattedDate(
+                                    "yyyy-MM-dd hh:mm:ss",
+                                    "hh:mm a", data.date.plus(" ${data.time}")
+                                )
+                            }
+                            else -> {
+                                binding.timeTV.visibleView(false)
+                            }
+                        }
+
+                        /*   binding.timeTV.text = DateFunctions.getFormattedDate(
+                               "yyyy-MM-dd hh:mm:ss",
+                               "hh:mm a", data.date.plus(" ${data.time}")
+                           )*/
                     }
                     is DataResult.Failure -> {
                         handleFailure(it.message, it.exception, it.errorCode)
@@ -72,10 +88,19 @@ class RollingDetailFragment : BaseFragment<FragmentRollingDetailBinding>() {
                 "yyyy-MM-dd",
                 "dd MMM, yyyy", data.date
             )
-            binding.timeTV.text = DateFunctions.getFormattedDate(
-                "yyyy-MM-dd hh:mm:ss",
-                "hh:mm a", data.date.plus(" ${data.time}")
-            )
+            when (data.event_category_id) {
+                Constants.EVENT_FILTER.EVENTS.value -> {
+                    binding.timeTV.visibleView(true)
+                    binding.timeTV.text = DateFunctions.getFormattedDate(
+                        "yyyy-MM-dd hh:mm:ss",
+                        "hh:mm a", data.date.plus(" ${data.time}")
+                    )
+                }
+                else -> {
+                    binding.timeTV.visibleView(false)
+                }
+            }
+
         }
 
 
