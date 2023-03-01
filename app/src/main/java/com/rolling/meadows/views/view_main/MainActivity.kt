@@ -147,9 +147,12 @@ class MainActivity : BaseActivity(), View.OnClickListener {
 
     override fun onBackPressed() {
         val destArray = listOf<Int>(R.id.homeFragment)
+        val notificationArray = listOf<Int>(R.id.notificationFragment)
         if (destArray.contains(getCurrentFragmentId())) {
             // check for view  to open
             backAction()
+        } else if (notificationArray.contains(getCurrentFragmentId())) {
+            navController?.navigate(R.id.homeFragment)
         } else {
             navController?.popBackStack()
         }

@@ -3,6 +3,7 @@ package com.rolling.meadows.views.view_main.notification
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
@@ -116,7 +117,8 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(),
                         data.description,
                         data.eventType,
                         data.id,
-                        data.time
+                        data.time,
+                        data.event_category_name
                     )
                     val bundle = Bundle()
                     bundle.putParcelable("detail", eventData)
@@ -153,6 +155,8 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(),
     override fun onItemClick(vararg items: Any) {
         selectedPosition = items[1] as Int
         val data = items[0] as NotificationData
+
+
         if (items[2] as String == "delete") {
             viewModel.deleteNotification(data.id)
         } else {
@@ -164,8 +168,15 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(),
                 findNavController().navigate(R.id.notification_to_rolling_detail, bundle)
             }
         }
-
-
+        var unRead = false
+        for(i in notificationList){
+            if(i.read == "UN_READ"){
+                unRead  = true
+            }
+        }
+        if(!unRead){
+            viewModelClick.selectItem(0)
+        }
     }
 
 

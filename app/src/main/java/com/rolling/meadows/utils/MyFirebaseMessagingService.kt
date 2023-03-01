@@ -96,7 +96,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val title = bundle.getString("title")
         val channelId = getString(R.string.app_name)
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-        val largeIcon = BitmapFactory.decodeResource(resources, R.drawable.notification_icon_overlay)
+        val largeIcon = BitmapFactory.decodeResource(resources, R.drawable.notifi_icon)
         val vibrate = longArrayOf(100, 100, 100, 100, 100)
         val mPowerManager = this.getSystemService(Context.POWER_SERVICE) as PowerManager
         var wl: PowerManager.WakeLock? = null
