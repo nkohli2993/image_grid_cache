@@ -90,7 +90,7 @@
         <item>December</item>
     </string-array>
 
-    <integer-array name="background_announcements">
+     <integer-array name="background_announcements">
         <item>@drawable/ic_background_pink</item>
         <item>@drawable/ic_background_yellow</item>
         <item>@drawable/ic_background_blue</item>

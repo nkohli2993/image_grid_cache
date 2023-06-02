@@ -29,6 +29,21 @@ android {
         enabled = true
     }
 
+    signingConfigs {
+        debug {
+            storeFile file('rolling_meadows.jks')
+            storePassword 'rolling_meadows'
+            keyAlias 'rolling_meadows'
+            keyPassword 'rolling_meadows'
+        }
+        release {
+            storeFile file('rolling_meadows.jks')
+            storePassword 'rolling_meadows'
+            keyAlias 'rolling_meadows'
+            keyPassword 'rolling_meadows'
+        }
+    }
+
 
     kapt { generateStubs = true }
 

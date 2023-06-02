@@ -1,7 +1,8 @@
 package com.rolling.meadows.utils
 
 object ApiConstants {
-    const val BASE_URL = "https://rollingmeadows.itechnolabs.tech/api/v1/"
+//    const val BASE_URL = "https://rollingmeadows.itechnolabs.tech/api/v1/"   //---- Local Server Link
+    const val BASE_URL = "https://rmeadowsapp.com/api/v1/"   //---- Live Server Link
 //    const val BASE_URL = "http://192.168.1.130:8000/api/v1/"
     const val SUCCESS = "success"
 
