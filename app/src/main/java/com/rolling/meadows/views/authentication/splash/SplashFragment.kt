@@ -37,11 +37,16 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>() {
         baseActivity!!.getFirebaseToken()
         val android_device_id =
             Settings.Secure.getString(context?.contentResolver, Settings.Secure.ANDROID_ID)
-        Log.e("catch_exception","unique:id: ${android_device_id}")
         lifecycleScope.launch {
             delay(3000)
             activity?.runOnUiThread {
-                viewModel.hitLogin(LoginRequestModelData(com.rolling.meadows.utils.Constants.DEVICE_TYPE,viewModel.getDeviceToken(),android_device_id!!))
+                viewModel.hitLogin(
+                    LoginRequestModelData(
+                        com.rolling.meadows.utils.Constants.DEVICE_TYPE,
+                        viewModel.getDeviceToken(),
+                        android_device_id!!
+                    )
+                )
             }
         }
     }
@@ -51,8 +56,9 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>() {
             it.getContentIfNotHandled()?.let { result ->
                 when (result) {
                     is DataResult.Loading -> {
-                        showLoading()
+                        // showLoading()
                     }
+
                     is DataResult.Success -> {
                         hideLoading()
                         showSuccess(baseActivity!!, getString(R.string.welcome_back))
@@ -60,6 +66,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>() {
                         viewModel.saveUser(result.data!!.data)
                         baseActivity!!.goToMainActivity()
                     }
+
                     is DataResult.Failure -> {
                         viewModel.saveToken(null)
                         // handleFailure(result.message, result.exception, result.errorCode)
@@ -77,8 +84,9 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>() {
             event.getContentIfNotHandled()?.let {
                 when (it) {
                     is DataResult.Loading -> {
-                        showLoading()
+                       // showLoading()
                     }
+
                     is DataResult.Success -> {
                         hideLoading()
 //                        showSuccess(baseActivity!!, it.data?.message!!)
@@ -88,6 +96,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>() {
                         viewModel.saveUser(it.data?.data)
                         baseActivity!!.goToMainActivity()
                     }
+
                     is DataResult.Failure -> {
                         handleFailure(it.message, it.exception, it.errorCode)
                     }
