@@ -55,24 +55,6 @@ android {
         }
     }
 
-
-/*
-    signingConfigs {
-        debug {
-            storeFile file('key.jks')
-            storePassword 'roves2022customer'
-            keyAlias 'roves2022customer'
-            keyPassword 'roves2022customer'
-        }
-        release {
-            storePassword 'roves2022customer'
-            keyAlias = 'roves2022customer'
-            keyPassword 'roves2022customer'
-            storeFile file('key.jks')
-        }
-    }
-*/
-
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
             def project = "rollingMeadows"
