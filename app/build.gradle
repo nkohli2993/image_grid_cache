@@ -8,13 +8,12 @@ plugins {
 //
 android {
 
-    compileSdkVersion 34
-    buildToolsVersion "30.0.3"
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.image_grid.app"
         minSdkVersion 21
-        targetSdkVersion 33
+        targetSdk 33
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
