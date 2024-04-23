@@ -8,9 +8,9 @@ import java.util.Collections
 class MemoryCache {
     private val cache = Collections.synchronizedMap(
         LinkedHashMap<String, Bitmap>(10, 1.5f, true)
-    ) //Last argument true for LRU ordering
-    private var size: Long = 0 //current allocated size
-    private var limit: Long = 1000000 //max memory in bytes
+    )
+    private var size: Long = 0
+    private var limit: Long = 1000000
 
     init {
         //use 25% of available heap size
@@ -60,7 +60,6 @@ class MemoryCache {
 
     fun clear() {
         try {
-            //NullPointerException sometimes happen here http://code.google.com/p/osmdroid/issues/detail?id=78
             cache.clear()
             size = 0
         } catch (ex: NullPointerException) {
